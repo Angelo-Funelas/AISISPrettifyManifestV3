@@ -1,0 +1,31 @@
+{
+  "manifest_version": 2,
+  "name": "AISIS Prettify",
+  "version": "0.1.0",
+
+  "description": "An extension that aims to make AISIS easier to work with",
+
+  "browser_action": {
+    "default_title": "AISIS Prettify",
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+
+  "author": "Ian De La Cruz",
+  "content_scripts": [
+    {
+      "matches": ["https://*.aisis.ateneo.edu/*"],
+      "js": ["app.js"]
+    }
+  ],
+  "permissions": [
+    "tabs"
+  ],
+  "short_name": "AISIS Prettify",
+  "version_name": "0.1.0",
+  "web_accessible_resources": [
+    "images/*.jpg",
+    "js/*.js",
+    "css/*.css"
+  ]
+}
