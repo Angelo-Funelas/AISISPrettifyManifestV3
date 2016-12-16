@@ -1,0 +1,12 @@
+tbody tr:nth-child(5) td table {
+  border-collapse: collapse;
+}
+
+.hidden {
+  display: none;
+}
+
+.checkbox_div {
+  display: flex;
+  flex-direction: column;
+}

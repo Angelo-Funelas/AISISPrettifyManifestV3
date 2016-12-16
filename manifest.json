@@ -14,7 +14,8 @@
   "author": "Ian De La Cruz",
   "content_scripts": [
     {
-      "matches": ["https://*.aisis.ateneo.edu/*"],
+      "matches": ["https://*.aisis.ateneo.edu/j_aisis/J_VCSC.do"],
+      "css": ["style.css"],
       "js": ["app.js"]
     }
   ],
@@ -26,6 +27,7 @@
   "web_accessible_resources": [
     "images/*.jpg",
     "js/*.js",
-    "css/*.css"
+    "css/*.css",
+    "*.css"
   ]
 }
