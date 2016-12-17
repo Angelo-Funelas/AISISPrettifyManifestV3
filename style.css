@@ -2,7 +2,7 @@ tbody tr:nth-child(5) td table {
   border-collapse: collapse;
 }
 
-.hidden {
+.hidden, .hiddenRadio {
   display: none;
 }
 
