@@ -16,7 +16,7 @@
     {
       "matches": ["https://*.aisis.ateneo.edu/j_aisis/J_VCSC.do"],
       "css": ["style.css"],
-      "js": ["app.js"]
+      "js": ["app.js", "dropdown.js"]
     }
   ],
   "permissions": [

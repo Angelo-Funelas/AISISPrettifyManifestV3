@@ -73,6 +73,12 @@ var FilterBox = (function() {
     }
   }
 
+  var _extractDataSet = function(set, queryString) {
+    for(var section of sections) {
+      set.add(section.querySelector(queryString).innerText)
+    }
+  }
+
   /* Event Handlers */
   var _genericCheckListener = function() {
     for(var section of sections) {
@@ -86,31 +92,33 @@ var FilterBox = (function() {
 
   var _genericRadioListener = function() {
     for(var section of sections) {
+      console.log(this.dataset.column)
       if(section.querySelector(this.dataset.column).innerText.includes(this.value)) {
-        if(this.checked) section.classList.remove('hiddenRadio')
-        if(!this.checked) section.classList.add('hiddenRadio')
+        console.log('here')
+        if(this.checked) section.classList.remove('hidden')
+        if(!this.checked) section.classList.add('hidden')
         //if(section.classList.contains('hidden')) section.classList.toggle('hidden')
       }
     }
   }
 
-  var _checkBoxInitializations = function(column, filterContainer) {
+  var _checkBoxInitialization = function(column, filterContainer) {
     var checkBox = document.createElement('div')
     var columnSet = new Array();
     var orderedSet = new Set();
-    var boxtitle = document.createelement('h1')
-    var checkboxcontainer = document.createelement('div')
+    var boxTitle = document.createElement('h1')
+    var checkBoxContainer = document.createElement('div')
 
-    boxtitle.innertext = column
-    boxtitle.setattribute('style', 'text-align: center; text-transform: capitalize;')
+    boxTitle.innerText = column
+    boxTitle.setAttribute('style', 'text-align: center; text-transform: capitalize;')
 
-    checkboxcontainer.appendchild(boxtitle)
-    checkboxcontainer.appendchild(checkbox)
+    checkBoxContainer.appendChild(boxTitle)
+    checkBoxContainer.appendChild(checkBox)
 
-    checkbox.classlist.add('checkbox_div')
-    filtercontainer.appendchild(checkboxcontainer)
+    checkBox.classList.add('checkbox_div')
+    filterContainer.appendChild(checkBoxContainer)
     //sectiontable.parentnode.insertbefore(filtercontainer, h)
-    sectiontable.parentnode.insertbefore(filtercontainer, sectiontable)
+    sectionTable.parentNode.insertBefore(filterContainer, sectionTable)
     //document.querySelector('body').appendChild(filterContainer)
 
     _extractData(columnSet, columnData[column])
@@ -143,13 +151,13 @@ var FilterBox = (function() {
     var radioTitle = document.createElement('h1')
     radioTitle.innerText = column
     checkBoxContainer.appendChild(radioTitle)
-    checkBoxContainer.appendChild('checkBox')
+    checkBoxContainer.appendChild(checkBox)
 
     checkBox.classList.add('checkbox_div')
     filterContainer.appendChild(checkBoxContainer)
-    sectionTable.parentNode.insertBefore(filterContainer, h)
+    sectionTable.parentNode.insertBefore(filterContainer, sectionTable)
 
-    _extractData(columnSet, columnData[column])
+    _extractDataSet(columnSet, columnData[column])
 
     for(let row of columnSet) {
       var checkLabel = document.createElement('label')
@@ -175,8 +183,9 @@ var FilterBox = (function() {
     for(var section of sections) {
       section.classList.add('hidden')
     }
-    _checkBoxInitializations('instructor', filterBox)
-    _radioInitalization('languages', filterBox)
+    _checkBoxInitialization('instructor', filterBox)
+    _checkBoxInitialization('languages', filterBox)
+
   }
   return {
     init: init
