@@ -2,8 +2,18 @@ function capitalizeFirstLetter(string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+chrome.runtime.onMessage.addListener(function(request) {
+  if (request.reload) {
+    location.reload()
+  }
+}
+);
+
 chrome.storage.local.get(['disable_filter'], function(result) {
   if (window.location.href == 'https://aisis.ateneo.edu/j_aisis/J_VCSC.do' && !result.disable_filter) {
+
+    activeFilter = []
+
     var _nodeCompare = function(a, b) {
       if(a.innerText < b.innerText) return -1
       if(a.innerText > b.innerText) return 1
@@ -105,6 +115,7 @@ chrome.storage.local.get(['disable_filter'], function(result) {
         var orderedSet = new Set();
         var boxTitle = document.createElement('p')
         boxTitle.className = 'filter-heading'
+
         var searchBox = document.createElement('input')
         searchBox.type = 'search'
         searchBox.setAttribute('list', `${column}-options`)
@@ -125,50 +136,23 @@ chrome.storage.local.get(['disable_filter'], function(result) {
 
         boxTitle.innerText = column
   
-        if (column == 'instructor') {
-          col2.appendChild(searchBox)
-        }
+        col2.appendChild(searchBox)
         col2.appendChild(datalist)
 
         checkBoxContainer.appendChild(col1)
         checkBoxContainer.appendChild(col2)
-        
-        if (column !== 'instructor') {
-          datalist.classList.add('checkbox_div')
-        }
         datalist.id = `${column}-options`
         filterContainer.appendChild(checkBoxContainer)
-        //sectiontable.parentnode.insertbefore(filtercontainer, h)
         document.querySelectorAll('table.needspadding table > tbody ')[0].appendChild(checkBoxContainer)
-        // sectionTable.parentNode.insertBefore(filterContainer, sectionTable)
-        //document.querySelector('body').appendChild(filterContainer)
   
         _extractData(columnSet, columnData[column])
         columnSet.sort()
         for(let d of columnSet) { orderedSet.add(d) }
   
         for(let row of orderedSet) {
-          if (column == 'instructor') {
-            var option = document.createElement('option')
-            option.value = capitalizeFirstLetter(row);
-            datalist.appendChild(option)
-          } else {
-            var checkLabel = document.createElement('label')
-            var checkSpan = document.createElement('span')
-            var check = document.createElement('input')
-    
-            check.setAttribute('type', 'checkbox')
-            check.addEventListener('change', _genericCheckListener)
-            check.setAttribute('value', row)
-            check.setAttribute('data-column', columnData[column])
-    
-            checkSpan.innerText = row.toLowerCase();
-            checkSpan.classList.add('checkBox')
-    
-            checkLabel.appendChild(check)
-            checkLabel.appendChild(checkSpan)
-            datalist.appendChild(checkLabel)
-          }
+          var option = document.createElement('option')
+          option.value = capitalizeFirstLetter(row);
+          datalist.appendChild(option)
         }
       }
 
@@ -255,9 +239,9 @@ chrome.storage.local.get(['disable_filter'], function(result) {
       var init = function() {
         var filterBox = document.createElement('tr')
         filterBox.className = 'filterbox'
-        for(var section of sections) {
-          section.classList.add('hidden')
-        }
+        // for(var section of sections) {
+        //   section.classList.add('hidden')
+        // }
         _filterInstructorInitialization('instructor', filterBox)
         _checkBoxInitialization('languages', filterBox)
   
