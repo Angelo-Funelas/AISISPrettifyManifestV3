@@ -8,6 +8,10 @@
   <head>
     <title>Getting Started Extension's Popup</title>
     <style>
+      html {
+        width: 20em;
+        height: 20em;
+      }
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
@@ -19,19 +23,74 @@
         overflow: hidden;
         max-width: 400px;
       }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 4em;
+        height: 2em;
+    }
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .2s;
+        transition: .2s;
+    }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 1.6em;
+        width: 1.6em;
+        left: 0.25em;
+        bottom: 0.25em;
+        background-color: white;
+        -webkit-transition: .2s;
+        transition: .2s;
+    }
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+    input:checked + .slider:before {
+        -webkit-transform: translateX(1.8em);
+        -ms-transform: translateX(1.8em);
+        transform: translateX(1.8em);
+    }
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+    .slider.round:before {
+        border-radius: 50%;
+    }
+    p {
+      display: inline-block;
+      vertical-align: -webkit-baseline-middle;
+      margin-left: 1rem;
+    }
     </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->
-    <script src="popup.js"></script>
   </head>
   <body>
-    <div id="status"></div>
-    <img id="image-result" hidden>
+    <label class="switch">
+      <input type="checkbox" id="settings-filter"><span class="slider round"></span>
+    </label><p class="setting-checkbox-p">Disable Filter</p><br>
+    <label class="switch">
+      <input type="checkbox" id="settings-schedule"><span class="slider round"></span>
+    </label><p class="setting-checkbox-p">Pretty Schedule</p>
+    <script src="/scripts/popup.js"></script>
   </body>
 </html>
 

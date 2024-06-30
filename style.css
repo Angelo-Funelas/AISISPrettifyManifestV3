@@ -17,21 +17,34 @@ tbody tr:nth-child(5) td table {
 }
 
 .checkbox_div {
-  width: 80%;
-  margin: 0 auto;
   display: flex;
-  height: 100px;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  /*border-left: #A8BCDF 5px solid;*/
-  /*border-right: #A8BCDF 5px solid;*/
 }
-
 .checkbox_div label {
   text-align: left;
+  margin-right: 2rem;
+  color: white;
 }
-
 .checkbox {
   text-transform: capitalize;
   font-size: 0.83em;
+}
+.checkbox_div input[type=checkbox] {
+  margin-right: 1rem;
+}
+
+.filterbox {
+  text-align: left;
+}
+.filterbox input {
+  width: 80%;
+}
+.filter-heading {
+  color: white;
+  text-transform: capitalize;
+}
+input[type=search] {
+  width: 100%;
 }
