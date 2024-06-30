@@ -2,3 +2,6 @@
 
 This Chrome extension aims to provide a different UI for the
 student portal of Ateneo De Manila University
+
+Features
+- Class Schedule Filter
