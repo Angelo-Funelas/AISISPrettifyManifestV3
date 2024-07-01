@@ -6,7 +6,8 @@ function showS_img(name) {
     s_img.src = chrome.runtime.getURL(`/images/hutao/${RandomInt(1,3+1)}.png`)
     s_img.className = 's_img';
     document.body.append(s_img)
-    s_img.style.left = `${RandomInt(0, 100)}vw`
+    s_img.style.left = `max(0,calc(${RandomInt(0, 100)}vw - 5em))`
+    alert(`max(0,calc(${RandomInt(0, 100)}vw - 5em))`)
     s_img.addEventListener('animationend', function(e) {
         e.currentTarget.remove()
     })
@@ -22,7 +23,7 @@ document.addEventListener("keydown", function(e) {
             document.getElementById('secret_input').value = ''
         }, 4000)
     }
-    if (e.key.length === 1 && e.key.match(/[a-z]/i)) {
+    if (e.key !== null && e.key.length === 1 && e.key.match(/[a-z]/i)) {
         document.getElementById('secret_input').value += e.key;
     }
     secret_value = document.getElementById('secret_input').value
