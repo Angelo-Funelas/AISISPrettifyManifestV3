@@ -38,7 +38,12 @@ tbody tr:nth-child(5) td table {
   font-size: 0.83em;
 }
 .checkbox_div input[type=checkbox] {
-  margin-right: 1rem;
+  margin: 0rem .4rem;
+}
+.checkbox_div > label {
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
 }
 
 .filterbox {
