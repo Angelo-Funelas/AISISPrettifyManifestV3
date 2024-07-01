@@ -94,12 +94,21 @@ chrome.storage.local.get(['disable_filter'], function(result) {
           firstRun = !firstRun
           displayRows(false)
         }
+        if (this.checked && !activeFilter[9-1].includes(this.value)) {
+          activeFilter[9-1].push(this.value)
+        } else if (!this.checked && activeFilter[9-1].includes(this.value)) {
+          activeFilter[9-1].splice(activeFilter[9-1].indexOf(this.value), 1)
+        }
         for(var section of sections) {
           if(section.querySelector(this.dataset.column).innerText.includes(this.value)) {
             if(this.checked) section.classList.remove('hidden')
             if(!this.checked) section.classList.add('hidden')
             //if(section.classList.contains('hidden')) section.classList.toggle('hidden')
           }
+        }
+        if (activeFilter[9-1].length == 0) {
+          displayRows(true)
+          firstRun = true
         }
       }
 
