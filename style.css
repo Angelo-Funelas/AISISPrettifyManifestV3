@@ -15,6 +15,12 @@ tbody tr:nth-child(5) td table {
   width: 90%;
   margin: 20px auto;
 }
+.sectionTable > tbody > tr:not(:first-child) td {
+  background-image: none;
+}
+.sectionTable > tbody > tr:nth-child(odd) {
+  background-color: #f0f0f0;
+}
 
 .checkbox_div {
   display: flex;
@@ -55,23 +61,26 @@ input[type=search] {
   background-color: white;
   color: black;
   border-radius: 5px;
-  margin: 1rem;
+  margin: .5rem;
   vertical-align: middle;
 }
 .filterTag > p {
   display: inline-block;
   margin: 0;
+  font-size: 1rem;
 }
 .filterTag > p:nth-child(1) {
   margin-right: 1rem;
+  cursor: pointer;
 }
 .shown {
-  animation: show 1s linear;
+  animation: show .8s linear;
 }
+
 
 @keyframes show {
   0% {
-    background-color: cyan;
+    background-color: rgb(133, 236, 240);
   }
   100% {
     background-color: inherit;

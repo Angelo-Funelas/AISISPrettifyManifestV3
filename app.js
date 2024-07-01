@@ -76,9 +76,15 @@ chrome.storage.local.get(['disable_filter'], function(result) {
       }
       var firstRun = true
 
-      function hideRows() {
-        for(var section of sections) {
-          section.classList.add('hidden')
+      function displayRows(display) {
+        if (display) {
+          for(var section of sections) {
+            section.classList.remove('hidden')
+          }
+        } else {
+          for(var section of sections) {
+            section.classList.add('hidden')
+          }
         }
       }
   
@@ -86,7 +92,7 @@ chrome.storage.local.get(['disable_filter'], function(result) {
       var _genericCheckListener = function() {
         if (firstRun) {
           firstRun = !firstRun
-          hideRows()
+          displayRows(false)
         }
         for(var section of sections) {
           if(section.querySelector(this.dataset.column).innerText.includes(this.value)) {
@@ -129,6 +135,21 @@ chrome.storage.local.get(['disable_filter'], function(result) {
             var tagElVal = document.createElement('p')
             var closeButton = document.createElement('p')
             closeButton.innerText = '✖'
+            closeButton.addEventListener('click', function(e) {
+              var tagName = e.currentTarget.parentNode.querySelectorAll('p')[1].innerText
+              activeFilter[7-1].splice(activeFilter[7-1].indexOf(tagName), 1)
+              for(var section of sections) {
+                if(section.querySelector(`td:nth-of-type(7)`).innerText.includes(tagName)) {
+                  section.classList.add('hidden')
+                  section.classList.remove('shown')
+                }
+              }
+              e.currentTarget.parentNode.remove()
+              if (activeFilter[7-1].length == 0) {
+                displayRows(true)
+                firstRun = true
+              }
+            })
 
             tagElVal.innerText = activeFilter[i][j]
             tagEl.className = 'filterTag'
@@ -176,7 +197,7 @@ chrome.storage.local.get(['disable_filter'], function(result) {
               if (orderedSet.has(searchBox.value) && !(activeFilter[7-1].includes(searchBox.value))) {
                 if (firstRun) {
                   firstRun = !firstRun
-                  hideRows()
+                  displayRows(false)
                 }
                 activeFilter[7-1].push(searchBox.value)
                 for(var section of sections) {
