@@ -14,6 +14,10 @@ chrome.storage.local.get(['disable_filter'], function(result) {
 
     activeFilter = []
 
+    for (let i=0;i<14;i++) {
+      activeFilter.push([])
+    }
+
     var _nodeCompare = function(a, b) {
       if(a.innerText < b.innerText) return -1
       if(a.innerText > b.innerText) return 1
@@ -35,22 +39,6 @@ chrome.storage.local.get(['disable_filter'], function(result) {
     for(var i = 0; i < opts.length; i++) {
       myNode.appendChild(opts[i])
     }
-  
-      
-    // chrome.runtime.onMessage.addListener(function(request) {
-    //   if (request.byemessage) {
-    //       var submit = document.getElementsByClassName('VfPpkd-Bz112c-LgbsSe yHy1rc eT1oJ tWDL4c Cs0vCd')[0];
-    //       if (!submit) {
-    //           alert('This requires the chatbox to be opened at least once.');
-    //       } else {
-    //           document.querySelectorAll('textarea')[0].value = request.byemessage;
-    //           submit.disabled = false;
-    //           submit.click();
-    //       }
-    //   }
-    //   return true;
-    // }
-    // );
 
     /* Variable definitions */
     var sectionTable = document.querySelectorAll('table.needspadding')[1]
@@ -86,14 +74,37 @@ chrome.storage.local.get(['disable_filter'], function(result) {
           set.push(section.querySelector(queryString).innerText)
         }
       }
+      var firstRun = true
+
+      function hideRows() {
+        for(var section of sections) {
+          section.classList.add('hidden')
+        }
+      }
   
       /* Event Handlers */
       var _genericCheckListener = function() {
+        if (firstRun) {
+          firstRun = !firstRun
+          hideRows()
+        }
         for(var section of sections) {
           if(section.querySelector(this.dataset.column).innerText.includes(this.value)) {
             if(this.checked) section.classList.remove('hidden')
             if(!this.checked) section.classList.add('hidden')
             //if(section.classList.contains('hidden')) section.classList.toggle('hidden')
+          }
+        }
+      }
+
+      var filterWithActiveFilter = function() {
+        for(var section of sections) {
+          for (let i=0;i<14;i++) {
+            if(section.querySelector(i).innerText.includes(this.value)) {
+              if(this.checked) section.classList.remove('hidden')
+              if(!this.checked) section.classList.add('hidden')
+              //if(section.classList.contains('hidden')) section.classList.toggle('hidden')
+            }
           }
         }
       }
@@ -108,25 +119,39 @@ chrome.storage.local.get(['disable_filter'], function(result) {
           }
         }
       }
-  
-      var _filterInstructorInitialization = function(column, filterContainer) {
+      
+      function renderFilters() {
+        var cont = document.getElementById('filterInstrContainer')
+        cont.innerHTML = ''
+        for (let i=0;i<activeFilter.length;i++) {
+          for (let j=0;j<activeFilter[i].length;j++) {
+            var tagEl = document.createElement('div')
+            var tagElVal = document.createElement('p')
+            var closeButton = document.createElement('p')
+            closeButton.innerText = '✖'
+
+            tagElVal.innerText = activeFilter[i][j]
+            tagEl.className = 'filterTag'
+            tagEl.appendChild(closeButton)
+            tagEl.appendChild(tagElVal)
+            cont.appendChild(tagEl)
+          }
+        }
+      }
+
+      var _filterInstructorInitialization = function() {
         var datalist = document.createElement('datalist')
         var columnSet = new Array();
         var orderedSet = new Set();
         var boxTitle = document.createElement('p')
         boxTitle.className = 'filter-heading'
 
-        var searchBox = document.createElement('input')
-        searchBox.type = 'search'
-        searchBox.setAttribute('list', `${column}-options`)
-        searchBox.addEventListener('keypress', function(event) {
-          if (event.key === 'Enter') {
-              event.preventDefault();
-          }
-        });
-
-
         var checkBoxContainer = document.createElement('tr')
+        var instructorsContainer = document.createElement('tr')
+        instructorsContainer.appendChild(document.createElement('td'))
+        var instructorTags = document.createElement('td')
+        instructorTags.id = 'filterInstrContainer'
+        instructorsContainer.appendChild(instructorTags)
 
         var col1 = document.createElement('td')
         col1.className = 'text01'
@@ -134,20 +159,46 @@ chrome.storage.local.get(['disable_filter'], function(result) {
 
         col1.appendChild(boxTitle)
 
-        boxTitle.innerText = column
+        boxTitle.innerText = 'Instructor'
   
+
+        _extractData(columnSet, columnData['instructor'])
+        columnSet.sort()
+        for(let d of columnSet) { orderedSet.add(d) }
+        
+        var searchBox = document.createElement('input')
+        searchBox.type = 'search'
+        searchBox.setAttribute('list', `instructor-options`)
+        searchBox.addEventListener('keypress', function(event) {
+          if (event.key === 'Enter') {
+              event.preventDefault();
+              console.log(activeFilter)
+              if (orderedSet.has(searchBox.value) && !(activeFilter[7-1].includes(searchBox.value))) {
+                if (firstRun) {
+                  firstRun = !firstRun
+                  hideRows()
+                }
+                activeFilter[7-1].push(searchBox.value)
+                for(var section of sections) {
+                  if(section.querySelector(`td:nth-of-type(7)`).innerText.includes(searchBox.value)) {
+                    section.classList.remove('hidden')
+                    section.classList.add('shown')
+                  }
+                }
+                searchBox.value = ''
+                renderFilters()
+              }
+          }
+        });
         col2.appendChild(searchBox)
         col2.appendChild(datalist)
 
         checkBoxContainer.appendChild(col1)
         checkBoxContainer.appendChild(col2)
-        datalist.id = `${column}-options`
-        filterContainer.appendChild(checkBoxContainer)
+        datalist.id = `instructor-options`
         document.querySelectorAll('table.needspadding table > tbody ')[0].appendChild(checkBoxContainer)
+        document.querySelectorAll('table.needspadding table > tbody ')[0].appendChild(instructorsContainer)
   
-        _extractData(columnSet, columnData[column])
-        columnSet.sort()
-        for(let d of columnSet) { orderedSet.add(d) }
   
         for(let row of orderedSet) {
           var option = document.createElement('option')
@@ -156,7 +207,7 @@ chrome.storage.local.get(['disable_filter'], function(result) {
         }
       }
 
-      var _checkBoxInitialization = function(column, filterContainer) {
+      var _checkBoxInitialization = function(column) {
         var checkboxContainer = document.createElement('div')
         var columnSet = new Array();
         var orderedSet = new Set();
@@ -179,7 +230,6 @@ chrome.storage.local.get(['disable_filter'], function(result) {
         
         checkboxContainer.classList.add('checkbox_div')
         checkboxContainer.id = `${column}-options`
-        filterContainer.appendChild(checkBoxContainer)
         document.querySelectorAll('table.needspadding table > tbody ')[0].appendChild(checkBoxContainer)
   
         _extractData(columnSet, columnData[column])
@@ -239,11 +289,8 @@ chrome.storage.local.get(['disable_filter'], function(result) {
       var init = function() {
         var filterBox = document.createElement('tr')
         filterBox.className = 'filterbox'
-        // for(var section of sections) {
-        //   section.classList.add('hidden')
-        // }
-        _filterInstructorInitialization('instructor', filterBox)
-        _checkBoxInitialization('languages', filterBox)
+        _filterInstructorInitialization()
+        _checkBoxInitialization('languages')
   
       }
       return {
@@ -256,4 +303,3 @@ chrome.storage.local.get(['disable_filter'], function(result) {
   }
   
 });
-

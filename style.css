@@ -48,3 +48,32 @@ tbody tr:nth-child(5) td table {
 input[type=search] {
   width: 100%;
 }
+.filterTag {
+  display: inline-block;
+  padding: 5px;
+  padding-left: 1rem;
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  margin: 1rem;
+  vertical-align: middle;
+}
+.filterTag > p {
+  display: inline-block;
+  margin: 0;
+}
+.filterTag > p:nth-child(1) {
+  margin-right: 1rem;
+}
+.shown {
+  animation: show 1s linear;
+}
+
+@keyframes show {
+  0% {
+    background-color: cyan;
+  }
+  100% {
+    background-color: inherit;
+  }
+}
