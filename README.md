@@ -3,7 +3,8 @@
 
 This Chrome extension aims to provide a different UI for the student portal of Ateneo De Manila University
 
-Updated to Chrome Manifest V3 and additional improvements and tweaks by Gelo Funelas
+Originally made by Prof. Ian, De La Cruz & updated to **Chrome Manifest V3** and additional improvements and tweaks by Gelo Funelas
 
 Features
 - Class Schedule Filter
+![class schedule filter preview](https://github.com/Angelo-Funelas/AISISPrettifyManifestV3/blob/master/images/preview1.png?raw=true)
