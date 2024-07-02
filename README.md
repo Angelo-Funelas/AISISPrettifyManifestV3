@@ -8,4 +8,6 @@ Originally made by Prof. Ian, De La Cruz & updated to **Chrome Manifest V3** and
 Features
 - Class Schedule Filter
 ![class schedule filter preview](https://github.com/Angelo-Funelas/AISISPrettifyManifestV3/blob/master/images/preview1.png?raw=true)
+- Improved Class Schedule Table
+![class schedule filter preview](https://github.com/Angelo-Funelas/AISISPrettifyManifestV3/blob/master/images/preview2.png?raw=true)
 - Sort Dropdown
