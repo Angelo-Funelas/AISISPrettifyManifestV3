@@ -9,15 +9,8 @@ chrome.runtime.onMessage.addListener(function(request) {
 }
 );
 
-chrome.storage.local.get(['disable_filter'], function(result) {
-  if (window.location.href == 'https://aisis.ateneo.edu/j_aisis/J_VCSC.do' && !result.disable_filter) {
-
-    activeFilter = []
-
-    for (let i=0;i<14;i++) {
-      activeFilter.push([])
-    }
-
+chrome.storage.local.get(['disable_dropdownSort'], function(result) {
+  if (window.location.href == 'https://aisis.ateneo.edu/j_aisis/J_VCSC.do' && !result.disable_dropdownSort) {
     var _nodeCompare = function(a, b) {
       if(a.innerText < b.innerText) return -1
       if(a.innerText > b.innerText) return 1
@@ -38,6 +31,16 @@ chrome.storage.local.get(['disable_filter'], function(result) {
     }
     for(var i = 0; i < opts.length; i++) {
       myNode.appendChild(opts[i])
+    }
+  }
+})
+chrome.storage.local.get(['disable_filter'], function(result) {
+  if (window.location.href == 'https://aisis.ateneo.edu/j_aisis/J_VCSC.do' && !result.disable_filter) {
+
+    activeFilter = []
+
+    for (let i=0;i<14;i++) {
+      activeFilter.push([])
     }
 
     /* Variable definitions */

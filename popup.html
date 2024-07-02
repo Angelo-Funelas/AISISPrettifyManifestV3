@@ -10,6 +10,7 @@
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
         font-size: 100%;
+        margin: 0;
       }
       #status {
         /* avoid an excessively wide status text */
@@ -76,15 +77,45 @@
       vertical-align: -webkit-baseline-middle;
       margin-left: 1rem;
     }
+    header {
+      background: rgb(34,230,255);
+      background: linear-gradient(17deg, rgba(34,230,255,1) 0%, rgba(1,4,255,1) 100%);
+      color: white;
+      padding: 1rem;
+    }
+    header > h1 {
+      margin: 0;
+    }
+    main {
+      margin: 1rem;
+    }
+    footer {
+      position: absolute;
+      bottom: 0;
+      padding: 1rem;
+      font-size: .8rem;
+      color: #8f8f8f;
+    }
     </style>
   </head>
   <body>
-    <label class="switch">
-      <input type="checkbox" id="settings-filter" disabled><span class="slider round"></span>
-    </label><p class="setting-checkbox-p">Disable Filter</p><br>
-    <label class="switch">
-      <input type="checkbox" id="settings-schedule" disabled><span class="slider round"></span>
-    </label><p class="setting-checkbox-p">Pretty Schedule</p>
+    <header>
+      <h1>Settings</h1>
+    </header>
+    <main>
+      <label class="switch">
+        <input type="checkbox" id="settings-filter" disabled><span class="slider round"></span>
+      </label><p class="setting-checkbox-p">Disable Filter</p><br>
+      <label class="switch">
+        <input type="checkbox" id="settings-schedule" disabled><span class="slider round"></span>
+      </label><p class="setting-checkbox-p">Disable Pretty Schedule</p><br>
+      <label class="switch">
+        <input type="checkbox" id="settings-dropdown" disabled><span class="slider round"></span>
+      </label><p class="setting-checkbox-p">Disable Dropdown Sorting</p>
+    </main>
+    <footer>
+      Developed by Gelo Funelas
+    </footer>
     <script src="/scripts/popup.js"></script>
   </body>
 </html>

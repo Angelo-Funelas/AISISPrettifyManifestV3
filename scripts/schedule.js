@@ -2,8 +2,8 @@ function to12hr(hr) {
     hr = parseInt(hr)
     return `${(hr<13)?hr:hr%12}`
 }
-chrome.storage.local.get(['show_schedule'], function(result) {
-    if (window.location.href == 'https://aisis.ateneo.edu/j_aisis/J_VMCS.do' && !result.show_schedule) {
+chrome.storage.local.get(['disable_schedule'], function(result) {
+    if (window.location.href == 'https://aisis.ateneo.edu/j_aisis/J_VMCS.do' && !result.disable_schedule) {
         var table = document.getElementsByTagName('table')[15]
         var rows = table.querySelector('tbody').querySelectorAll('tr')
         var parsedTable = []

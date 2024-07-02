@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "AISIS Prettify",
+    "name": "AISIS Prettify - Better Schedule and Class Filter",
     "description": "An extension that aims to make AISIS easier to work with",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "icons": {
         "16": "/images/icon_16.png",
         "48": "/images/icon_48.png",
@@ -19,8 +19,7 @@
     }],
     "permissions": [
         "tabs",
-        "storage",
-        "background"
+        "storage"
     ],
     "web_accessible_resources": [{
         "resources": ["/images/hutao/*.png"],
