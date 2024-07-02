@@ -1,3 +1,7 @@
+function to12hr(hr) {
+    hr = parseInt(hr)
+    return `${(hr<13)?hr:hr%12}`
+}
 chrome.storage.local.get(['show_schedule'], function(result) {
     if (window.location.href == 'https://aisis.ateneo.edu/j_aisis/J_VMCS.do' && !result.show_schedule) {
         var table = document.getElementsByTagName('table')[15]
@@ -42,39 +46,49 @@ chrome.storage.local.get(['show_schedule'], function(result) {
         }
         console.log(gridTable)
         console.log(subjects)
-
-        var gridSchedule = document.createElement('div')
-        gridSchedule.id = "prettyGrid"
-        gridSchedule.style.gridTemplateRows = `repeat(${gridTable[0].length}, fit-content)`
-
-        for (let i=0;i<parsedTable[0].length;i++) {
-            var heading = document.createElement('p')
-            heading.className = 'headCell'
-            heading.innerText = parsedTable[0][i]
-            gridSchedule.append(heading)
-        }
-        for (let i=0;i<gridTable.length;i++) {
-            for (let j=0;j<gridTable[i].length;j++) {
-                if (i==0) {
-                    var time = document.createElement('p')
-                    time.className = 'timeCell'
-                    time.innerText = gridTable[0][j][0]
-                    time.style.gridRow = gridTable[0][j][1]
-                    gridSchedule.append(time)
-                } else {
-                    var classBlock = document.createElement('div')
-                    classBlock.className = 'classCell'
-                    classBlock.style.backgroundColor = `#${subjectColors[subjects.get(gridTable[i][j][0])]}`
-                    classBlock.innerText = gridTable[i][j][0]
-                    classBlock.style.gridColumn = i+1
-                    classBlock.style.gridRowStart = gridTable[i][j][1]
-                    classBlock.style.gridRowEnd = gridTable[i][j][2]
-                    gridSchedule.append(classBlock)
-                }
+        if (parsedTable[0].length == 7) {
+            var gridSchedule = document.createElement('div')
+            gridSchedule.id = "prettyGrid"
+            gridSchedule.style.gridTemplateRows = `64px repeat(${gridTable[0].length-1}, 32px)`
+            for (let i=1;i<gridTable[0].length;i++) {
+                var gridLine = document.createElement('div')
+                gridLine.className = 'gridLine'
+                gridLine.style.gridRow = i+1
+                gridSchedule.append(gridLine)
             }
-        
+            for (let i=0;i<parsedTable[0].length;i++) {
+                var heading = document.createElement('p')
+                heading.className = 'headCell'
+                heading.innerText = parsedTable[0][i]
+                gridSchedule.append(heading)
+            }
+            for (let i=0;i<gridTable.length;i++) {
+                for (let j=0;j<gridTable[i].length;j++) {
+                    if (i==0 && j%2==0) {
+                        var cont = document.createElement('div')
+                        var time = document.createElement('p')
+                        cont.className = 'timeCell'
+                        var timeStr = gridTable[0][j][0].split("-")[0]
+                        time.innerText = to12hr(timeStr.slice(0, -2)) + ':' + timeStr.slice(-2);
+                        cont.style.gridRow = gridTable[0][j][1]
+                        cont.appendChild(time)
+                        gridSchedule.append(cont)
+                    } else {
+                        var classBlock = document.createElement('div')
+                        classBlock.className = 'classCell'
+                        classBlock.style.backgroundColor = `#${subjectColors[subjects.get(gridTable[i][j][0])]}`
+                        classBlock.innerText = gridTable[i][j][0]
+                        classBlock.style.gridColumn = i+1
+                        classBlock.style.gridRowStart = gridTable[i][j][1]
+                        classBlock.style.gridRowEnd = gridTable[i][j][2]
+                        gridSchedule.append(classBlock)
+                    }
+                }
+            
+            }
+            table.parentElement.append(gridSchedule)
+            table.style.display = 'none'
         }
-        table.parentElement.append(gridSchedule)
-        table.style.display = 'none'
+
     }
 })

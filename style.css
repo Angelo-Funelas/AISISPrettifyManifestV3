@@ -96,15 +96,31 @@ input[type=search] {
   width: 90%;
   display: grid;
   grid-template-columns: auto repeat(6,2fr);
-  grid-gap: 6px;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 11px;
 }
+.headCell {
+  z-index: 2;
+}
 .classCell {
-  padding: 1rem;
+  padding: 5px;
   border-radius: 10px;
-  color: white
+  color: white;
+  margin: 2px 6px;
 }
 .timeCell {
+  grid-column: 1;
+  display: flex;
+  align-items: center;
+}
+.timeCell > p {
   margin: 0;
+  transform: translateY(-17px);
+  padding: 6px;
+  background-color: white;
+}
+.gridLine {
+  grid-column: 1 / span 7;
+  border-bottom: 2px solid #f0f0f0;
+  box-sizing: content-box;
 }
