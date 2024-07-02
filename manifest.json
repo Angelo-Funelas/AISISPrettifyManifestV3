@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "AISIS Prettify - Better Schedule and Class Filter",
+    "name": "AISIS Prettify - Improved Schedule and Class Filter",
     "description": "An extension that aims to make AISIS easier to work with",
     "version": "0.2.0",
     "icons": {
