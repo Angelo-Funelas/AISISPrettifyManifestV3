@@ -15,7 +15,7 @@
     "content_scripts": [{
         "matches": ["*://aisis.ateneo.edu/*"],
         "css": ["style.css","/styles/secrets.css"],
-        "js": ["app.js", "/scripts/modules.js", "/scripts/secrets.js"]
+        "js": ["app.js", "/scripts/modules.js", "/scripts/secrets.js", "/scripts/schedule.js"]
     }],
     "permissions": [
         "tabs",
