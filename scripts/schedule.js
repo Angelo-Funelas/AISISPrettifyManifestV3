@@ -50,7 +50,7 @@ chrome.storage.local.get(['disable_schedule'], function(result) {
             var gridSchedule = document.createElement('div')
             gridSchedule.id = "prettyGrid"
             gridSchedule.style.gridTemplateRows = `64px repeat(${gridTable[0].length-1}, 32px)`
-            for (let i=1;i<gridTable[0].length;i++) {
+            for (let i=0;i<gridTable[0].length;i++) {
                 var gridLine = document.createElement('div')
                 gridLine.className = 'gridLine'
                 gridLine.style.gridRow = i+1
@@ -59,20 +59,23 @@ chrome.storage.local.get(['disable_schedule'], function(result) {
             for (let i=0;i<parsedTable[0].length;i++) {
                 var heading = document.createElement('p')
                 heading.className = 'headCell'
+                heading.style.gridColumn = i+1
                 heading.innerText = parsedTable[0][i]
                 gridSchedule.append(heading)
             }
             for (let i=0;i<gridTable.length;i++) {
                 for (let j=0;j<gridTable[i].length;j++) {
-                    if (i==0 && j%2==0) {
-                        var cont = document.createElement('div')
-                        var time = document.createElement('p')
-                        cont.className = 'timeCell'
-                        var timeStr = gridTable[0][j][0].split("-")[0]
-                        time.innerText = to12hr(timeStr.slice(0, -2)) + ':' + timeStr.slice(-2);
-                        cont.style.gridRow = gridTable[0][j][1]
-                        cont.appendChild(time)
-                        gridSchedule.append(cont)
+                    if (i==0) {
+                        if (j%2==0) {
+                            var cont = document.createElement('div')
+                            var time = document.createElement('p')
+                            cont.className = 'timeCell'
+                            var timeStr = gridTable[0][j][0].split("-")[0]
+                            time.innerText = to12hr(timeStr.slice(0, -2)) + ':' + timeStr.slice(-2);
+                            cont.style.gridRow = gridTable[0][j][1]
+                            cont.appendChild(time)
+                            gridSchedule.append(cont)
+                        }
                     } else {
                         var classBlock = document.createElement('div')
                         classBlock.className = 'classCell'
