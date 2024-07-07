@@ -9,7 +9,7 @@ def generateChrome(template_filename, output_filename):
     
     # Copy the template file to the output path
     shutil.copyfile(template_path, output_path)
-    print(f"Manifest generated from {template_path} to {output_path}")
+    print(f"Chrome manifest saved to {output_path}")
 
 def generateFirefox(chrome_manifest_path, firefox_manifest_path):
     with open(chrome_manifest_path, 'r') as file:
@@ -76,7 +76,7 @@ def zip(exclude,zipname):
                 arcname = os.path.relpath(file_path, current_dir)
                 zipf.write(file_path, arcname)
 
-    print(f"Folder '{current_dir}' has been zipped into '{zip_name}' excluding specified files and folders")
+    print(f"Generated '{zip_name}'.")
 
 
 exclude = [
@@ -98,4 +98,14 @@ if choice == 0:
 elif choice == 1:
     generateFirefox('manifest_template.json', 'manifest.json')
     zip(exclude, 'AISISPrettifyFirefox.zip')
-
+    
+    
+manifest_path = os.path.join(current_dir, 'manifest.json')
+    
+# Check if the file exists
+if os.path.isfile(manifest_path):
+    # Delete the file
+    os.remove(manifest_path)
+    print(f"'{manifest_path}' has been deleted.")
+else:
+    print(f"'{manifest_path}' does not exist.")
