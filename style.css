@@ -177,9 +177,13 @@ input[type=search] {
   border-radius: 12px;
   color: white;
 }
-#ap-sitemap > div:last-child > h2, #ap-sitemap > div:last-child > p {
+#ap-sitemap > div:last-child > h2, #ap-sitemap > div:last-child p {
   margin: 0;
 }
 #ap-sitemap > div:last-child > h2 {
   font-size: 24px;
+}
+#ap-sitemap > div:last-child > a {
+  color: white;
+  text-decoration: underline;
 }
