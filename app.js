@@ -143,7 +143,8 @@ chrome.storage.local.get(['disable_filter'], function(result) {
         
         function renderFilters() {
           var cont = document.getElementById('filterInstrContainer')
-          cont.innerHTML = ''
+          // cont.innerHTML = ''
+          while(cont.firstChild && cont.removeChild(cont.firstChild));
           for (let i=0;i<activeFilter.length;i++) {
             for (let j=0;j<activeFilter[i].length;j++) {
               var tagEl = document.createElement('div')
@@ -280,8 +281,8 @@ chrome.storage.local.get(['disable_filter'], function(result) {
             check.addEventListener('change', _genericCheckListener)
             check.setAttribute('value', row)
             check.setAttribute('data-column', columnData[column])
-    
-            checkLabel.innerHTML += row
+
+            checkLabel.innerText = row
             checkLabel.prepend(check)
             checkboxContainer.appendChild(checkLabel)
           }
