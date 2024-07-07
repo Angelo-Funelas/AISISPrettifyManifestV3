@@ -25,7 +25,9 @@
     ],
     "short_name": "AISIS Prettify",
     "web_accessible_resources": [
+      "/images/*.png",
       "images/hutao/*.png",
+      "/images/icons/*.png",
       "scripts/*.js",
       "css/*.css",
       "*.css",

@@ -7,6 +7,8 @@ chrome.storage.local.get(['disable_homepage'], function(result) {
             sitemap.classList.add('hidden')
             var newSiteMap = document.createElement('div')
             newSiteMap.id = 'ap-sitemap'
+            sitemap.parentElement.append(newSiteMap)
+
             for (let i=1;i<parsedTable.length;i++) {
                 var navData = parsedTable[i]
                 var link = document.createElement('a')
@@ -29,8 +31,13 @@ chrome.storage.local.get(['disable_homepage'], function(result) {
                     newSiteMap.appendChild(navElement)
                 }
             }
-    
-            sitemap.parentElement.append(newSiteMap)
+            var header = document.createElement('div')
+            var headerh = document.createElement('h2')
+            var headerp = document.createElement('p')
+            headerh.innerText = 'AISIS Prettify Site Map'
+            headerp.innerText = 'by Gelo Funelas'
+            header.append(headerh,headerp)
+            newSiteMap.append(header)
         }
     }
 })

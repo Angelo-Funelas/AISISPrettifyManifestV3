@@ -22,7 +22,7 @@
         "storage"
     ],
     "web_accessible_resources": [{
-        "resources": ["/images/hutao/*.png","/images/icons/*.png"],
+        "resources": ["/images/*.png","/images/hutao/*.png","/images/icons/*.png"],
         "matches": ["*://aisis.ateneo.edu/*"],
        "extension_ids": []
     }]
