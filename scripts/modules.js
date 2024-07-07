@@ -41,5 +41,7 @@ function parseTable(table) {
             parsedTable.push(parsedRow)
         }
         return parsedTable
+    } else {
+        return false
     }
 }

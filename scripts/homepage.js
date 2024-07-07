@@ -21,7 +21,7 @@ chrome.storage.local.get(['disable_homepage'], function(result) {
         document.addEventListener('DOMContentLoaded', function() {
             var sitemap = document.getElementsByTagName('table')[11]
             parsedTable = parseTable(sitemap)
-            if (parsedTable[0][0] == 'Site Map') {
+            if (parsedTable !== false && parsedTable[0][0] == 'Site Map') {
                 sitemap.classList.add('hidden')
                 var newSiteMap = document.createElement('div')
                 newSiteMap.id = 'ap-sitemap'
