@@ -1,6 +1,6 @@
 const icon_map = [`google`,`ips`,`print`,`curriculum`,`studentinfo`,`classes`,`grades`,`holdorder`,`change`,`schedule`,`password`,`list`]
 chrome.storage.local.get(['disable_homepage'], function(result) {
-    if (window.location.href == 'https://aisis.ateneo.edu/j_aisis/welcome.do' && !result.disable_homepage) {
+    if (((window.location.href == 'https://aisis.ateneo.edu/j_aisis/welcome.do') || (window.location.href == 'https://aisis.ateneo.edu/j_aisis/login.do')) && !result.disable_homepage) {
         var sitemap = document.getElementsByTagName('table')[11]
         parsedTable = parseTable(sitemap)
         if (parsedTable[0][0] == 'Site Map') {
@@ -34,7 +34,7 @@ chrome.storage.local.get(['disable_homepage'], function(result) {
             var header = document.createElement('div')
             var headerh = document.createElement('h2')
             var headerp = document.createElement('p')
-            headerh.innerText = 'AISIS Prettify Site Map'
+            headerh.innerText = 'AISIS Prettify'
             headerp.innerText = 'by Gelo Funelas'
             header.append(headerh,headerp)
             newSiteMap.append(header)
