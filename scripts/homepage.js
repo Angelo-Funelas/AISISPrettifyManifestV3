@@ -1,4 +1,21 @@
-const icon_map = [`google`,`ips`,`print`,`curriculum`,`studentinfo`,`classes`,`grades`,`holdorder`,`change`,`schedule`,`password`,`list`]
+const icon_map = {
+    'GOOGLE ACCOUNT':`google`,
+    'MY INDIVIDUAL PROGRAM OF STUDY':`ips`,
+    'PRINT TUITION RECEIPT':`print`,
+    'OFFICIAL CURRICULUM':`curriculum`,
+    'UPDATE STUDENT INFORMATION':`studentinfo`,
+    'MY CURRENTLY ENROLLED CLASSES':`classes`,
+    'MY GRADES':`grades`,
+    'MY HOLD ORDERS':`holdorder`,
+    'DOWNLOAD CHANGE DEGREE PROGRAM FORM':`change`,
+    'MY CLASS SCHEDULE':`schedule`,
+    'CHANGE PASSWORD':`password`,
+    'CLASS SCHEDULE':`list`,
+    'ENLIST IN CLASS':`enlist`
+}
+
+
+
 chrome.storage.local.get(['disable_homepage'], function(result) {
     if (((window.location.href == 'https://aisis.ateneo.edu/j_aisis/welcome.do') || (window.location.href == 'https://aisis.ateneo.edu/j_aisis/login.do')) && !result.disable_homepage) {
         document.addEventListener('DOMContentLoaded', function() {
@@ -18,8 +35,10 @@ chrome.storage.local.get(['disable_homepage'], function(result) {
                     var elHeading = document.createElement('h3')
                     var elDesc = document.createElement('p')
     
-                    if (i-1<icon_map.length) {
-                        elIcon.src = chrome.runtime.getURL(`/images/icons/${icon_map[i-1]}.png`)
+                    if (icon_map[navData[0][0]] !== undefined) {
+                        elIcon.src = chrome.runtime.getURL(`/images/icons/${icon_map[navData[0][0]]}.png`)
+                    } else {
+                        elIcon.src = chrome.runtime.getURL(`/images/icons/empty.png`)
                     }
                     elHeading.innerText = navData[0][0]
                     elDesc.innerText = navData[1]
