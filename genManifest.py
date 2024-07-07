@@ -18,12 +18,12 @@ def generateFirefox(chrome_manifest_path, firefox_manifest_path):
     # Create a new dictionary for Firefox manifest
     firefox_manifest = {
         "manifest_version": 2,
-        "name": "AISIS Prettify - Improved Schedule and Filter",
+        "name": "AISIS Prettify - Improved User Interface",
         "version": chrome_manifest["version"],
         "description": chrome_manifest.get("description", ""),
         "author": chrome_manifest.get("author", ""),
         "browser_action": {
-            "default_title": "AISIS Prettify - Improved Schedule and Filter",
+            "default_title": "AISIS Prettify - Improved User Interface",
             "default_icon": chrome_manifest["action"]["default_icon"],
             "default_popup": chrome_manifest["action"]["default_popup"]
         },
