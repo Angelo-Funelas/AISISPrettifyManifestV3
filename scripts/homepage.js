@@ -17,7 +17,7 @@ const icon_map = {
 
 
 chrome.storage.local.get(['disable_homepage'], function(result) {
-    if (((window.location.href == 'https://aisis.ateneo.edu/j_aisis/welcome.do') || (window.location.href == 'https://aisis.ateneo.edu/j_aisis/login.do')) && !result.disable_homepage) {
+    if (((window.location.href.includes('https://aisis.ateneo.edu/j_aisis/welcome.do')) || (window.location.href.includes('https://aisis.ateneo.edu/j_aisis/login.do'))) && !result.disable_homepage) {
         document.addEventListener('DOMContentLoaded', function() {
             var sitemap = document.getElementsByTagName('table')[11]
             parsedTable = parseTable(sitemap)
