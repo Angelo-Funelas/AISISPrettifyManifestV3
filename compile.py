@@ -94,18 +94,12 @@ print("1: Firefox")
 choice = int(input())
 if choice == 0:
     generateChrome('manifest_template.json', 'manifest.json')
-    zip(exclude, 'AISISPrettifyChrome.zip')
 elif choice == 1:
     generateFirefox('manifest_template.json', 'manifest.json')
-    zip(exclude, 'AISISPrettifyFirefox.zip')
     
-    
-manifest_path = os.path.join(current_dir, 'manifest.json')
-    
-# Check if the file exists
-if os.path.isfile(manifest_path):
-    # Delete the file
-    os.remove(manifest_path)
-    print(f"'{manifest_path}' has been deleted.")
-else:
-    print(f"'{manifest_path}' does not exist.")
+print("Create a zip file (Y/N):")
+if input().upper()=='Y':
+    if choice == 0:
+        zip(exclude, 'AISISPrettifyChrome.zip')
+    elif choice == 1:
+        zip(exclude, 'AISISPrettifyFirefox.zip')
