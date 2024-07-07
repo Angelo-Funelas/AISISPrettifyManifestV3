@@ -58,6 +58,7 @@ chrome.storage.local.get(['disable_homepage'], function(result) {
                 headerh.innerText = 'AISIS Prettify'
                 headerp.innerText = 'by Gelo Funelas'
                 headera.href = 'https://gemplo.com'
+                headera.target = '_blank'
                 headera.appendChild(headerp)
                 header.append(headerh,headera)
                 newSiteMap.append(header)
