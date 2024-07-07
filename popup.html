@@ -5,7 +5,6 @@
     <style>
       html {
         width: 20em;
-        height: 20em;
       }
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
@@ -90,8 +89,6 @@
       margin: 1rem;
     }
     footer {
-      position: absolute;
-      bottom: 0;
       padding: 1rem;
       font-size: .8rem;
       color: #8f8f8f;
@@ -103,6 +100,9 @@
       <h1>Settings</h1>
     </header>
     <main>
+      <label class="switch">
+        <input type="checkbox" id="settings-home" disabled><span class="slider round"></span>
+      </label><p class="setting-checkbox-p">Disable Home Layout</p>
       <label class="switch">
         <input type="checkbox" id="settings-filter" disabled><span class="slider round"></span>
       </label><p class="setting-checkbox-p">Disable Filter</p><br>

@@ -7,6 +7,7 @@ chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
         document.getElementById('settings-filter').disabled = false
         document.getElementById('settings-schedule').disabled = false
         document.getElementById('settings-dropdown').disabled = false
+        document.getElementById('settings-home').disabled = false
 
         chrome.storage.local.get(['disable_filter'], function(result) {
             document.getElementById('settings-filter').checked = result.disable_filter
@@ -30,6 +31,11 @@ chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
         document.getElementById('settings-dropdown').addEventListener('change', function() {
             var input = document.getElementById('settings-dropdown');
             chrome.storage.local.set({disable_dropdownSort: input.checked});
+            chrome.tabs.sendMessage(activeTab.id, {reload: true});
+        });
+        document.getElementById('settings-home').addEventListener('change', function() {
+            var input = document.getElementById('settings-home');
+            chrome.storage.local.set({disable_homepage: input.checked});
             chrome.tabs.sendMessage(activeTab.id, {reload: true});
         });
     }
