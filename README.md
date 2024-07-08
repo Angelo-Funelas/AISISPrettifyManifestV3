@@ -1,6 +1,9 @@
 ![AISISPrettifyLogo](https://github.com/Angelo-Funelas/AISISPrettifyManifestV3/blob/master/images/icon_128.png?raw=true)
 # Ateneo Integrated Student Information System Prettify
 
+[💻 DOWNLOAD FOR CHROME](https://chromewebstore.google.com/detail/aisis-prettify-improved-s/fplegjpnninijhpaajkjcnhhnnddjdam)
+[🦊 DOWNLOAD FOR FIREFOX](https://angelo-funelas.github.io/AISISPrettifyManifestV3/web-ext-artifacts/aisis_prettify-0.2.7.xpi)
+
 This Chrome extension aims to provide a different UI for the student portal of Ateneo De Manila University
 
 Originally made by Prof. Ian De La Cruz & updated to **Chrome Manifest V3** and additional improvements and tweaks by Gelo Funelas
