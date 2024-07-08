@@ -18,6 +18,9 @@ chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
         chrome.storage.local.get(['disable_dropdownSort'], function(result) {
             document.getElementById('settings-dropdown').checked = result.disable_dropdownSort
         });
+        chrome.storage.local.get(['disable_homepage'], function(result) {
+            document.getElementById('settings-home').checked = result.disable_homepage
+        });
         document.getElementById('settings-filter').addEventListener('change', function() {
             var input = document.getElementById('settings-filter');
             chrome.storage.local.set({disable_filter: input.checked});
