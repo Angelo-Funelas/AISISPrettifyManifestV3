@@ -37,7 +37,7 @@ def generateFirefox(chrome_manifest_path, firefox_manifest_path):
         "browser_specific_settings": {
             "gecko": {
                 "id": "dev.gelofunelas@gmail.com",
-                "update_url": "https://github.com/Angelo-Funelas/AISISPrettifyManifestV3/updates.json"
+                "update_url": "https://angelo-funelas.github.io/AISISPrettifyManifestV3/updates.json"
             }
         }
     }
