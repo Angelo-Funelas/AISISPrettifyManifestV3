@@ -162,6 +162,7 @@ input[type=search] {
 }
 #ap-sitemap > a > div > img {
   width: 2em;
+  height: 2em;
   transition: transform .2s cubic-bezier(.46,1.53,.79,.98);
   margin-bottom: 3em;
 }
