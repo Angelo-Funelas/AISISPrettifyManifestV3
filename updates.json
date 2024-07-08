@@ -1,0 +1,12 @@
+{
+    "addons": {
+      "your-addon-id": {
+        "updates": [
+          {
+            "version": "0.2.6",
+            "update_link": "https://github.com/Angelo-Funelas/AISISPrettifyManifestV3/AISISPrettify.xpi"
+          }
+        ]
+      }
+    }
+}
