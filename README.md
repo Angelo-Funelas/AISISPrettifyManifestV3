@@ -2,7 +2,7 @@
 # Ateneo Integrated Student Information System Prettify
 
 [💻 DOWNLOAD FOR CHROME](https://chromewebstore.google.com/detail/aisis-prettify-improved-s/fplegjpnninijhpaajkjcnhhnnddjdam)
-[🦊 DOWNLOAD FOR FIREFOX](https://angelo-funelas.github.io/AISISPrettifyManifestV3/web-ext-artifacts/aisis_prettify-0.2.7.xpi)
+[🦊 DOWNLOAD FOR FIREFOX](https://angelo-funelas.github.io/AISISPrettifyManifestV3/web-ext-artifacts/aisis_prettify-0.2.9.xpi)
 
 This Chrome extension aims to provide a different UI for the student portal of Ateneo De Manila University
 

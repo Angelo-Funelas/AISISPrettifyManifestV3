@@ -81,6 +81,7 @@ def zip(exclude,zipname):
 
 
 exclude = [
+    os.path.join(current_dir, 'web-ext-artifacts'),     
     os.path.join(current_dir, '.git'),            # Exclude .git folder
     os.path.join(current_dir, '.gitignore'),      # Exclude .gitignore file
     os.path.join(current_dir, 'manifest_template.json'), # Exclude manifest_template.json file

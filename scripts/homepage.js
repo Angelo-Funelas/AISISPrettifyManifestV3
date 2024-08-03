@@ -1,3 +1,5 @@
+var disable_homepage = true
+
 const icon_map = {
     'GOOGLE ACCOUNT':`google`,
     'MY INDIVIDUAL PROGRAM OF STUDY':`ips`,
@@ -14,55 +16,87 @@ const icon_map = {
     'ENLIST IN CLASS':`enlist`
 }
 
+function prettifyHome() {
+    var sitemap = document.getElementsByTagName('table')[11]
+    parsedTable = parseTable(sitemap)
+    if (parsedTable !== false && parsedTable[0][0] == 'Site Map') {
+        sitemap.classList.add('hidden')
+        var newSiteMap = document.querySelector('#ap-sitemap')
+        if (newSiteMap==undefined) {
+            newSiteMap = document.createElement('div')
+            newSiteMap.id = 'ap-sitemap'
+            sitemap.parentElement.append(newSiteMap)
+        } else {
+          while(newSiteMap.firstChild && newSiteMap.removeChild(newSiteMap.firstChild));
+        }
 
+        for (let i=1;i<parsedTable.length;i++) {
+            var navData = parsedTable[i]
+            var link = document.createElement('a')
+            var navElement = document.createElement('div')
+            var elIcon = document.createElement('img')
+            var elHeading = document.createElement('h3')
+            var elDesc = document.createElement('p')
+
+            if (icon_map[navData[0][0]] !== undefined) {
+                elIcon.src = chrome.runtime.getURL(`/images/icons/${icon_map[navData[0][0]]}.png`)
+            } else {
+                elIcon.src = chrome.runtime.getURL(`/images/icons/empty.png`)
+            }
+            elHeading.innerText = navData[0][0]
+            elDesc.innerText = navData[1]
+            navElement.append(elIcon,elHeading,elDesc)
+            if (navData[0].length>1) {
+                link.href = navData[0][1].href
+                link.appendChild(navElement)
+                newSiteMap.appendChild(link)
+            } else {
+                newSiteMap.appendChild(navElement)
+            }
+        }
+        var header = document.createElement('div')
+        var headerh = document.createElement('h2')
+        var headera = document.createElement('a')
+        var headerp = document.createElement('p')
+        headerh.innerText = 'AISIS Prettify'
+        headerp.innerText = 'by Gelo Funelas'
+        headera.href = 'https://gemplo.com'
+        headera.target = '_blank'
+        headera.appendChild(headerp)
+        header.append(headerh,headera)
+        newSiteMap.append(header)
+        return true
+    } else {
+        return false
+    }
+}
+
+function load() {
+    home_table = document.querySelectorAll('table')[11]
+    if (home_table !== undefined) {
+        console.log('start')
+        const mutationObserver = new MutationObserver(entries => {
+            prettifyHome()
+            console.log(entries)
+        })
+        mutationObserver.observe(home_table, {
+            childList: true,
+            subtree: true
+        })
+        home_table.classList.add('hidden')
+        prettifyHome()
+    } else {
+        setTimeout(load, 1)
+    }
+}
 
 chrome.storage.local.get(['disable_homepage'], function(result) {
+    disable_homepage = result.disable_homepage
+    console.log('loaded storage')
     if (((window.location.href.includes('https://aisis.ateneo.edu/j_aisis/welcome.do')) || (window.location.href.includes('https://aisis.ateneo.edu/j_aisis/login.do'))) && !result.disable_homepage) {
+        load()
         document.addEventListener('DOMContentLoaded', function() {
-            var sitemap = document.getElementsByTagName('table')[11]
-            parsedTable = parseTable(sitemap)
-            if (parsedTable !== false && parsedTable[0][0] == 'Site Map') {
-                sitemap.classList.add('hidden')
-                var newSiteMap = document.createElement('div')
-                newSiteMap.id = 'ap-sitemap'
-                sitemap.parentElement.append(newSiteMap)
-    
-                for (let i=1;i<parsedTable.length;i++) {
-                    var navData = parsedTable[i]
-                    var link = document.createElement('a')
-                    var navElement = document.createElement('div')
-                    var elIcon = document.createElement('img')
-                    var elHeading = document.createElement('h3')
-                    var elDesc = document.createElement('p')
-    
-                    if (icon_map[navData[0][0]] !== undefined) {
-                        elIcon.src = chrome.runtime.getURL(`/images/icons/${icon_map[navData[0][0]]}.png`)
-                    } else {
-                        elIcon.src = chrome.runtime.getURL(`/images/icons/empty.png`)
-                    }
-                    elHeading.innerText = navData[0][0]
-                    elDesc.innerText = navData[1]
-                    navElement.append(elIcon,elHeading,elDesc)
-                    if (navData[0].length>1) {
-                        link.href = navData[0][1].href
-                        link.appendChild(navElement)
-                        newSiteMap.appendChild(link)
-                    } else {
-                        newSiteMap.appendChild(navElement)
-                    }
-                }
-                var header = document.createElement('div')
-                var headerh = document.createElement('h2')
-                var headera = document.createElement('a')
-                var headerp = document.createElement('p')
-                headerh.innerText = 'AISIS Prettify'
-                headerp.innerText = 'by Gelo Funelas'
-                headera.href = 'https://gemplo.com'
-                headera.target = '_blank'
-                headera.appendChild(headerp)
-                header.append(headerh,headera)
-                newSiteMap.append(header)
-            }
+            prettifyHome()
         })
     }
 })
