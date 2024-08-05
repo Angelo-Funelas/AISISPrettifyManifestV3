@@ -178,8 +178,8 @@ function tick(timeStamp) {
         x = parseInt(curNote[0])
         y = parseInt(curNote[1])
         if (lastPosX == x && lastPosY == y) {
-            x += 15
-            y += 15
+            x += 6
+            y += 6
         }
         posx = toPosX(x)
         posy = toPosY(y)
