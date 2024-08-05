@@ -194,7 +194,7 @@ function tick(timeStamp) {
             hitNote(note,noteTime)
         })
         setTimeout(removeNote.bind(null, note, noteTime, true), 800)
-        playarea.append(note)
+        playarea.prepend(note)
         note_index++
     }
   

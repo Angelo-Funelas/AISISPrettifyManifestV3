@@ -274,9 +274,6 @@ tr:has(> #ap-prettyLogin) > h1 {
   font-family: Arial, sans-serif;
   margin: 0;
 }
-#osu-playarea > p:nth-child(1) {
-  float: right;
-}
 .bm_note {
   position: absolute;
   font-size: 2vw !important;
