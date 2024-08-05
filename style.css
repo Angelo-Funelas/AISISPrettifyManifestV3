@@ -250,6 +250,7 @@ tr:has(> #ap-prettyLogin) > h1 {
   -webkit-user-select: none; /* Safari */
   -ms-user-select: none; /* IE 10 and IE 11 */
   user-select: none; /* Standard syntax */
+  overflow: visible;
 }
 #osu-playarea {
   position: fixed;
@@ -281,6 +282,7 @@ tr:has(> #ap-prettyLogin) > h1 {
   font-size: 2vw !important;
   animation: .8s closeInNote linear;
   outline: 0.4vw black solid; 
+  text-wrap: nowrap;
 }
 .bm_note::after {
   content: " ";

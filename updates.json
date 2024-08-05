@@ -21,6 +21,10 @@
           {
             "version": "0.3.0",
             "update_link": "https://angelo-funelas.github.io/AISISPrettifyManifestV3/web-ext-artifacts/aisis_prettify-0.3.0.xpi"
+          },
+          {
+            "version": "0.3.1",
+            "update_link": "https://angelo-funelas.github.io/AISISPrettifyManifestV3/web-ext-artifacts/aisis_prettify-0.3.1.xpi"
           }
         ]
       }
