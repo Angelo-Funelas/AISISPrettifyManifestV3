@@ -43,16 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (secret_value == 'kael') {
             // playSfx('4')
             document.getElementById('secret_input').value = ''
+        } else if (secret_value == 'carpaltunnel') {
+            playBM(maps[0])
+            document.getElementById('secret_input').value = ''
         }
     })
-    // function playSfx(e) {
-    //     audio = document.createElement('audio')
-    //     audio.src = `/sfx/${e}.wav`
-    //     audio.autoplay = true
-    //     audio.type = 'audio/wav'
-    //     audio.addEventListener("ended",function() {
-    //         this.remove();
-    //     });
-    //     document.body.append(audio)
-    // }
 })

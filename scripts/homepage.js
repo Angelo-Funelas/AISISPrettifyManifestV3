@@ -58,7 +58,8 @@ function prettifyHome() {
         var headerh = document.createElement('h2')
         var headera = document.createElement('a')
         var headerp = document.createElement('p')
-        headerh.innerText = 'AISIS Prettify'
+        var manifest = chrome.runtime.getManifest()
+        headerh.innerText = `AISIS Prettify v${manifest.version}`
         headerp.innerText = 'by Gelo Funelas'
         headera.href = 'https://gemplo.com'
         headera.target = '_blank'
@@ -71,30 +72,29 @@ function prettifyHome() {
     }
 }
 
-function load() {
+function loadHomepage() {
     home_table = document.querySelectorAll('table')[11]
     if (home_table !== undefined) {
         console.log('start')
         const mutationObserver = new MutationObserver(entries => {
             prettifyHome()
-            console.log(entries)
         })
         mutationObserver.observe(home_table, {
             childList: true,
             subtree: true
         })
-        home_table.classList.add('hidden')
         prettifyHome()
-    } else {
-        setTimeout(load, 1)
+    } else if (document.readyState !== 'complete') {
+        setTimeout(loadHomepage, 1)
     }
 }
 
 chrome.storage.local.get(['disable_homepage'], function(result) {
     disable_homepage = result.disable_homepage
     console.log('loaded storage')
-    if (((window.location.href.includes('https://aisis.ateneo.edu/j_aisis/welcome.do')) || (window.location.href.includes('https://aisis.ateneo.edu/j_aisis/login.do'))) && !result.disable_homepage) {
-        load()
+    // ((window.location.href.includes('https://aisis.ateneo.edu/j_aisis/welcome.do')) || (window.location.href.includes('https://aisis.ateneo.edu/j_aisis/login.do'))) && 
+    if (!result.disable_homepage) {
+        loadHomepage()
         document.addEventListener('DOMContentLoaded', function() {
             prettifyHome()
         })

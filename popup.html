@@ -54,6 +54,12 @@
         -webkit-transition: .2s;
         transition: .2s;
     }
+    input:disabled + .slider {
+        background-color: #d6d6d6;
+    }
+    input:disabled + .slider:before {
+      background-color: rgb(200, 200, 200);
+    }
     input:checked + .slider {
         background-color: #2196F3;
     }
@@ -103,8 +109,10 @@
     <main>
       <label class="switch">
         <input type="checkbox" id="settings-home" disabled><span class="slider round"></span>
-      </label><p class="setting-checkbox-p">Disable Home Layout</p>
-      <br>
+      </label><p class="setting-checkbox-p">Disable Home Layout</p><br>
+      <label class="switch">
+        <input type="checkbox" id="settings-login" disabled><span class="slider round"></span>
+      </label><p class="setting-checkbox-p">Disable Pretty Login</p><br>
       <label class="switch">
         <input type="checkbox" id="settings-filter" disabled><span class="slider round"></span>
       </label><p class="setting-checkbox-p">Disable Filter</p><br>

@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "AISIS Prettify - Improved User Interface",
     "description": "An extension that aims to make AISIS easier to work with",
-    "version": "0.2.9",
+    "version": "0.3.0",
     "icons": {
         "16": "/images/icon_16.png",
         "48": "/images/icon_48.png",
@@ -15,7 +15,7 @@
     "content_scripts": [{
         "matches": ["*://aisis.ateneo.edu/*"],
         "css": ["style.css","/styles/secrets.css"],
-        "js": ["app.js", "/scripts/modules.js", "/scripts/secrets.js", "/scripts/schedule.js", "/scripts/homepage.js"],
+        "js": ["app.js", "/scripts/modules.js", "/scripts/secrets.js", "/scripts/schedule.js", "/scripts/homepage.js", "/scripts/login.js", "/scripts/osu.js"],
         "run_at": "document_start"
     }],
     "permissions": [
@@ -26,7 +26,13 @@
         "resources": [
             "/images/*.png",
             "/images/hutao/*.png",
-            "/images/icons/*.png"
+            "/images/icons/*.png",
+            "/images/icons/*.svg",
+            "/images/bg/*.svg",
+            "/eggs/fd/*.osu",
+            "/eggs/fd/*.wav",
+            "/eggs/fd/*.mp3",
+            "/eggs/*.wav"
         ],
         "matches": ["*://aisis.ateneo.edu/*"]
     }]

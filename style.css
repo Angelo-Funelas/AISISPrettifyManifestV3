@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
 tbody tr:nth-child(5) td table {
   border-collapse: collapse;
 }
@@ -135,20 +136,23 @@ input[type=search] {
 }
 #ap-sitemap > a {
   flex: 1 1 auto;
+  text-decoration: none;
 }
 #ap-sitemap > a > div {
   height: 100%;
   display: grid;
+  background-color: white;
   grid-template-rows: 2fr fit-content(0) fit-content(0);
-  padding: 2rem;
-  box-shadow: rgba(145, 145, 145, 0.35) 0px 0px 20px 4px;
-  -webkit-box-shadow: 0px 0px 20px 4px rgba(145, 145, 145, 0.35);
-  -moz-box-shadow: 0px 0px 20px 4px rgba(145, 145, 145, 0.35);
-  transition: all .2s linear;
-  font-size: 18px;
+  padding: 1.6rem;
+  box-shadow: rgba(145, 145, 145, 0.35) 0px 0px 10px 3px;
+  /* -webkit-box-shadow: 0px 0px 20px 4px rgba(145, 145, 145, 0.35);
+  -moz-box-shadow: 0px 0px 20px 4px rgba(145, 145, 145, 0.35); */
+  transition: box-shadow .2s linear;
+  /* font-size: 1vw; */
+  font-size: 14px;
 }
 #ap-sitemap > a > div:hover {
-  box-shadow: rgba(145, 145, 145, 0.35) 0px 0px 20px 8px;
+  box-shadow: rgba(145, 145, 145, 0.35) 0px 0px 12px 6px;
 }
 #ap-sitemap > a > div > h3 {
   margin: 0;
@@ -161,13 +165,16 @@ input[type=search] {
   font-size: .8em;
 }
 #ap-sitemap > a > div > img {
-  width: 2em;
-  height: 2em;
+  width: 2.5em;
+  height: 2.5em;
   transition: transform .2s cubic-bezier(.46,1.53,.79,.98);
-  margin-bottom: 3em;
+  margin-bottom: 1em;
 }
 #ap-sitemap > a:hover > div > img {
-  transform: scale(1.2);
+  transform: scale(1.15);
+}
+#ap-sitemap > a:hover > div > h3 {
+  text-decoration: underline;
 }
 #ap-sitemap > div:last-child {
   width: 100%;
@@ -175,7 +182,7 @@ input[type=search] {
   background: rgb(46,185,255);
   background: linear-gradient(40deg, rgb(129, 213, 255) 0%, rgb(89, 122, 255) 69%);
   padding: 1rem;
-  border-radius: 12px;
+  border-radius: 2px;
   color: white;
 }
 #ap-sitemap > div:last-child > h2, #ap-sitemap > div:last-child p {
@@ -185,9 +192,136 @@ input[type=search] {
   display: inline;
 }
 #ap-sitemap > div:last-child > h2 {
-  font-size: 24px;
+  font-size: 18px;
 }
 #ap-sitemap > div:last-child > a {
   color: white;
   text-decoration: underline;
+}
+tr:has(> #ap-prettyLogin) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  font-family: sans-serif;
+  height: 75vh;
+  flex-direction: column;
+}
+tr:has(> #ap-prettyLogin) > img {
+  width: 10vw;
+}
+tr:has(> #ap-prettyLogin) > * {
+  display: block;
+}
+tr:has(> #ap-prettyLogin) > h1 {
+  font-family: "Jost", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+  font-style: normal;
+}
+#ap-prettyLogin > form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#ap-prettyLogin > form > input {
+  display: block;
+  font-size: 1.5rem;
+  padding: 0.6rem 1rem;
+  outline: none;
+  width: 12em;
+  margin: 0.5rem;
+}
+#ap-prettyLogin > form > input[type=submit] {
+  border: none;
+  width: auto;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  background-color: #2EBFFF;
+  border-radius: 5px;
+}
+#osu-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-user-select: none; /* Safari */
+  -ms-user-select: none; /* IE 10 and IE 11 */
+  user-select: none; /* Standard syntax */
+}
+#osu-playarea {
+  position: fixed;
+  padding: 2rem;
+  box-sizing: content-box;
+  left: 0;
+  right: 0;
+  top: 5vh;
+  aspect-ratio: calc(4/3);
+  height: 80vh;
+  margin: 0 auto;
+  background-color: rgba(255, 255, 255, 0.75);
+  animation: .5s fadeIn linear;
+}
+#osu-playarea > h1 {
+  font-size: 1.6vw;
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+#osu-playarea > p {
+  font-family: Arial, sans-serif;
+  margin: 0;
+}
+#osu-playarea > p:nth-child(1) {
+  float: right;
+}
+.bm_note {
+  position: absolute;
+  font-size: 2vw !important;
+  animation: .8s closeInNote linear;
+  outline: 0.4vw black solid; 
+}
+.bm_note::after {
+  content: " ";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  border: 1px solid black;
+  animation: .6s closeIn linear;
+  pointer-events: none;
+}
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+@keyframes closeInNote {
+  0% {opacity: 1;}
+  75% {opacity: 1;}
+  100% {opacity: 0;}
+}
+@keyframes closeIn {
+  from {scale: 5}
+  to {scale: 1}
+}
+@keyframes pop_in {
+    0% {opacity: 0.5; transform: scale(0.8)}
+    20% {opacity: 1; transform: scale(1.2)}
+    30% {opacity: 1; transform: scale(1)}
+    90% {opacity: 1; transform: scale(1)}
+    100% {opacity: 0; transform: scale(0.8)}
+}
+.pop_grade_combo {
+    animation: pop_in .4s linear;
+    font-size: 3vw;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #7ed0ff;
+    text-align: center;
+    z-index: -1;
 }
