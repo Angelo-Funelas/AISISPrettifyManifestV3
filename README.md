@@ -9,12 +9,12 @@ This Chrome extension aims to provide a different UI for the student portal of A
 Originally made by Prof. Ian De La Cruz & updated to **Chrome Manifest V3** and additional improvements and tweaks by Gelo Funelas
 
 Features
-- Improved Home Layout
+- Improved Home Layout  
 ![home layout preview](https://lh3.googleusercontent.com/3XuzIOVR2HZB-jyaT4XKfW51_lXHetO1MO5j2nfgvs_SbTX0sNlWHn6AZjiJMmWksX_zEzqBaJW4rbY3TD0Hw4ln=s800-w800-h500)
-- Class Schedule Filter
+- Class Schedule Filter  
 ![class schedule preview](https://lh3.googleusercontent.com/IsMul3XBS3a74qhW5yGegFfjjVpDa_ndiDfomaPKvlJqI8sgCSucumZDo4GwfukAxpxUsyh3fvQluqWhmuXMg_4L=s800-w800-h500)
-- Improved Login Page
+- Improved Login Page  
 ![login page](https://lh3.googleusercontent.com/GFau4i9JlpUwklQK84ATIliuWTuPq66eDrQcIgOPqh66Z0wf_o9wOMWBgjhuLpUIpi7WGSIJYi0h_rLNyTq-91UnT5A=s800-w800-h500)
-- Improved Class Schedule Table
+- Improved Class Schedule Table  
 ![class schedule filter preview](https://lh3.googleusercontent.com/HgWCyKqXWlVwKu03GRCRiEsADMdqz7rA9aXeb5s_yLpzTlOsHuxl9sm7aGQqvUEKWbbKotKVB1Vmf0k3q3QGcebriA=s800-w800-h500)
-- Sort Dropdown
+- Sort Dropdown  
