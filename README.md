@@ -10,11 +10,11 @@ Originally made by Prof. Ian De La Cruz & updated to **Chrome Manifest V3** and 
 
 Features
 - Improved Home Layout
-![home layout preview]([https://media.discordapp.net/attachments/1257747810913357945/1259420008711454853/image.png?ex=668b9dc8&is=668a4c48&hm=4ba4753ef2e83aed8e5b30c63bd2fc22e228af9e0148fa20493e25714e0af50c&=&format=webp&quality=lossless&width=1288&height=671](https://lh3.googleusercontent.com/3XuzIOVR2HZB-jyaT4XKfW51_lXHetO1MO5j2nfgvs_SbTX0sNlWHn6AZjiJMmWksX_zEzqBaJW4rbY3TD0Hw4ln=s800-w800-h500))
+![home layout preview](https://lh3.googleusercontent.com/3XuzIOVR2HZB-jyaT4XKfW51_lXHetO1MO5j2nfgvs_SbTX0sNlWHn6AZjiJMmWksX_zEzqBaJW4rbY3TD0Hw4ln=s800-w800-h500)
 - Class Schedule Filter
-![class schedule preview]([https://media.discordapp.net/attachments/1257747810913357945/1257748411793539154/preview2.png?ex=668b77bd&is=668a263d&hm=c82528656fe4e0f61fbe7bc78327f9c324072cce967bb8e682ed5a1c7c17cdc4&=&format=webp&quality=lossless&width=1327&height=671](https://lh3.googleusercontent.com/IsMul3XBS3a74qhW5yGegFfjjVpDa_ndiDfomaPKvlJqI8sgCSucumZDo4GwfukAxpxUsyh3fvQluqWhmuXMg_4L=s800-w800-h500))
+![class schedule preview](https://lh3.googleusercontent.com/IsMul3XBS3a74qhW5yGegFfjjVpDa_ndiDfomaPKvlJqI8sgCSucumZDo4GwfukAxpxUsyh3fvQluqWhmuXMg_4L=s800-w800-h500)
 - Improved Login Page
-![login page]([[https://media.discordapp.net/attachments/1257747810913357945/1257748411793539154/preview2.png?ex=668b77bd&is=668a263d&hm=c82528656fe4e0f61fbe7bc78327f9c324072cce967bb8e682ed5a1c7c17cdc4&=&format=webp&quality=lossless&width=1327&height=671](https://lh3.googleusercontent.com/IsMul3XBS3a74qhW5yGegFfjjVpDa_ndiDfomaPKvlJqI8sgCSucumZDo4GwfukAxpxUsyh3fvQluqWhmuXMg_4L=s800-w800-h500)](https://lh3.googleusercontent.com/GFau4i9JlpUwklQK84ATIliuWTuPq66eDrQcIgOPqh66Z0wf_o9wOMWBgjhuLpUIpi7WGSIJYi0h_rLNyTq-91UnT5A=s800-w800-h500))
+![login page](https://lh3.googleusercontent.com/GFau4i9JlpUwklQK84ATIliuWTuPq66eDrQcIgOPqh66Z0wf_o9wOMWBgjhuLpUIpi7WGSIJYi0h_rLNyTq-91UnT5A=s800-w800-h500)
 - Improved Class Schedule Table
-![class schedule filter preview]([https://media.discordapp.net/attachments/1257747810913357945/1257748412120563722/preview1.png?ex=668b77bd&is=668a263d&hm=7684f704a9fb0dccf7991a5c356cc43dc0ac47435b3c435a0899fd38e514567b&=&format=webp&quality=lossless&width=1440&height=655](https://lh3.googleusercontent.com/HgWCyKqXWlVwKu03GRCRiEsADMdqz7rA9aXeb5s_yLpzTlOsHuxl9sm7aGQqvUEKWbbKotKVB1Vmf0k3q3QGcebriA=s800-w800-h500))
+![class schedule filter preview](https://lh3.googleusercontent.com/HgWCyKqXWlVwKu03GRCRiEsADMdqz7rA9aXeb5s_yLpzTlOsHuxl9sm7aGQqvUEKWbbKotKVB1Vmf0k3q3QGcebriA=s800-w800-h500)
 - Sort Dropdown
