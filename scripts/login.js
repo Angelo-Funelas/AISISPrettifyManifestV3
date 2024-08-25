@@ -33,6 +33,7 @@ function prettifyLogin() {
             newform.id = 'pretty-login-form'
             newform.name = 'loginForm'
             newform.action = '/j_aisis/login.do'
+            newform.method = 'POST'
             inputs.forEach(function(e) {
                 if (e.type == 'text') {
                     e.placeholder = 'Student ID'

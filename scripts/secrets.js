@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.getElementById('secret_input').value == '') {
             setTimeout(function() {
                 document.getElementById('secret_input').value = ''
-            }, 4000)
+            }, 2000)
         }
         if (typeof e.key !== "undefined" && e.key.length === 1 && e.key.match(/[a-z]/i)) {
             document.getElementById('secret_input').value += e.key;

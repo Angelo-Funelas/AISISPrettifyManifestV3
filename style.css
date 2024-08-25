@@ -277,7 +277,7 @@ tr:has(> #ap-prettyLogin) > h1 {
 .bm_note {
   position: absolute;
   font-size: 2vw !important;
-  animation: .8s closeInNote linear;
+  animation: .8s closeInNote linear both;
   outline: 0.4vw black solid; 
   text-wrap: nowrap;
 }
