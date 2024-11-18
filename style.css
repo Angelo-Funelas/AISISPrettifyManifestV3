@@ -99,6 +99,9 @@ input[type=search] {
   grid-template-columns: auto repeat(6,2fr);
   font-family: Arial, Helvetica, sans-serif;
   font-size: 11px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 .headCell {
   z-index: 2;
@@ -179,11 +182,13 @@ input[type=search] {
 #ap-sitemap > div:last-child {
   width: 100%;
   text-align: center;
-  background: rgb(46,185,255);
-  background: linear-gradient(40deg, rgb(129, 213, 255) 0%, rgb(89, 122, 255) 69%);
+  /* color: black; */
+  /* background: rgb(46,185,255); */
+  /* background: linear-gradient(40deg, rgb(129, 213, 255) 0%, rgb(89, 122, 255) 69%); */
+  /* border-image: linear-gradient(40deg, rgb(129, 213, 255) 0%, rgb(89, 122, 255) 69%) 1;
+  border-width: 2px;
+  border-style: solid; */
   padding: 1rem;
-  border-radius: 2px;
-  color: white;
 }
 #ap-sitemap > div:last-child > h2, #ap-sitemap > div:last-child p {
   margin: 0;
@@ -192,11 +197,17 @@ input[type=search] {
   display: inline;
 }
 #ap-sitemap > div:last-child > h2 {
-  font-size: 18px;
+  font-size: 1em;
+  background-image: linear-gradient(40deg, rgb(129, 213, 255) 0%, rgb(89, 122, 255) 69%);
+  font-weight: bold;
+  color: transparent;
+  background-clip: text;
 }
 #ap-sitemap > div:last-child > a {
-  color: white;
-  text-decoration: underline;
+  background-image: linear-gradient(40deg, rgb(129, 213, 255) 0%, rgb(89, 122, 255) 69%);
+  color: transparent;
+  background-clip: text;
+  font-size: 0.8em;
 }
 tr:has(> #ap-prettyLogin) {
   display: flex;
@@ -323,4 +334,17 @@ tr:has(> #ap-prettyLogin) > h1 {
     color: #7ed0ff;
     text-align: center;
     z-index: -1;
+}
+@keyframes pulsateOutline {
+  0% {
+    outline: 0 solid #618bff00;
+  }
+  100% {
+    outline: 0.8rem solid #ff7d4ac2;
+  }
+}
+.home-highlight {
+  position: relative;
+  z-index: 5;
+  animation: pulsateOutline .6s cubic-bezier(0,1.16,.98,.96) alternate infinite;
 }

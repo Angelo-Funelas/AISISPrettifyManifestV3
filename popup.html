@@ -9,7 +9,7 @@
       }
       body {
         font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
+        font-size: 0.8rem;
         margin: 0;
       }
       #status {
@@ -54,12 +54,6 @@
         -webkit-transition: .2s;
         transition: .2s;
     }
-    input:disabled + .slider {
-        background-color: #d6d6d6;
-    }
-    input:disabled + .slider:before {
-      background-color: rgb(200, 200, 200);
-    }
     input:checked + .slider {
         background-color: #2196F3;
     }
@@ -71,6 +65,12 @@
         -ms-transform: translateX(1.8em);
         transform: translateX(1.8em);
     }
+    input:disabled + .slider {
+        background-color: #d6d6d6;
+    }
+    input:disabled + .slider:before {
+      background-color: rgb(200, 200, 200);
+    }
     /* Rounded sliders */
     .slider.round {
         border-radius: 34px;
@@ -81,7 +81,7 @@
     p {
       display: inline-block;
       vertical-align: -webkit-baseline-middle;
-      margin-left: 1rem;
+      margin: 0.4rem 0.6rem;
     }
     header {
       background: rgb(34,230,255);
@@ -109,19 +109,22 @@
     <main>
       <label class="switch">
         <input type="checkbox" id="settings-home" disabled><span class="slider round"></span>
-      </label><p class="setting-checkbox-p">Disable Home Layout</p><br>
+      </label><p class="setting-checkbox-p">Home Layout</p><br>
       <label class="switch">
         <input type="checkbox" id="settings-login" disabled><span class="slider round"></span>
-      </label><p class="setting-checkbox-p">Disable Pretty Login</p><br>
+      </label><p class="setting-checkbox-p">Pretty Login</p><br>
       <label class="switch">
         <input type="checkbox" id="settings-filter" disabled><span class="slider round"></span>
-      </label><p class="setting-checkbox-p">Disable Filter</p><br>
+      </label><p class="setting-checkbox-p">Filter</p><br>
       <label class="switch">
         <input type="checkbox" id="settings-schedule" disabled><span class="slider round"></span>
-      </label><p class="setting-checkbox-p">Disable Pretty Schedule</p><br>
+      </label><p class="setting-checkbox-p">Pretty Schedule</p><br>
       <label class="switch">
         <input type="checkbox" id="settings-dropdown" disabled><span class="slider round"></span>
-      </label><p class="setting-checkbox-p">Disable Dropdown Sorting</p>
+      </label><p class="setting-checkbox-p">Dropdown Sorting</p><br>
+      <label class="switch">
+        <input type="checkbox" id="settings-enlistSumm" disabled><span class="slider round"></span>
+      </label><p class="setting-checkbox-p">Enlistment Summary Schedule</p>
     </main>
     <footer>
       Developed by Gelo Funelas
