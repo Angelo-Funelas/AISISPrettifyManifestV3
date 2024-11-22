@@ -20,7 +20,6 @@ const importantLinks = new Set(["ENLIST IN CLASS"])
 function prettifyHome() {
     var sitemap = document.getElementsByTagName('table')[11]
     parsedTable = parseTable(sitemap)
-    console.log(!parsedTable, parsedTable[0][0][0])
     if (!parsedTable || parsedTable[0][0][0] !== 'Site Map') return false;
     sitemap.classList.add('hidden')
     try {

@@ -105,3 +105,5 @@ if input().upper()=='Y':
         zip(exclude, 'AISISPrettifyChrome.zip')
     elif choice == 1:
         zip(exclude, 'AISISPrettifyFirefox.zip')
+else:
+    print("zip not created.")
