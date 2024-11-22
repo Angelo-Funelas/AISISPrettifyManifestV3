@@ -20,7 +20,7 @@ Loop = (function() {
     if (this.id) {
       return;
     }
-    method = this.interval != null ? periodicTimeout : window.requestAnimationFrame;
+    method = this.interval != null ? periodicTimeout : window.requestAnimationFrame.bind(window);
     lastCallAt = void 0;
     (animLoop = (function(_this) {
       return function(timestamp) {
