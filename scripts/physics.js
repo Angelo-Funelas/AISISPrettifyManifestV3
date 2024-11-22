@@ -7,6 +7,8 @@ var perfRes = 1;
 benchmarkPerformance((avgFrameTime) => {
   if (avgFrameTime > 50) {
     perfRes = 2
+  } else if (avgFrameTime > 30) {
+    perfRes = 3
   } else if (avgFrameTime > 10) {
     perfRes = 4
   } else {
