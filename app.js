@@ -4,7 +4,10 @@ function capitalizeFirstLetter(string) {
 
 chrome.runtime.onMessage.addListener(function(request) {
   if (request.reload) {
-    location.reload()
+    if ( window.history.replaceState ) {
+      window.history.replaceState( null, null, window.location.href );
+    }
+    window.location = window.location.href;
   }
 }
 );
