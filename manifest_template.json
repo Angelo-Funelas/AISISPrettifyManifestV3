@@ -46,11 +46,7 @@
             "/eggs/fd/*.osu",
             "/eggs/fd/*.wav",
             "/eggs/fd/*.mp3",
-            "/eggs/*.wav",
-            "/scripts/box2d.min.js",
-            "/scripts/rAF.js",
-            "/scripts/jquery-latest.js",
-            "/scripts/loop.js"
+            "/eggs/*.wav"
         ],
         "matches": ["*://aisis.ateneo.edu/*"]
     }]
