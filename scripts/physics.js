@@ -14,7 +14,7 @@ benchmarkPerformance((avgFrameTime) => {
   }
   console.log(`Benchmark Results | frametime:${avgFrameTime} Result:${perfRes}`)
 });
-var destructableTables = [2,3,5,9,10,11,12]
+var destructableTables = [11,2,3,5,9,10,12]
 var spansOnlyTables = new Set([9,12])
 function destroyAISIS() {
     if (prettyHome) return alert("🤔 hmm... nothing happened.");
