@@ -45,3 +45,23 @@ function parseTable(table) {
         return false
     }
 }
+function getRandomFloat() {
+    return Math.random() * 100 - 50;
+}
+function benchmarkPerformance(callback) {
+    const frameTimes = [];
+    let start = performance.now();
+
+    function measureFrame(timestamp) {
+        if (frameTimes.length >= 100) {
+            const avgFrameTime = frameTimes.reduce((a, b) => a + b) / frameTimes.length;
+            callback(avgFrameTime);
+            return;
+        }
+        frameTimes.push(timestamp - start);
+        start = timestamp;
+        requestAnimationFrame(measureFrame);
+    }
+
+    requestAnimationFrame(measureFrame);
+}

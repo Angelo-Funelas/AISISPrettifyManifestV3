@@ -3,9 +3,6 @@ var prettyHome = true;
 chrome.storage.local.get(['disable_home'], function(result) {
     prettyHome = !result.disable_home
 })
-function getRandomFloat() {
-    return Math.random() * 100 - 50;
-}
 function destroyAISIS() {
     if (prettyHome) return alert("🤔 hmm... nothing happened.");
     var sitemap = document.getElementsByTagName('table')[11]
