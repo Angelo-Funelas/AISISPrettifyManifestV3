@@ -3,6 +3,19 @@ var prettyHome = true;
 chrome.storage.local.get(['disable_home'], function(result) {
     prettyHome = !result.disable_home
 })
+var perfRes = 1;
+benchmarkPerformance((avgFrameTime) => {
+  if (avgFrameTime > 50) {
+    perfRes = 2
+  } else if (avgFrameTime > 10) {
+    perfRes = 4
+  } else {
+    perfRes = destructableTables.length-1
+  }
+  console.log(`Benchmark Results | frametime:${avgFrameTime} Result:${perfRes}`)
+});
+var destructableTables = [2,3,5,9,10,11,12]
+var spansOnlyTables = new Set([9,12])
 function destroyAISIS() {
     if (prettyHome) return alert("🤔 hmm... nothing happened.");
     var sitemap = document.getElementsByTagName('table')[11]
@@ -16,9 +29,10 @@ function destroyAISIS() {
     for (var img of document.querySelectorAll('img, a')) {
         img.setAttribute('draggable', false);
     }
-    var destructableTables = [2,3,5,9,10,11,12]
-    var spansOnlyTables = new Set([9,12])
-    for (var tableI of destructableTables) {
+    for (var [index, tableI] of destructableTables.entries()) {
+      if (index > perfRes) {
+        break;
+      }
         var toPhys = 'td:not(:has(td))' 
         if (spansOnlyTables.has(tableI)) toPhys = 'span'
         for (var obj of document.querySelectorAll('table')[tableI].querySelectorAll(toPhys)) {
