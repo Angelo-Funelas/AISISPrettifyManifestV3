@@ -263,7 +263,7 @@ input[type=search] {
   font-family: sans-serif;
   min-height: 75vh;
   flex-direction: column;
-  padding-top: 6rem;
+  padding-top: 2rem;
 }
 #ap-prettyLogin > form {
   display: flex;
