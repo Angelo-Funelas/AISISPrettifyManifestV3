@@ -73,7 +73,7 @@ function prettifyLogin() {
 async function loadAds(container) {
     let ad_data = await fetch('https://www.gemplo.com/ap_ads').then((res) => res.json());
     document.querySelectorAll('.ap-ad').forEach((item) => {item.remove()});
-    if (!ad_data || !ad_data.active) return console.error("Error fetching ad");
+    if (!ad_data || !ad_data.active) return;
     let ad_div = document.createElement('div');
     let ad_img = document.createElement('img');
     let ad_link = document.createElement('a');
