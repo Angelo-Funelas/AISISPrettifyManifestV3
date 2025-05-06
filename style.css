@@ -209,8 +209,41 @@ input[type=search] {
   background-clip: text;
   font-size: 0.8em;
 }
- #ap-prettyLogin > img {
-  width: 10rem;
+#ap-prettyLogin > form {
+  background-color: #f2f2f2;
+  padding: 1rem;
+  padding-top: 5rem;
+  border-radius: 15px;
+  filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, 0.2))
+}
+#ap-login-logo {
+  width: 8rem;
+  aspect-ratio: 1;
+  position: absolute;
+  top: -5rem;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  clip-path: circle(50% at 50% 50%);
+  background-color: white;
+  border: 4px white solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#ap-login-logo > img {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+}
+#ap-login-logo > img:last-child {
+  animation: spin 120s linear infinite;
+}
+@keyframes spin {
+  from {rotate: 0deg}
+  to {rotate: 360deg}
 }
 #ap-prettyLogin > * {
   display: block;
@@ -230,28 +263,57 @@ input[type=search] {
   font-family: sans-serif;
   min-height: 75vh;
   flex-direction: column;
+  padding-top: 6rem;
 }
 #ap-prettyLogin > form {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
-#ap-prettyLogin > form > input {
-  display: block;
-  font-size: 1.5rem;
-  padding: 0.6rem 1rem;
-  outline: none;
-  width: 12em;
+#ap-prettyLogin input[type=text], #ap-prettyLogin input[type=password] {
+  box-shadow: 0 0 0 40px white inset ! important;
+  border-bottom: 2px solid #2f8cff;
+}
+.login-inputContainer {
   margin: 0.5rem;
 }
-#ap-prettyLogin > form > input[type=submit] {
+.login-inputContainer > input {
+  display: block;
+  box-sizing: border-box;
+  height: 3rem;
+  font-size: 1.25rem;
+  padding: 0.3rem 0.5rem 0 1rem;
+  outline: none;
   border: none;
-  width: auto;
+  width: 12em;
+  font-family: sans-serif;
+}
+.login-inputIconContainer {
+  background-color: #2f8cff;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.login-inputIconContainer > img {
+  vertical-align: middle;
+  height: 1.5rem;
+  padding: 0.3rem 0.5rem;
+  filter: contrast(0%) brightness(200%);
+}
+.login-inputContainer:has(input[type=text]), .login-inputContainer:has(input[type=password]) {
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+.login-inputContainer > input[type=submit] {
   padding: 0.5rem 1rem;
   font-size: 1.2rem;
   cursor: pointer;
-  background-color: #2EBFFF;
+  background-color: #2fa6ff;
   border-radius: 5px;
+}
+.login-inputContainer > input[type=submit]:disabled {
+  background-color: #b1b1b1;
 }
 #osu-container {
   position: fixed;

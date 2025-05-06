@@ -16,31 +16,52 @@ function prettifyLogin() {
                 }
             }
             var prettyLoginCont = document.createElement('div')
-            var prettyLoginHeading = document.createElement('h1')
-            var img = document.createElement('img')
-            var icon = chrome.runtime.getURL(`/images/icon.png`)
-            img.src = icon
             prettyLoginCont.id = 'ap-prettyLogin'
-            prettyLoginHeading.innerText = 'AISIS Prettify Login'
             formTable.firstElementChild.firstElementChild.style.display = 'none'
-            prettyLoginCont.append(img)
-            prettyLoginCont.append(prettyLoginHeading)
             formTable.firstElementChild.append(prettyLoginCont)
         }
         if (!loginMoved) {
             var inputs = document.querySelectorAll('form input')
-            newform = document.createElement('form')
+            newform = document.createElement('form');
+            var img = document.createElement('div');
+            let icon_center = document.createElement('img');
+            let icon_border = document.createElement('img');
+            icon_center.src = chrome.runtime.getURL(`/images/icon_center.png`);
+            icon_border.src = chrome.runtime.getURL(`/images/icon_border.png`);
+            img.id = 'ap-login-logo';
+            img.append(icon_center, icon_border);
+            newform.append(img);
+
             newform.id = 'pretty-login-form'
             newform.name = 'loginForm'
             newform.action = '/j_aisis/login.do'
             newform.method = 'POST'
+            newform.addEventListener('submit', (e) => {
+                document.querySelector('.login-inputContainer > input[type=submit]').disabled = true;
+            })
             inputs.forEach(function(e) {
+                let inputContainer = document.createElement('div');
+                let inputIconContainer = document.createElement('div');
+                let inputIcon = document.createElement('img');
+                inputIconContainer.className = 'login-inputIconContainer';
+                inputContainer.className = 'login-inputContainer';
                 if (e.type == 'text') {
+                    inputIcon.src = chrome.runtime.getURL(`/images/icons/user.png`);
                     e.placeholder = 'Student ID'
                 } else if (e.type =='password') {
+                    inputIcon.src = chrome.runtime.getURL(`/images/icons/password.png`);
                     e.placeholder = 'Password'
                 }
-                newform.append(e)
+                if (inputIcon.src) {
+                    inputIconContainer.append(inputIcon);
+                    inputContainer.append(inputIconContainer);
+                };
+                if (e.type == 'hidden') {
+                    newform.append(e);
+                } else {
+                    inputContainer.append(e);
+                    newform.append(inputContainer);
+                }
             })
             loginMoved = true
             prettyLoginCont.append(newform)
