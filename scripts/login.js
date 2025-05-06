@@ -1,4 +1,4 @@
-var loginMoved = false
+let loginMoved = false;
 
 function prettifyLogin() {
     var header = document.querySelector('form td:nth-child(1)') 
@@ -23,8 +23,8 @@ function prettifyLogin() {
             prettyLoginCont.id = 'ap-prettyLogin'
             prettyLoginHeading.innerText = 'AISIS Prettify Login'
             formTable.firstElementChild.firstElementChild.style.display = 'none'
-            formTable.firstElementChild.append(img)
-            formTable.firstElementChild.append(prettyLoginHeading)
+            prettyLoginCont.append(img)
+            prettyLoginCont.append(prettyLoginHeading)
             formTable.firstElementChild.append(prettyLoginCont)
         }
         if (!loginMoved) {
@@ -45,7 +45,25 @@ function prettifyLogin() {
             loginMoved = true
             prettyLoginCont.append(newform)
         }
+        loadAds(prettyLoginCont);
     }
+}
+
+async function loadAds(container) {
+    let ad_data = await fetch('https://www.gemplo.com/ap_ads').then((res) => res.json());
+    document.querySelectorAll('.ap-ad').forEach((item) => {item.remove()});
+    if (!ad_data || !ad_data.active) return console.error("Error fetching ad");
+    let ad_div = document.createElement('div');
+    let ad_img = document.createElement('img');
+    let ad_link = document.createElement('a');
+    ad_link.href = ad_data.url;
+    ad_link.target = '_blank';
+    ad_link.className = 'ap-ad';
+    ad_img.src = ad_data.img;
+    ad_div.append(ad_img);
+    ad_link.append(ad_div)
+    container.append(ad_link);
+    console.log("Successfully loaded ad")
 }
 
 function loadLogin() {

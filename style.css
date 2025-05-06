@@ -209,26 +209,27 @@ input[type=search] {
   background-clip: text;
   font-size: 0.8em;
 }
-tr:has(> #ap-prettyLogin) {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  font-family: sans-serif;
-  height: 75vh;
-  flex-direction: column;
+ #ap-prettyLogin > img {
+  width: 10rem;
 }
-tr:has(> #ap-prettyLogin) > img {
-  width: 10vw;
-}
-tr:has(> #ap-prettyLogin) > * {
+#ap-prettyLogin > * {
   display: block;
 }
-tr:has(> #ap-prettyLogin) > h1 {
+#ap-prettyLogin > h1 {
   font-family: "Jost", sans-serif;
   font-optical-sizing: auto;
   font-weight: 700;
   font-style: normal;
+}
+#ap-prettyLogin {
+  white-space: nowrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  font-family: sans-serif;
+  min-height: 75vh;
+  flex-direction: column;
 }
 #ap-prettyLogin > form {
   display: flex;
@@ -348,4 +349,22 @@ tr:has(> #ap-prettyLogin) > h1 {
   position: relative;
   z-index: 5;
   animation: pulsateOutline .6s cubic-bezier(0,1.16,.98,.96) alternate infinite;
+}
+.ap-ad {
+  margin-top: 4rem;
+  margin-bottom: 1rem;
+}
+.ap-ad > div {
+  display: block;
+  border-radius: 10px;
+  width: 40rem;
+  height: 5rem;
+  overflow: hidden;
+  filter: drop-shadow(0px 0px 2px rgba(0, 0, 0, 0.296))
+}
+.ap-ad > div > img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
 }
