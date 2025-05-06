@@ -16,8 +16,8 @@ benchmarkPerformance((avgFrameTime) => {
   }
   console.log(`Benchmark Results | frametime:${avgFrameTime} Result:${perfRes}`)
 });
-var destructableTables = [11,2,3,5,9,10,12]
-var spansOnlyTables = new Set([9,12])
+var destructableTables = [11,2,3,5,10,12]
+var spansOnlyTables = new Set([12])
 function destroyAISIS() {
     if (prettyHome) return alert("🤔 hmm... nothing happened.");
     var sitemap = document.getElementsByTagName('table')[11]
@@ -35,29 +35,29 @@ function destroyAISIS() {
       if (index > perfRes) {
         break;
       }
-        var toPhys = 'td:not(:has(td))' 
-        if (spansOnlyTables.has(tableI)) toPhys = 'span'
-        for (var obj of document.querySelectorAll('table')[tableI].querySelectorAll(toPhys)) {
-            if (toPhys == 'td:not(:has(td))') {
-                var bg = window.getComputedStyle(obj).getPropertyValue('background');
-                if (!bg.includes('url') && obj.querySelector('a') && false) {
-                    console.log('found clear td')
-                    var divCont = document.createElement('div')
-                    obj.parentElement.appendChild(divCont)
-                    divCont.appendChild(obj.querySelector('a'))
-                    divCont.style.width = 'max-content'
-                    divCont.classList.add('phys')
-                } else {
-                    obj.classList.add('phys')
-                }
-                continue
-            }
-            var divCont = document.createElement('div')
-            obj.parentElement.appendChild(divCont)
-            divCont.appendChild(obj)
-            divCont.style.width = 'max-content'
-            divCont.classList.add('phys')
-        }
+      var toPhys = 'td:not(:has(td))' 
+      if (spansOnlyTables.has(tableI)) toPhys = 'span'
+      for (var obj of document.querySelectorAll('table')[tableI].querySelectorAll(toPhys)) {
+          if (toPhys == 'td:not(:has(td))') {
+              var bg = window.getComputedStyle(obj).getPropertyValue('background');
+              if (!bg.includes('url') && obj.querySelector('a') && false) {
+                  console.log('found clear td')
+                  var divCont = document.createElement('div')
+                  obj.parentElement.appendChild(divCont)
+                  divCont.appendChild(obj.querySelector('a'))
+                  divCont.style.width = 'max-content'
+                  divCont.classList.add('phys')
+              } else {
+                  obj.classList.add('phys')
+              }
+              continue
+          }
+          var divCont = document.createElement('div')
+          obj.parentElement.appendChild(divCont)
+          divCont.appendChild(obj)
+          divCont.style.width = 'max-content'
+          divCont.classList.add('phys')
+      }
     }
     for (var obj of document.querySelectorAll('.text04')[7].querySelectorAll('span')) {
         var divCont = document.createElement('div')
