@@ -21,6 +21,7 @@
             "/scripts/rAF.js",
             "/scripts/loop.js",
             "/scripts/homepage.js",
+            "/scripts/login.js",
             "/scripts/nav.js",
             "/scripts/modules.js",
             "/scripts/osu.js",

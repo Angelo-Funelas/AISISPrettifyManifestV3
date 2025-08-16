@@ -1,10 +1,13 @@
 let loginMoved = false;
 
+function isLogin() {
+    let header = document.querySelector('form td:nth-child(1)') 
+    return (header && header.innerText == 'Sign in');
+}
+
 function prettifyLogin() {
     const originalForm = document.querySelector("form");
-    let header = document.querySelector('form td:nth-child(1)') 
-    if (!(header && header.innerText == 'Sign in')) return;
-    // console.log('Prettifying Login')
+    if (!isLogin()) return;
 
     let prettyLoginCont = document.getElementById('ap-prettyLogin')
     let formTable = document.forms['loginForm'].parentElement.parentElement.parentElement
@@ -24,6 +27,7 @@ function prettifyLogin() {
     }
     if (!loginMoved) {
         let inputs = document.querySelectorAll('form input')
+        if (inputs.length < 2) return;
         let newform = document.createElement('form');
         let img = document.createElement('div');
         let icon_center = document.createElement('img');
@@ -98,28 +102,19 @@ async function loadAds(container) {
     // console.log("Successfully loaded ad")
 }
 
-function loadLogin() {
-    let login_form = document.querySelector('form')
-    if (login_form) {
-        // console.log('start login prettify')
-        const loginMutationObserver = new MutationObserver(entries => {
-            prettifyLogin()
-        })
-        loginMutationObserver.observe(login_form, {
-            childList: true,
-            subtree: true
-        })
-        prettifyLogin()
-    } else if (document.readyState !== 'complete') {
-        setTimeout(loadLogin, 1)
-    }
-}
-
 chrome.storage.local.get({'settings_login': true}, function(result) {
-    if (result.settings_login) {
-        loadLogin()
-        document.addEventListener('DOMContentLoaded', function() {
-            prettifyLogin()
-        })        
-    }
+    if (!result.settings_login) return;
+    const mutationObserver = new MutationObserver((mutations, obs) => {
+        if (isLogin()) {
+            prettifyLogin();
+            obs.disconnect();
+        }
+    })
+    mutationObserver.observe(document, {
+        childList: true,
+        subtree: true
+    })
+    document.addEventListener('DOMContentLoaded', function() {
+        prettifyLogin();
+    })
 })

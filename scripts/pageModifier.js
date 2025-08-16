@@ -15,7 +15,6 @@ const setting_keys = Object.fromEntries(setting_ids.map(str => ["settings_" + st
 
 const isEnlistmentSummary = true;
 const isHomepage = true;
-const isLogin = true;
 const isSchedule = path.includes("J_VMCS");
 const isIPS = path.includes("J_VIPS");
 const isGrades = path.includes("J_VG");
@@ -23,9 +22,6 @@ const isGrades = path.includes("J_VG");
 chrome.storage.local.get(setting_keys, function(result) {
     if (result.settings_enlistSumm) {
         if (isEnlistmentSummary) import(chrome.runtime.getURL("/scripts/enlistSumm.js"));
-    }
-    if (result.settings_login) {
-        if (isLogin) import(chrome.runtime.getURL("/scripts/login.js"));
     }
     if (result.settings_schedule) {
         if (isSchedule) import(chrome.runtime.getURL("/scripts/schedule.js"));
