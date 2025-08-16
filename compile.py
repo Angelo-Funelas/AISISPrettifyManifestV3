@@ -28,7 +28,11 @@ def generateFirefox(chrome_manifest_path, firefox_manifest_path):
             "default_popup": chrome_manifest["action"]["default_popup"]
         },
         "content_scripts": chrome_manifest["content_scripts"],
-        "permissions": chrome_manifest["permissions"],
+        "background": {
+            "scripts": [chrome_manifest["background"]["service_worker"]],
+            "persistent": False
+        },
+        "permissions": chrome_manifest["permissions"] + ["https://qpi.alexi.life/", "https://schedule.alexi.life/"],
         "short_name": "AISIS Prettify",
         "web_accessible_resources": [
             resource for entry in chrome_manifest["web_accessible_resources"]

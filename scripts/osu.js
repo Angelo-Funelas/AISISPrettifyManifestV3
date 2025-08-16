@@ -1,9 +1,9 @@
-var pageInteracted = false
+let pageInteracted = false
 function getBMattr(bm, attr) {
     return bm.split(`${attr}:`)[1].split(/\r?\n/)[0]
 }
 function calcHitValue(offset) {
-    var OD = parseInt(currentBM.versions[0].od)
+    let OD = parseInt(currentBM.versions[0].od)
     if (offset <= 80 - (6*OD)) {
         combo ++
         return 300
@@ -19,7 +19,7 @@ function calcHitValue(offset) {
     }
 }
 function popGrade(grade,x,y) {
-    var pop_grade = document.createElement('span')
+    let pop_grade = document.createElement('span')
     pop_grade.className = 'pop_grade_combo'
     pop_grade.innerText = grade
     pop_grade.style.left = `${x}%`
@@ -29,11 +29,41 @@ function popGrade(grade,x,y) {
     })
     playarea.append(pop_grade)
 }
+let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let bufferCache = {};
+
+async function loadSfx() {
+    try {
+        const response = await fetch(chrome.runtime.getURL('/eggs/normal-hitnormal.wav'));
+        const arrayBuffer = await response.arrayBuffer();
+        const buffer = await audioContext.decodeAudioData(arrayBuffer);
+        bufferCache["hitsound"] = buffer;
+    } catch (err) {
+        console.error("Failed to load or decode audio:", err);
+    }
+}
+
+loadSfx();
+
+function playSfx(e, vol) {
+    const soundBuffer = bufferCache[e];
+    if (soundBuffer) {
+        const source = audioContext.createBufferSource();
+        source.buffer = soundBuffer;
+
+        const gainNode = audioContext.createGain();
+        gainNode.gain.value = vol;
+
+        source.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+
+        source.start(0);
+    }
+}
 
 function hitNote(note, time) {
     activeNotes.delete(time)
-    hitsound.currentTime = 0 
-    hitsound.play()
+    playSfx("hitsound", 0.1)
     grade = calcHitValue(Math.abs(time-(audio.currentTime*1000)))
     popGrade(grade, note.dataset.x, note.dataset.y)
     score += grade
@@ -42,7 +72,7 @@ function hitNote(note, time) {
     removeNote(note, time, false)
 }
 function handleMap(data) {
-    var bg_events = data.split('Background and Video events')[1].split(/\r?\n/)
+    let bg_events = data.split('Background and Video events')[1].split(/\r?\n/)
     beatmap_data = {
         "processed_i": 6,
         "bmsid": getBMattr(data, 'BeatmapSetID'),
@@ -69,6 +99,10 @@ const maps = [
     {
         'name': 'xi - FREEDOM DiVE (Pikastar) [Earth]',
         'audio': 'Freedom Dive'
+    },
+    {
+        'name': 'Various Artists - Umapyoi Densetsu (Kwstv) [Insane]',
+        'audio': 'Umapyoi Densetsu'
     }
 ]
 
@@ -78,14 +112,16 @@ function toPosX(x) {
 function toPosY(y) {
     return y/384*100
 }
-var note_index = 1
-var audio = new Audio()
-var currentBM, playarea,scoreh, hitsound
-var score = 0
-var combo = 0
-var activeNotes = new Set()
+let note_index = 1
+let audio = new Audio()
+let currentBM, playarea,scoreh
+let score = 0
+let combo = 0
+let activeNotes = new Set()
+let playingBM = false;
 function playBM(map) {
     closeBM()
+    playingBM = true;
     playarea = document.createElement('div')
     playarea.id = 'osu-playarea'
     scoreh = document.createElement('h1')
@@ -93,7 +129,7 @@ function playBM(map) {
     comboh = document.createElement('h1')
     comboh.innerText = `Combo: 0x`
     closeMsg = document.createElement('p')
-    closeMsg.innerText = `Press 'Esc' to close game.`
+    closeMsg.innerText = `Press 'Esc' to close game. Press 'Z' or 'X' to click.`
     highscoreh = document.createElement('p')
     chrome.storage.local.get(['osu_highscore'], function(result) {
         if (result.osu_highscore) {
@@ -106,25 +142,24 @@ function playBM(map) {
     playarea.append(scoreh)
     playarea.append(highscoreh)
     playarea.append(comboh)
-    var playareaCont = document.createElement('div')
+    let playareaCont = document.createElement('div')
     playareaCont.id = 'osu-container'
     playareaCont.append(playarea)
     document.body.append(playareaCont)
-    var url = chrome.runtime.getURL(`/eggs/fd/${map.name}.osu`)
-    hitsound = new Audio(chrome.runtime.getURL(`/eggs/normal-hitnormal.wav`));
-    console.log('loading beatmaps')
+    let url = chrome.runtime.getURL(`/eggs/fd/${map.name}.osu`)
+    // console.log('loading beatmaps')
     score = 0
     combo = 0
     note_index = 1
     fetch(url)
       .then((res) => res.text())
       .then((text) => {
-        var bm_data = handleMap(text)
+        let bm_data = handleMap(text)
         audio = new Audio(chrome.runtime.getURL(`/eggs/fd/${map.audio}.mp3`));
-        audio.volume = 0.5;
+        audio.volume = 0.15;
         audio.play();
         currentBM = bm_data
-        console.log(currentBM)
+        // console.log(currentBM)
         window.requestAnimationFrame(tick);
         audio.addEventListener('ended', function() {
             chrome.storage.local.get(['osu_highscore'], function(result) {
@@ -140,6 +175,7 @@ function playBM(map) {
       .catch((e) => console.error(e));
 }
 function closeBM() {
+    playingBM = false;
     if (document.querySelector('#osu-container')) {
         document.querySelector('#osu-container').remove()
     }
@@ -161,25 +197,43 @@ function removeNote(note, time, breakcombo) {
     }
     activeNotes.delete(time)
 }
-var lastPosX = 0
-var lastPosY = 0
+let mouseX = 0;
+let mouseY = 0;
 document.addEventListener('DOMContentLoaded', function() {
     document.body.addEventListener('keydown', function(e) {
-        if (e.key == "Escape") { closeBM() }
+        if (e.key == "Escape") closeBM();
+        if (playingBM && (e.key == "z" || e.key == "x")) {
+            document.elementFromPoint(mouseX, mouseY).click()
+        };
     });
 })
+document.addEventListener('mousemove', function(event) {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
+});
+let lastPosX = 0
+let lastPosY = 0
+let stackDepth = 0
 function tick(timeStamp) {
-    var curNote = currentBM.versions[0].hitobjects[note_index].split(',')
-    var noteTime = parseInt(curNote[2])
+    let curNote = currentBM.versions[0].hitobjects[note_index].split(',')
+    let noteTime = parseInt(curNote[2])
     if ((audio.currentTime*1000)+600>=noteTime) {
-        var note = document.createElement('button')
+        let note = document.createElement('button')
         note.classList.add('bm_note','button01')
         note.innerText = 'Enlist/Delist'
-        x = parseInt(curNote[0])
-        y = parseInt(curNote[1])
+        let x = parseInt(curNote[0])
+        let y = parseInt(curNote[1])
+        // if they stack
         if (lastPosX == x && lastPosY == y) {
-            x += 6
-            y += 6
+            stackDepth++;
+            lastPosX = x
+            lastPosY = y
+            x += (6*stackDepth);
+            y += (6*stackDepth);
+        } else {
+            lastPosX = x
+            lastPosY = y
+            stackDepth = 0;
         }
         posx = toPosX(x)
         posy = toPosY(y)
@@ -187,8 +241,6 @@ function tick(timeStamp) {
         note.style.top = `${posy}%`
         note.dataset.x = posx
         note.dataset.y = posy
-        lastPosX = x
-        lastPosY = y
         activeNotes.add(noteTime)
         note.addEventListener('click', function() {
             hitNote(note,noteTime)

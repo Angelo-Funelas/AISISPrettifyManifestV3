@@ -1,3 +1,7 @@
+function to12hr(hr) {
+    hr = parseInt(hr)
+    return `${(hr<13)?hr:hr%12}`
+}
 function RandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 };
@@ -23,8 +27,8 @@ function gotoBottom(id){
     var element = document.getElementById(id);
     element.scrollTop = element.scrollHeight - element.clientHeight;
 }
-function parseTable(table) {
-    if (typeof table !== "undefined") {
+function parseTable(table, include_links = true) {
+    if (typeof table !== "undefined" && table !== null) {
         var rows = table.querySelector('tbody').querySelectorAll('tr')
         var parsedTable = []
         for (let i = 0; i< rows.length;i++) {
@@ -33,7 +37,11 @@ function parseTable(table) {
             for (let cell of cells) {
                 var links = cell.querySelectorAll('a')
                 if (links.length > 0) {
-                    parsedRow.push([cell.innerText, links[0]])
+                    if (include_links) {
+                        parsedRow.push([links[0].title || cell.innerText, links[0]])
+                    } else {
+                        parsedRow.push([links[0].title || cell.innerText])
+                    }
                 } else {
                     parsedRow.push([cell.innerText])
                 }

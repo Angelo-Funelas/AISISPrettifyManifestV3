@@ -8,11 +8,11 @@ const dayIndex = {
     "SAT": 7,
 }
 function loadEnlistSumm() {
-    console.log("loading enlistment summary")
-    const table = document.getElementsByTagName('table')[11]
+    // console.log("Loading Enlistment Summary")
+    const table = document.querySelector('body > div:nth-child(1) > table > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > table > tbody > tr:nth-child(4) > td > table > tbody > tr:nth-child(6) > td > table');
     const parsedTable = parseTable(table)
-    const pageHeading = document.getElementsByTagName('table')[10]?.querySelector("tbody > tr:nth-child(2) > td > span.header06")?.innerText
-    if (parsedTable[0]?.length !== 8 || pageHeading !== "Summary of Enlistment") return;
+    const pageHeading = document.querySelector("body > div:nth-child(1) > table > tbody > tr:nth-child(2) > td > table > tbody > tr:nth-child(2) > td:nth-child(2) > table > tbody > tr:nth-child(4) > td > table > tbody > tr:nth-child(2) > td > span.header06")?.innerText
+    if (parsedTable[0]?.length !== 7 || pageHeading !== "Enlistment Summary") return;
     var prettyGridOld = document.getElementById("prettyGrid")
     if (prettyGridOld) prettyGridOld.remove()
 
@@ -43,19 +43,19 @@ function loadEnlistSumm() {
         cont.appendChild(time)
         gridSchedule.append(cont)
     }
-    for (let i=1;i<parsedTable.length;i++) {
+    for (let i=1;i<parsedTable.length-1;i++) {
         const row = parsedTable[i]
-        const week_day = row[5][0].split(' ')[0].split('-')
-        const time = row[5][0].split(' ')[1].split('-')
-        console.log(time)
+        const week_day = row[4][0].split(' ')[0].split('-')
+        const time = row[4][0].split(' ')[1].split('-')
+        // console.log(time)
         for (let j = 0; j<week_day.length;j++) {
             const day = week_day[j]
             var classBlock = document.createElement('div')
             classBlock.className = 'classCell'
             classBlock.style.backgroundColor = `#63c1ff`
-            classBlock.innerText = `${row[0]}\n${row[2]}\n${row[3]} ${row[5]}`
+            classBlock.innerText = `${row[0]}\n${row[1]} ${row[2]}\n${row[4]}`
             classBlock.style.gridColumn = dayIndex[day]
-            console.log(parseInt(time[0])+((time[0][2]=='3')?20:0))
+            // console.log(parseInt(time[0])+((time[0][2]=='3')?20:0))
             classBlock.style.gridRowStart = Math.floor((parseInt(time[0])+((time[0][2]=='3')?20:0))/50)-12
             classBlock.style.gridRowEnd = Math.floor((parseInt(time[1])+((time[1][2]=='3')?20:0))/50)-12
             gridSchedule.append(classBlock)
@@ -88,11 +88,11 @@ function loadEnlistSumm() {
     //     }
     // }
     table.parentElement.append(gridSchedule)
-    console.log(parsedTable)
+    // console.log(parsedTable)
 }
 
-chrome.storage.local.get(['disable_enlistSumm'], function(result) {
-    if (!result.disable_enlistSumm) {
+chrome.storage.local.get({'settings_enlistSumm': true}, function(result) {
+    if (result.settings_enlistSumm) {
         if (document.readyState !== 'loading') return loadEnlistSumm()
         document.addEventListener('DOMContentLoaded', loadEnlistSumm)
     }

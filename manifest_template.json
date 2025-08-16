@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "AISIS Prettify - Improved User Interface",
     "description": "An extension that aims to make AISIS easier to work with",
-    "version": "0.3.7",
+    "version": "1.0",
     "icons": {
         "16": "/images/icon_16.png",
         "48": "/images/icon_48.png",
@@ -14,28 +14,36 @@
     "author": "Gelo Funelas",
     "content_scripts": [{
         "matches": ["*://aisis.ateneo.edu/*"],
-        "css": ["style.css","/styles/secrets.css"],
+        "css": ["/styles/style.css","/styles/secrets.css"],
         "js": [
-            "app.js",
-            "/scripts/modules.js",
-            "/scripts/secrets.js",
-            "/scripts/schedule.js",
-            "/scripts/homepage.js",
-            "/scripts/login.js",
-            "/scripts/osu.js",
-            "/scripts/enlistSumm.js",
+            "/scripts/jquery-3.7.1.min.js",
             "/scripts/box2d.min.js",
             "/scripts/rAF.js",
-            "/scripts/jquery-latest.js",
             "/scripts/loop.js",
-            "/scripts/physics.js"
+            "/scripts/homepage.js",
+            "/scripts/nav.js",
+            "/scripts/modules.js",
+            "/scripts/osu.js",
+            "/scripts/pageModifier.js",
+            "/scripts/app.js"
         ],
         "run_at": "document_start"
     }],
+    "background": {
+        "service_worker": "background.js"
+    },
     "permissions": [
         "tabs",
-        "storage"
+        "storage",
+        "declarativeNetRequest"
     ],
+    "declarative_net_request": {
+        "rule_resources": [{
+            "id": "block_rules",
+            "enabled": true,
+            "path": "rules.json"
+        }]
+    },
     "web_accessible_resources": [{
         "resources": [
             "/images/*.png",
@@ -46,7 +54,11 @@
             "/eggs/fd/*.osu",
             "/eggs/fd/*.wav",
             "/eggs/fd/*.mp3",
-            "/eggs/*.wav"
+            "/eggs/*.wav",
+            "/styles/*.css",
+            "/styles/fonts/*.ttf",
+            "/scripts/*.js",
+            "/html/*.html"
         ],
         "matches": ["*://aisis.ateneo.edu/*"]
     }]

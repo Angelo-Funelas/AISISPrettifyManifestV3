@@ -1,4 +1,4 @@
-var Loop, periodicTimeout,
+let Loop, periodicTimeout,
   bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; };
 
 periodicTimeout = function(callback, element, interval) {
@@ -16,7 +16,7 @@ Loop = (function() {
   }
 
   Loop.prototype.start = function() {
-    var animLoop, lastCallAt, method;
+    let animLoop, lastCallAt, method;
     if (this.id) {
       return;
     }
@@ -24,7 +24,7 @@ Loop = (function() {
     lastCallAt = void 0;
     (animLoop = (function(_this) {
       return function(timestamp) {
-        var time;
+        let time;
         time = timestamp;
         if (timestamp < 1e12) {
           time = timestamp + performance.timing.navigationStart;
@@ -40,7 +40,7 @@ Loop = (function() {
   };
 
   Loop.prototype.stop = function() {
-    var method;
+    let method;
     if (this.id == null) {
       return;
     }
@@ -54,7 +54,7 @@ Loop = (function() {
 
 })();
 
-this.Loop = Loop;
+Loop = Loop;
 
 if (typeof module !== "undefined" && module !== null) {
   module.exports = this.Loop;

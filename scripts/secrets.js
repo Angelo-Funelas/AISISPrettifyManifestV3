@@ -1,9 +1,11 @@
+import { destroyAISIS } from "./physics.js";
+
 document.addEventListener('DOMContentLoaded', function() {
     var secret_input = document.createElement('input');
     secret_input.id = 'secret_input'
     document.body.append(secret_input)
     function showS_img(name) {
-        s_img = document.createElement('img')
+        let s_img = document.createElement('img')
         s_img.src = chrome.runtime.getURL(`/images/hutao/${RandomInt(1,3+1)}.png`)
         s_img.className = 's_img';
         document.body.append(s_img)
@@ -17,16 +19,21 @@ document.addEventListener('DOMContentLoaded', function() {
             // playSfx('5')
         })
     }
+    let clearInputTimeout;
     document.addEventListener("keydown", function(e) {
         if (document.getElementById('secret_input').value == '') {
-            setTimeout(function() {
+            clearInputTimeout = setTimeout(function() {
                 document.getElementById('secret_input').value = ''
             }, 2000)
         }
         if (typeof e.key !== "undefined" && e.key.length === 1 && e.key.match(/[a-z]/i)) {
+            clearTimeout(clearInputTimeout);
             document.getElementById('secret_input').value += e.key;
+            clearInputTimeout = setTimeout(function() {
+                document.getElementById('secret_input').value = ''
+            }, 2000)
         }
-        secret_value = document.getElementById('secret_input').value
+        let secret_value = document.getElementById('secret_input').value
         switch (secret_value) {
             case 'gelo':
                 showS_img('gelo');
@@ -44,6 +51,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
             case 'carpaltunnel':
                 playBM(maps[0]);
+                document.getElementById('secret_input').value = '';
+                break;
+
+            case 'umapyoi':
+                playBM(maps[1]);
                 document.getElementById('secret_input').value = '';
                 break;
         

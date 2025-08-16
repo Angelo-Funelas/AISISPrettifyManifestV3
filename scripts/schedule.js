@@ -1,27 +1,22 @@
-function to12hr(hr) {
-    hr = parseInt(hr)
-    return `${(hr<13)?hr:hr%12}`
-}
+const mapToObject = map => Object.fromEntries(map.entries());
 function loadSchedule() {
     const pageHeading = document.getElementsByTagName('table')[11]?.querySelector("tbody > tr:nth-child(2) > td > span.header06")?.innerText
-    console.log(pageHeading)
     if (pageHeading !== "My Class Schedule") return;
     var table = document.getElementsByTagName('table')[15]
     var rows = table.querySelector('tbody').querySelectorAll('tr')
     var parsedTable = []
     for (let i = 0; i< rows.length;i++) {
-        cells = rows[i].querySelectorAll('td')
+        let cells = rows[i].querySelectorAll('td')
         var parsedRow = []
         for (let cell of cells) {
             parsedRow.push(cell.innerText)
         }
         parsedTable.push(parsedRow)
     }
-    console.log(parsedTable)
-
     const subjectColors = ['3DC2EC', '4B70F5', '4C3BCF', '402E7A', '3ABEF9', '3572EF','050C9C', '153448', '3C5B6F']
     var subjects = new Map()
     var gridTable = []
+    let subjStart = 0;
     for (let i=0;i<parsedTable[0].length;i++) {
         var col = []
         var prevSubj = ' '
@@ -46,8 +41,10 @@ function loadSchedule() {
         }
         gridTable.push(col)
     }
-    console.log(gridTable)
-    console.log(subjects)
+    chrome.storage.local.set({[`data_schedule`]: {
+        gridTable: gridTable,
+        subjects: mapToObject(subjects)
+    }});
     if (parsedTable[0].length == 7) {
         var gridSchedule = document.createElement('div')
         gridSchedule.id = "prettyGrid"
@@ -95,8 +92,9 @@ function loadSchedule() {
         table.style.display = 'none'
     }
 }
-chrome.storage.local.get(['disable_schedule'], function(result) {
-    if (!result.disable_schedule) {
+
+chrome.storage.local.get({'settings_schedule': true}, function(result) {
+    if (result.settings_schedule) {
         if (document.readyState !== 'loading') return loadSchedule()
         document.addEventListener('DOMContentLoaded', loadSchedule)
     }

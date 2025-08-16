@@ -1,31 +1,63 @@
-var activeTab = null
-chrome.storage.local.get([
-    'disable_filter', 'disable_schedule', 'disable_dropdownSort', 'disable_home', 'disable_login', 'disable_enlistSumm'
-], function(result) {
-    document.getElementById('settings-filter').checked = !result.disable_filter
-    document.getElementById('settings-schedule').checked = !result.disable_schedule
-    document.getElementById('settings-dropdown').checked = !result.disable_dropdownSort
-    document.getElementById('settings-home').checked = !result.disable_home
-    document.getElementById('settings-login').checked = !result.disable_login
-    document.getElementById('settings-enlistSumm').checked = !result.disable_enlistSumm
+let activeTab = null;
+const settings = {
+    'home': 'Pretty Site Map',
+    'login': 'Pretty Login',
+    'nav': 'Pretty Navbar',
+    'schedule': 'Pretty Schedule',
+    'grades': 'QPI Calculator',
+    'enlistPlanr': 'Enlistment Planner',
+    'enlistSumm': 'Schedule in Enlistment Summary',
+    'filter': 'Class Filter',
+}
+const setting_ids = Object.keys(settings)
+const setting_keys = Object.fromEntries(setting_ids.map(str => ["settings_" + str, true]));
+
+function loadSettings() {
+    for (const setting of setting_ids) {
+        const main = document.querySelector("main");
+        main.append(createSettingEl(setting))
+    }
+}
+
+loadSettings();
+chrome.storage.local.get(setting_keys, function(result) {
+    for (const setting of setting_ids) {
+        document.getElementById(`setting-${setting}`).checked = result[`settings_${setting}`]
+    }
 });
+
+
+function createSettingEl(name) {
+    const el = document.createElement("div");
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    const slider = document.createElement("span");
+    const text = document.createElement("p");
+    const br = document.createElement("br");
+
+    label.className = "switch";
+    input.type = "checkbox";
+    input.id = `setting-${name}`;
+    input.disabled = true;
+    slider.classList.add("slider", "round");
+    text.className = "setting-checkbox-p";
+    text.innerText = settings[name];
+
+    label.append(input, slider);
+    el.append(label, text, br);
+
+    input.addEventListener('change', (e) => {
+        chrome.storage.local.set({[`settings_${name}`]: e.target.checked});
+        chrome.tabs.sendMessage(activeTab.id, {reload: true});
+    });
+
+    return el
+}
+
 chrome.tabs.query({currentWindow: true, active: true}, function (tabs) {
     activeTab = tabs[0];
     if (!activeTab.url.includes('aisis.ateneo.edu')) return;
-    document.getElementById('settings-filter').disabled = false
-    document.getElementById('settings-schedule').disabled = false
-    document.getElementById('settings-dropdown').disabled = false
-    document.getElementById('settings-home').disabled = false
-    document.getElementById('settings-login').disabled = false
-    document.getElementById('settings-enlistSumm').disabled = false
-
-    const settings = ['filter','schedule','dropdown','home','login','enlistSumm']
-    for (let i=0;i<settings.length;i++) {
-        const elId = `settings-${settings[i]}`;
-        document.getElementById(elId).addEventListener('change', function() {
-            var input = document.getElementById(elId);
-            chrome.storage.local.set({[`disable_${settings[i]}`]: !input.checked});
-            chrome.tabs.sendMessage(activeTab.id, {reload: true});
-        });
+    for (const setting of setting_ids) {
+        document.getElementById(`setting-${setting}`).disabled = false;
     }
 });
