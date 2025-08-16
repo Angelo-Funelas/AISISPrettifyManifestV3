@@ -9,7 +9,7 @@ def generateChrome(template_filename, output_filename):
     
     # Copy the template file to the output path
     shutil.copyfile(template_path, output_path)
-    print(f"Chrome manifest saved to {output_path}")
+    print(f"\033[32mChrome manifest saved to {output_path}\033[0m")
 
 def generateFirefox(chrome_manifest_path, firefox_manifest_path):
     with open(chrome_manifest_path, 'r') as file:
@@ -50,7 +50,7 @@ def generateFirefox(chrome_manifest_path, firefox_manifest_path):
     with open(firefox_manifest_path, 'w') as file:
         json.dump(firefox_manifest, file, indent=2)
     
-    print(f"Firefox manifest saved to {firefox_manifest_path}")
+    print(f"\033[32mFirefox manifest saved to {firefox_manifest_path}\033[0m")
 
 def zip(exclude,zipname):
     # Get the current directory where the script is located
@@ -81,7 +81,7 @@ def zip(exclude,zipname):
                 arcname = os.path.relpath(file_path, current_dir)
                 zipf.write(file_path, arcname)
 
-    print(f"Generated '{zip_name}'.")
+    print(f"\033[32mGenerated '{zip_name}'.\033[0m")
 
 
 exclude = [
@@ -93,21 +93,27 @@ exclude = [
     os.path.abspath(__file__)                     # Exclude this script itself
 ]
 
-print("For which browser should I compile for:")
-print("0: Chrome")
-print("1: Firefox")
+def compile():
+    print("For which browser should I compile for:")
+    print("0: Chrome")
+    print("1: Firefox")
 
-choice = int(input())
-if choice == 0:
-    generateChrome('manifest_template.json', 'manifest.json')
-elif choice == 1:
-    generateFirefox('manifest_template.json', 'manifest.json')
-    
-print("Create a zip file (Y/N):")
-if input().upper()=='Y':
+    choice = int(input())
     if choice == 0:
-        zip(exclude, 'AISISPrettifyChrome.zip')
+        generateChrome('manifest_template.json', 'manifest.json')
     elif choice == 1:
-        zip(exclude, 'AISISPrettifyFirefox.zip')
-else:
-    print("zip not created.")
+        generateFirefox('manifest_template.json', 'manifest.json')
+    askZip()
+    
+def askZip():
+    print("Create a zip file (Y/N):")
+    if input().upper()=='Y':
+        if choice == 0:
+            zip(exclude, 'AISISPrettifyChrome.zip')
+        elif choice == 1:
+            zip(exclude, 'AISISPrettifyFirefox.zip')
+            
+    else:
+        print("\033[31m zip not created.\033[0m")
+
+compile()
