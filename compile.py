@@ -103,9 +103,9 @@ def compile():
         generateChrome('manifest_template.json', 'manifest.json')
     elif choice == 1:
         generateFirefox('manifest_template.json', 'manifest.json')
-    askZip()
+    askZip(choice)
     
-def askZip():
+def askZip(choice):
     print("Create a zip file (Y/N):")
     if input().upper()=='Y':
         if choice == 0:
