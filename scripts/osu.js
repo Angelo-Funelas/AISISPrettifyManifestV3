@@ -29,8 +29,16 @@ function popGrade(grade,x,y) {
     })
     playarea.append(pop_grade)
 }
-let audioContext = new (window.AudioContext || window.webkitAudioContext)();
+let audioContext = new (window.AudioContext || window.webkitAudioContext)({
+    latencyHint: 'interactive'
+});
 let bufferCache = {};
+
+window.addEventListener("pointerdown", () => {
+    if (audioContext.state === "suspended") {
+        audioContext.resume();
+    }
+}, { once: true });
 
 async function loadSfx() {
     try {
@@ -45,7 +53,7 @@ async function loadSfx() {
 
 loadSfx();
 
-function playSfx(e, vol) {
+function playSfx(e, vol = 0.1) {
     const soundBuffer = bufferCache[e];
     if (soundBuffer) {
         const source = audioContext.createBufferSource();
@@ -57,7 +65,7 @@ function playSfx(e, vol) {
         source.connect(gainNode);
         gainNode.connect(audioContext.destination);
 
-        source.start(0);
+        source.start(audioContext.currentTime);
     }
 }
 
