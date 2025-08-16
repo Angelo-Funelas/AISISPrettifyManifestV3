@@ -30,6 +30,7 @@ const short_headings = new Map(Object.entries({
     'CLASS SCHEDULE':`OFFERED CLASSES`,
     'ENLIST IN CLASS':`ENLIST IN CLASS`,
     'COURSE AND FACULTY EVALUATION': `EVALUATION`,
+    'FACULTY ATTENDANCE': 'FACULTY ATTENDANCE',
     'PRINT SAA': `PRINT SAA`
 }))
 
@@ -49,6 +50,7 @@ const groupings = new Map(Object.entries({
     'CLASS SCHEDULE': 1,
     'ENLIST IN CLASS': 0,
     'COURSE AND FACULTY EVALUATION': 1,
+    'FACULTY ATTENDANCE': 1,
     'PRINT SAA': 3
 }))
 
