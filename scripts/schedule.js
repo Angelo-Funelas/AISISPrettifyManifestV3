@@ -41,11 +41,11 @@ function loadSchedule() {
         }
         gridTable.push(col)
     }
-    chrome.storage.local.set({[`data_schedule`]: {
-        gridTable: gridTable,
-        subjects: mapToObject(subjects)
-    }});
     if (parsedTable[0].length == 7) {
+        chrome.storage.local.set({[`data_schedule`]: {
+            gridTable: gridTable,
+            subjects: mapToObject(subjects)
+        }});
         var gridSchedule = document.createElement('div')
         gridSchedule.id = "prettyGrid"
         gridSchedule.style.gridTemplateRows = `64px repeat(${gridTable[0].length-1}, 32px)`
