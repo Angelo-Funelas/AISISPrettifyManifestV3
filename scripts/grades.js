@@ -164,7 +164,7 @@ async function openGradeCalculator(ips) {
         },
         "grades_data": formatGrades(getGrades())
     }
-    console.log(req_body);
+    // console.log(req_body);
     fetch("https://qpi.alexi.life/api/calculator", {
         method: "POST",
         headers: {

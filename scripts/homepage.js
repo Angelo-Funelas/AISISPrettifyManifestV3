@@ -119,7 +119,7 @@ function prettifyHome() {
         document.querySelectorAll(".header08")[1]?.classList.add("hidden");
         return true
     } catch (err) {
-        sitemap.classList.remove('hidden')
+        sitemap.style.display = "";
         console.error(err)
         return false;
     }

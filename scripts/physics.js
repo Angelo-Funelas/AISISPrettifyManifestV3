@@ -140,7 +140,7 @@ export function destroyAISIS() {
           let fixDef = new b2FixtureDef;
           fixDef.density = 1;
         //   fixDef.density = phyObj.outerWidth()*phyObj.outerHeight()/20000;
-        //   // console.log(`set density to ${phyObj.outerWidth()*phyObj.outerHeight()/30000}`)
+        //   console.log(`set density to ${phyObj.outerWidth()*phyObj.outerHeight()/30000}`)
           fixDef.friction = 0.5;
           fixDef.restitution = 0.2;
         
