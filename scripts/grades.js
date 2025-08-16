@@ -50,9 +50,12 @@ function animate_text(el, states, interval) {
     }
     el.cancelAnimation();
     el.animation_index = 0;
-    el.animationInterval = setInterval(() => {
+    el.animation_step = () => {
         el.innerHTML = states[el.animation_index].replace(/ /g, "&nbsp;");
         el.animation_index = el.animation_index>=states.length-1?0:el.animation_index+1;
+    }
+    el.animationInterval = setInterval(() => {
+        el.animation_step();
     }, interval);
 }
 
