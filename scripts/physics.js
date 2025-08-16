@@ -1,7 +1,10 @@
 let aisisDestroyed = false
 let prettyHome = true;
-chrome.storage.local.get({'settings_home': true}, function(result) {
-    prettyHome = result.settings_home
+chrome.storage.local.get({
+  'settings_home': true,
+  'settings_nav': true
+}, function(result) {
+    prettyHome = result.settings_home || result.settings_nav
 })
 let perfRes = 4;
 // benchmarkPerformance((avgFrameTime) => {
