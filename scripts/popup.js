@@ -33,7 +33,6 @@ function createSettingEl(name) {
     const input = document.createElement("input");
     const slider = document.createElement("span");
     const text = document.createElement("p");
-    const br = document.createElement("br");
 
     label.className = "switch";
     input.type = "checkbox";
@@ -44,7 +43,7 @@ function createSettingEl(name) {
     text.innerText = settings[name];
 
     label.append(input, slider);
-    el.append(label, text, br);
+    el.append(label, text);
 
     input.addEventListener('change', (e) => {
         chrome.storage.local.set({[`settings_${name}`]: e.target.checked});
