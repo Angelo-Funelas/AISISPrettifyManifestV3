@@ -85,7 +85,7 @@ function hitNote(note, time) {
     activeNotes.delete(time)
     playSfx("hitsound", 0.1)
     grade = calcHitValue(Math.abs(time-(audio.currentTime*1000)))
-    popGrade(grade, note.dataset.x, note.dataset.y)
+    popGrade((grade==0)?'❌':grade, note.dataset.x, note.dataset.y)
     score += grade
     scoreh.innerText = `Score: ${score}`
     comboh.innerText = `Combo: ${combo}x`
@@ -236,8 +236,8 @@ let lastPosY = 0
 let stackDepth = 0
 function tick(timeStamp) {
     let curNote = currentBM.versions[0].hitobjects[note_index].split(',')
-    let noteTime = parseInt(curNote[2])
-    if ((audio.currentTime*1000)+600>=noteTime) {
+    let noteTime = parseInt(curNote[2])-60
+    if ((audio.currentTime*1000)+600>=noteTime) { // 600ms for animation before note should be hit 
         let note = document.createElement('button')
         note.classList.add('bm_note','button01')
         note.innerText = 'Enlist/Delist'
@@ -265,6 +265,9 @@ function tick(timeStamp) {
         note.addEventListener('click', function() {
             hitNote(note,noteTime)
         })
+        // setTimeout(() => {
+        //     hitNote(note,noteTime)
+        // }, 600);
         setTimeout(removeNote.bind(null, note, noteTime, true), 800)
         playarea.prepend(note)
         note_index++
