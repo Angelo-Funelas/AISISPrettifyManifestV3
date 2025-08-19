@@ -1,6 +1,7 @@
 import { destroyAISIS } from "./physics.js";
 
 function loadSecrets() {
+    if (!!document.getElementById('secret_input')) return;
     var secret_input = document.createElement('input');
     secret_input.id = 'secret_input'
     document.body.append(secret_input)
@@ -19,14 +20,15 @@ function loadSecrets() {
     }
     let clearInputTimeout;
     document.addEventListener("keydown", function(e) {
-        if (document.getElementById('secret_input').value == '') {
+        if (typeof e.key !== "undefined" && e.key.length === 1 && e.key.match(/[a-z]/i)) {
+            clearTimeout(clearInputTimeout);
+            document.getElementById('secret_input').value += e.key;
+            console.log(document.getElementById('secret_input').value)
             clearInputTimeout = setTimeout(function() {
                 document.getElementById('secret_input').value = ''
             }, 2000)
         }
-        if (typeof e.key !== "undefined" && e.key.length === 1 && e.key.match(/[a-z]/i)) {
-            clearTimeout(clearInputTimeout);
-            document.getElementById('secret_input').value += e.key;
+        if (document.getElementById('secret_input').value == '') {
             clearInputTimeout = setTimeout(function() {
                 document.getElementById('secret_input').value = ''
             }, 2000)
