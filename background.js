@@ -24,9 +24,9 @@ chrome.runtime.onInstalled.addListener((details) => {
         });
     } else if (details.reason === "update") {
         // Extension updated
-        chrome.tabs.create({
-            url: "/html/update.html"
-        });
+        // chrome.tabs.create({
+        //     url: "/html/update.html"
+        // });
         chrome.storage.local.get({"data_welcome_shown": false}, (result) => {
           if (!result.data_welcome_shown) {
             chrome.tabs.create({
