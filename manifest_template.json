@@ -38,6 +38,9 @@
         "storage",
         "declarativeNetRequest"
     ],
+    "host_permissions": [
+        "https://aisis.ateneo.edu/*"
+    ],
     "declarative_net_request": {
         "rule_resources": [{
             "id": "block_rules",
@@ -56,6 +59,7 @@
             "/eggs/fd/*.wav",
             "/eggs/fd/*.mp3",
             "/eggs/*.wav",
+            "/eggs/*.png",
             "/styles/*.css",
             "/styles/fonts/*.ttf",
             "/scripts/*.js",
