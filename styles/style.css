@@ -466,7 +466,7 @@ input[type=search] {
   height: 100%;
   left: 0;
   top: 0;
-  border: 1px solid black;
+  border: 5px solid black;
   animation: .6s closeIn linear;
   pointer-events: none;
 }
@@ -480,8 +480,14 @@ input[type=search] {
   100% {opacity: 0;}
 }
 @keyframes closeIn {
-  from {scale: 5}
-  to {scale: 1}
+  from {
+    scale: 5;
+    border: 1px solid black;
+  }
+  to {
+    scale: 1;
+    border: 5px solid black;
+  }
 }
 @keyframes pop_in {
     0% {opacity: 0.5; transform: scale(0.8)}
