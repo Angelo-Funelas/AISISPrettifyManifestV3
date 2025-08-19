@@ -217,8 +217,10 @@ async function appendSchedule(container) {
     sched_cont.append(sched_header);
     sched_cont.classList.add("schedule")
     sched_cont.append(await createSchedule());
-    const existingSchedule = document.querySelector(".schedule");
-    if (!!existingSchedule) existingSchedule.remove();
+    const existingSchedule = document.querySelectorAll(".schedule");
+    if (!!existingSchedule) existingSchedule.forEach((item) => {item.remove()});
+    const existingCredits = document.querySelectorAll(".credits");
+    if (!!existingCredits) existingCredits.forEach((item) => {item.remove()});
     container.append(sched_cont);
     container.append(createCredits());
 }
