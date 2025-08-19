@@ -228,9 +228,15 @@ async function appendSchedule(container) {
 const subjectColors = ['3DC2EC', '4B70F5', '4C3BCF', '402E7A', '3ABEF9', '3572EF','050C9C', '153448', '3C5B6F'];
 const days = ["Time", "Mon", "Tues", "Wed", "Thur", "Fri", "Sat"];
 async function createSchedule() {
+    const idNumber = await new Promise((resolve) => {
+        chrome.storage.local.get({'data_idNumber': 0}, (result) => {
+            resolve(result.data_idNumber);
+        });
+    });
     const schedule = await new Promise((resolve) => {
-        chrome.storage.local.get({'data_schedule': null}, (result) => {
-            resolve(result.data_schedule);
+        const key = `data_schedule_${idNumber}`
+        chrome.storage.local.get({[key]: null}, (result) => {
+            resolve(result[key]);
         });
     });    
     var gridSchedule = document.createElement('div')
