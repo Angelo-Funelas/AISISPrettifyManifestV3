@@ -41,13 +41,25 @@ window.addEventListener("pointerdown", () => {
 }, { once: true });
 
 async function loadSfx() {
-    try {
-        const response = await fetch(chrome.runtime.getURL('/eggs/normal-hitnormal.wav'));
-        const arrayBuffer = await response.arrayBuffer();
-        const buffer = await audioContext.decodeAudioData(arrayBuffer);
-        bufferCache["hitsound"] = buffer;
-    } catch (err) {
-        console.error("Failed to load or decode audio:", err);
+    const sounds = [
+        {
+            path: '/eggs/normal-hitnormal.wav',
+            name: 'hitsound'
+        },
+        {
+            path: '/eggs/destroy.wav',
+            name: 'destroy'
+        }
+    ];
+    for (const sound of sounds) {
+        try {
+            const response = await fetch(chrome.runtime.getURL(sound.path));
+            const arrayBuffer = await response.arrayBuffer();
+            const buffer = await audioContext.decodeAudioData(arrayBuffer);
+            bufferCache[sound.name] = buffer;
+        } catch (err) {
+            console.error("Failed to load or decode audio:", err);
+        }
     }
 }
 

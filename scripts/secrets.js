@@ -1,6 +1,6 @@
 import { destroyAISIS } from "./physics.js";
 
-document.addEventListener('DOMContentLoaded', function() {
+function loadSecrets() {
     var secret_input = document.createElement('input');
     secret_input.id = 'secret_input'
     document.body.append(secret_input)
@@ -41,12 +41,12 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (secret_value.includes('umapyoi')) {
             playBM(maps[1]);
             document.getElementById('secret_input').value = '';
-        } else if (secret_value.includes('destroy')) {
-            destroyAISIS();
-            document.getElementById('secret_input').value = '';
         }
     })
-});
+}
+
+if (document.readyState !== 'loading') loadSecrets();
+document.addEventListener('DOMContentLoaded', loadSecrets);
 /******************************************************************************
 * This script detects the Konami code 
 * Licence: WTFPL (http://es.wikipedia.org/wiki/WTFPL)

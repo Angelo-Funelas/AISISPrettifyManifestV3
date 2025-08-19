@@ -21,12 +21,28 @@ let perfRes = 4;
 // });
 let destructableTables = [11,2,3,5,10,12]
 let spansOnlyTables = new Set([12])
+
 export function destroyAISIS() {
-    if (prettyHome) return alert("🤔 hmm... nothing happened.");
-    let sitemap = document.getElementsByTagName('table')[11]
-    let parsedTable = parseTable(sitemap)
-    if (!parsedTable || parsedTable[0][0][0] !== 'Site Map') return alert("🤔 hmm... nothing happened.");
-    if (aisisDestroyed) return;
+  if (prettyHome) return alert("🤔 hmm... nothing happened.");
+  let sitemap = document.getElementsByTagName('table')[11]
+  let parsedTable = parseTable(sitemap)
+  if (!parsedTable || parsedTable[0][0][0] !== 'Site Map') return alert("🤔 hmm... nothing happened.");
+  if (aisisDestroyed) return;
+  aisisDestroyed = true;
+  playSfx('destroy');
+  const destory_img = document.createElement("img");
+  destory_img.src = chrome.runtime.getURL(`/eggs/destroy.png`);
+  destory_img.id = 'destroy-img';
+  destory_img.addEventListener('animationend', (e) => {
+    e.target.remove();
+  })
+  document.body.append(destory_img);
+  setTimeout(() => {
+    runPhysics();
+  }, 2.5 * 1000);
+}
+
+function runPhysics() {
     document.body.style.overflow = 'hidden';
     document.body.style.userSelect = 'None'
     document.body.style['-webkit-user-select'] = 'None'
@@ -259,5 +275,4 @@ export function destroyAISIS() {
           }).start();
         }());
     }(jQuery, Box2D));
-    aisisDestroyed = true;
 }
