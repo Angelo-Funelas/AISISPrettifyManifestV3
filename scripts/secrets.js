@@ -14,9 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.currentTarget.remove()
         })
         s_img.addEventListener('click', function(e) {
-            // e.currentTarget.remove()
             e.currentTarget.className = 'popend'
-            // playSfx('5')
         })
     }
     let clearInputTimeout;
@@ -34,39 +32,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 2000)
         }
         let secret_value = document.getElementById('secret_input').value
-        switch (secret_value) {
-            case 'gelo':
-                showS_img('gelo');
-                // playSfx('6');
-                document.getElementById('secret_input').value = '';
-                break;
-        
-            case 'kuho':
-            case 'krapky':
-            case 'jozco':
-            case 'kael':
-                // playSfx('4');
-                document.getElementById('secret_input').value = '';
-                break;
-        
-            case 'carpaltunnel':
-                playBM(maps[0]);
-                document.getElementById('secret_input').value = '';
-                break;
-
-            case 'umapyoi':
-                playBM(maps[1]);
-                document.getElementById('secret_input').value = '';
-                break;
-        
-            case 'destroy':
-                destroyAISIS();
-                document.getElementById('secret_input').value = '';
-                break;
-        
-            default:
-                // Optional: Handle any other cases if needed
-                break;
+        if (secret_value.includes('gelo')) {
+            showS_img('gelo');
+            document.getElementById('secret_input').value = '';
+        } else if (secret_value.includes('carpaltunnel')) {
+            playBM(maps[0]);
+            document.getElementById('secret_input').value = '';
+        } else if (secret_value.includes('umapyoi')) {
+            playBM(maps[1]);
+            document.getElementById('secret_input').value = '';
+        } else if (secret_value.includes('destroy')) {
+            destroyAISIS();
+            document.getElementById('secret_input').value = '';
         }
     })
 });
