@@ -1,3 +1,4 @@
 *.zip
 manifest.json
 .amo-upload-uuid
+_metadata
