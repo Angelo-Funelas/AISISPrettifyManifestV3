@@ -30,9 +30,9 @@ def generateFirefox(chrome_manifest_path, firefox_manifest_path):
         "content_scripts": chrome_manifest["content_scripts"],
         "background": {
             "scripts": [chrome_manifest["background"]["service_worker"]],
-            "persistent": False
+            "persistent": True
         },
-        "permissions": chrome_manifest["permissions"] + ["https://qpi.alexi.life/", "https://schedule.alexi.life/"],
+        "permissions": [perm for perm in chrome_manifest["permissions"] if perm != "declarativeNetRequest"] + ["webRequest", "webRequestBlocking", "*://aisis.ateneo.edu/*", "https://qpi.alexi.life/", "https://schedule.alexi.life/"],
         "short_name": "AISIS Prettify",
         "web_accessible_resources": [
             resource for entry in chrome_manifest["web_accessible_resources"]

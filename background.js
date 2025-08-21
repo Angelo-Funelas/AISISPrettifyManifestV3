@@ -36,3 +36,16 @@ chrome.runtime.onInstalled.addListener((details) => {
         })
     }
 });
+
+// for firefox blocking version.js
+if (typeof browser !== "undefined" && browser.webRequest) {
+  browser.webRequest.onBeforeRequest.addListener(
+    function(details) {
+      if (details.url.includes("aisis.ateneo.edu/j_aisis/js/version.js")) {
+        return { cancel: true };
+      }
+    },
+    { urls: ["*://aisis.ateneo.edu/j_aisis/js/version.js*"], types: ["script"] },
+    ["blocking"]
+  );
+}
