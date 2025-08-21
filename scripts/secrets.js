@@ -23,7 +23,7 @@ function loadSecrets() {
         if (typeof e.key !== "undefined" && e.key.length === 1 && e.key.match(/[a-z]/i)) {
             clearTimeout(clearInputTimeout);
             document.getElementById('secret_input').value += e.key;
-            console.log(document.getElementById('secret_input').value)
+            // console.log(document.getElementById('secret_input').value)
             clearInputTimeout = setTimeout(function() {
                 document.getElementById('secret_input').value = ''
             }, 2000)
