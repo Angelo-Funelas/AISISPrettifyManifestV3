@@ -95,7 +95,7 @@ function prettifyHome() {
         } else {
             newSiteMap.replaceChildren();
         }
-        const reminder = document.querySelectorAll(".heaader08")[1]?.textContent;
+        const reminder = document.querySelectorAll(".header08")[1]?.textContent;
         newSiteMap.append(createReminder([reminder]));
         appendSchedule(newSiteMap);
         let grouped_links = []
