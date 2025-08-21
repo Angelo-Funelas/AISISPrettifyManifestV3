@@ -46,7 +46,6 @@ chrome.storage.local.get({
   'settings_filter': true
 }, function(result) {
   if (window.location.href == 'https://aisis.ateneo.edu/j_aisis/J_VCSC.do' && result.settings_filter) {
-    document.addEventListener('DOMContentLoaded', function() {
       activeFilter = []
   
       for (let i=0;i<14;i++) {
@@ -342,8 +341,7 @@ chrome.storage.local.get({
         }
       })();
     
-      FilterBox.init();  
-    })
+      FilterBox.init();
   }
   
 });

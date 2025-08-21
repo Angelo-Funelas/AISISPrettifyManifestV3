@@ -28,30 +28,27 @@ function gotoBottom(id){
     element.scrollTop = element.scrollHeight - element.clientHeight;
 }
 function parseTable(table, include_links = true) {
-    if (typeof table !== "undefined" && table !== null) {
-        var rows = table.querySelector('tbody').querySelectorAll('tr')
-        var parsedTable = []
-        for (let i = 0; i< rows.length;i++) {
-            cells = rows[i].querySelectorAll('td')
-            var parsedRow = []
-            for (let cell of cells) {
-                var links = cell.querySelectorAll('a')
-                if (links.length > 0) {
-                    if (include_links) {
-                        parsedRow.push([links[0].title || cell.innerText, links[0]])
-                    } else {
-                        parsedRow.push([links[0].title || cell.innerText])
-                    }
-                } else {
-                    parsedRow.push([cell.innerText])
-                }
+    if (!table) return false;
+
+    const rows = table.tBodies[0]?.rows || []
+    const parsedTable = []
+
+    for (const row of rows) {
+        const parsedRow = []
+        for (const cell of row.cells) {
+            const link = cell.querySelector('a')
+            if (link) {
+                parsedRow.push(include_links
+                    ? [link.title || cell.textContent.trim(), link]
+                    : [link.title || cell.textContent.trim()]
+                )
+            } else {
+                parsedRow.push([cell.textContent.trim()])
             }
-            parsedTable.push(parsedRow)
         }
-        return parsedTable
-    } else {
-        return false
+        parsedTable.push(parsedRow)
     }
+    return parsedTable
 }
 function getRandomFloat() {
     return Math.random() * 100 - 50;

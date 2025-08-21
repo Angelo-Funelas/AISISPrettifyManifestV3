@@ -45,10 +45,8 @@ function loadTabIcons() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadTabIcons();
-    importFont();
-});
+loadTabIcons();
+importFont();
 
 function importFont() {
     const fontUrl = chrome.runtime.getURL("styles/fonts/InterVariable.ttf");

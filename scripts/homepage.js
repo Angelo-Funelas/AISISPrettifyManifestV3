@@ -69,18 +69,19 @@ function removeSideTable() {
 }
 
 function isHomePage() {
-    const sitemap = document.getElementsByTagName('table')[11]
+    const sitemap = document.querySelectorAll('table')[11]
     const parsedTable = parseTable(sitemap)
     return (!!parsedTable && parsedTable[0][0][0] == 'Site Map' && (parsedTable.length-1>8));
 }
 
-function cacheDegree() {
-    chrome.storage.local.set({[`data_degree`]: document.querySelectorAll("span.text04:has(+ span.text05)")[2].innerText});
+async function cacheDegree() {
+    const degree = document.querySelectorAll("span.text04:has(+ span.text05)")[2].textContent;
+    chrome.storage.local.set({[`data_degree`]: degree});
 }
 
 function prettifyHome() {
     if (!isHomePage()) return;
-    const sitemap = document.getElementsByTagName('table')[11]
+    const sitemap = document.querySelectorAll('table')[11]
     sitemap.style.display = "none";
     const parsedTable = parseTable(sitemap)
     removeSideTable();
@@ -94,7 +95,7 @@ function prettifyHome() {
         } else {
             while(newSiteMap.firstChild && newSiteMap.removeChild(newSiteMap.firstChild));
         }
-        const reminder = document.querySelectorAll(".header08")[1].innerText;
+        const reminder = document.querySelectorAll(".header08")[1].textContent;
         newSiteMap.append(createReminder([reminder]));
         appendSchedule(newSiteMap);
         let grouped_links = []
@@ -116,9 +117,10 @@ function prettifyHome() {
         for (let i=0; i<grouped_links.length; i++) {
             link_grp_container.append(createLinkGroup(group_headings[i], grouped_links[i]));
         }
-        const uselessNoteEl = document.querySelectorAll(".text04")[7];
-        uselessNoteEl && (uselessNoteEl.innerText = uselessNoteEl.innerText.replace("Access all the information you need with just a click of your mouse!\n\n\n",""));
-        document.querySelectorAll(".header08")[1]?.classList.add("hidden");
+        // const uselessNoteEl = document.querySelectorAll(".text04")[7];
+        // uselessNoteEl && (uselessNoteEl.innerText = uselessNoteEl.innerText.replace("Access all the information you need with just a click of your mouse!\n\n\n",""));
+        const header08 = document.querySelectorAll(".header08")[1];
+        if (header08) header08.style.display = "none";
         return true
     } catch (err) {
         sitemap.style.display = "";

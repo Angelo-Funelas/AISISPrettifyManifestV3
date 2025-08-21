@@ -12,24 +12,33 @@
         "default_popup": "popup.html"
     },
     "author": "Gelo Funelas",
-    "content_scripts": [{
-        "matches": ["*://aisis.ateneo.edu/*"],
-        "css": ["/styles/style.css","/styles/secrets.css"],
-        "js": [
-            "/scripts/jquery-3.7.1.min.js",
-            "/scripts/box2d.min.js",
-            "/scripts/rAF.js",
-            "/scripts/loop.js",
-            "/scripts/homepage.js",
-            "/scripts/login.js",
-            "/scripts/nav.js",
-            "/scripts/modules.js",
-            "/scripts/osu.js",
-            "/scripts/pageModifier.js",
-            "/scripts/app.js"
-        ],
-        "run_at": "document_start"
-    }],
+    "content_scripts": [
+        {
+            "matches": ["*://aisis.ateneo.edu/*"],
+            "css": ["/styles/style.css","/styles/secrets.css"],
+            "js": [
+                "/scripts/homepage.js",
+                "/scripts/login.js",
+                "/scripts/nav.js",
+                "/scripts/modules.js"
+            ],
+                "run_at": "document_start"
+        },
+        {
+            "matches": ["*://aisis.ateneo.edu/*"],
+            "css": ["/styles/style.css","/styles/secrets.css"],
+            "js": [
+                "/scripts/jquery-3.7.1.min.js",
+                "/scripts/box2d.min.js",
+                "/scripts/rAF.js",
+                "/scripts/loop.js",
+                "/scripts/osu.js",
+                "/scripts/pageModifier.js",
+                "/scripts/app.js"
+            ],
+                "run_at": "document_end"
+        }
+    ],
     "background": {
         "service_worker": "background.js"
     },

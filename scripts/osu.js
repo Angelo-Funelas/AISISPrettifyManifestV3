@@ -219,14 +219,12 @@ function removeNote(note, time, breakcombo) {
 }
 let mouseX = 0;
 let mouseY = 0;
-document.addEventListener('DOMContentLoaded', function() {
-    document.body.addEventListener('keydown', function(e) {
-        if (e.key == "Escape") closeBM();
-        if (playingBM && (e.key == "z" || e.key == "x")) {
-            document.elementFromPoint(mouseX, mouseY).click()
-        };
-    });
-})
+document.body.addEventListener('keydown', function(e) {
+    if (e.key == "Escape") closeBM();
+    if (playingBM && (e.key == "z" || e.key == "x")) {
+        document.elementFromPoint(mouseX, mouseY).click()
+    };
+});
 document.addEventListener('mousemove', function(event) {
     mouseX = event.clientX;
     mouseY = event.clientY;
