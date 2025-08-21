@@ -93,9 +93,9 @@ function prettifyHome() {
             newSiteMap.id = 'ap-sitemap'
             sitemap.parentElement.append(newSiteMap)
         } else {
-            while(newSiteMap.firstChild && newSiteMap.removeChild(newSiteMap.firstChild));
+            newSiteMap.replaceChildren();
         }
-        const reminder = document.querySelectorAll(".header08")[1].textContent;
+        const reminder = document.querySelectorAll(".heaader08")[1]?.textContent;
         newSiteMap.append(createReminder([reminder]));
         appendSchedule(newSiteMap);
         let grouped_links = []
@@ -130,17 +130,18 @@ function prettifyHome() {
 }
 
 function highlightMessage(message, highlights) {
-  if (!Array.isArray(highlights) || highlights.length === 0) return message;
+    if (!message) return;
+    if (!Array.isArray(highlights) || highlights.length === 0) return message;
 
-  // Escape special characters for use in a RegExp
-  const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    // Escape special characters for use in a RegExp
+    const escapeRegExp = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-  // Create a single regex pattern that matches any highlight word
-  const pattern = highlights.map(escapeRegExp).join('|');
-  const regex = new RegExp(`(${pattern})`, 'gi');
+    // Create a single regex pattern that matches any highlight word
+    const pattern = highlights.map(escapeRegExp).join('|');
+    const regex = new RegExp(`(${pattern})`, 'gi');
 
-  // Replace each match with a span
-  return message.replace(regex, '<span class="highlight">$1</span>');
+    // Replace each match with a span
+    return message.replace(regex, '<span class="highlight">$1</span>');
 }
 
 
@@ -206,7 +207,7 @@ function createReminder(reminders) {
     container.classList.add("reminder")
     for (const reminder of reminders) {
         const r = document.createElement("p");
-        r.innerHTML = highlightMessage(reminder, highlighted_words);
+        r.innerHTML = highlightMessage(reminder, highlighted_words) || "";
         container.append(r);
     }
     return container;
