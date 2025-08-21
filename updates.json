@@ -57,6 +57,10 @@
           {
             "version": "1.1",
             "update_link": "https://angelo-funelas.github.io/AISISPrettifyManifestV3/web-ext-artifacts/aisis_prettify-1.1.xpi"
+          },
+          {
+            "version": "1.2",
+            "update_link": "https://angelo-funelas.github.io/AISISPrettifyManifestV3/web-ext-artifacts/aisis_prettify-1.2.xpi"
           }
         ]
       }
