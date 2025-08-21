@@ -20,6 +20,7 @@
                 "/scripts/homepage.js",
                 "/scripts/login.js",
                 "/scripts/nav.js",
+                "/scripts/headModifier.js",
                 "/scripts/modules.js"
             ],
                 "run_at": "document_start"
