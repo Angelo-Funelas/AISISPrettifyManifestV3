@@ -234,7 +234,7 @@ let lastPosY = 0
 let stackDepth = 0
 function tick(timeStamp) {
     let curNote = currentBM.versions[0].hitobjects[note_index].split(',')
-    let noteTime = parseInt(curNote[2])-60
+    let noteTime = parseInt(curNote[2])
     if ((audio.currentTime*1000)+600>=noteTime) { // 600ms for animation before note should be hit 
         let note = document.createElement('button')
         note.classList.add('bm_note','button01')
