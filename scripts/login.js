@@ -44,13 +44,16 @@ function prettifyLogin() {
         newform.method = 'POST'
         newform.addEventListener('submit', (e) => {
             e.preventDefault();
-            document.querySelector('.login-inputContainer > input[type=submit]').disabled = true;
-            setTimeout(() => {
-                document.querySelector('.login-inputContainer > input[type=submit]').disabled = false;
-            }, 2*1000);
-            let idNumber = document.querySelector('form input[type=text]').value;
-            chrome.storage.local.set({"data_idNumber": idNumber});
-            document.getElementById("pretty-login-form").submit();
+            try {
+                document.querySelector('.login-inputContainer > input[type=submit]').disabled = true;
+                setTimeout(() => {
+                    document.querySelector('.login-inputContainer > input[type=submit]').disabled = false;
+                }, 2*1000);
+                let idNumber = document.querySelector('form input[type=text]').value;
+                chrome.storage.local.set({"data_idNumber": idNumber});
+            } finally {
+                document.getElementById("pretty-login-form").submit();
+            }
         })
         inputs.forEach(function(e) {
             let inputContainer = document.createElement('div');
