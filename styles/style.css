@@ -195,6 +195,7 @@ input[type=search] {
   width: 100%;
   text-align: center;
   padding: 1rem;
+  transition: scale .1s linear;
 }
 #ap-sitemap > div.credits > h2, #ap-sitemap > div.credits p {
   margin: 0;
@@ -309,6 +310,9 @@ input[type=search] {
   color: transparent;
   background-clip: text;
   font-size: 0.8em;
+}
+#ap-sitemap > div.credits:hover {
+  scale: 1.02;
 }
 #ap-prettyLogin > form {
   background-color: #f2f2f2;
