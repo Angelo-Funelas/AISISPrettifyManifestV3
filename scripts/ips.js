@@ -5,7 +5,12 @@ async function loadIPS() {
     chrome.storage.local.get({"settings_enlistPlanr": true}, function(result) {
         if (result.settings_enlistPlanr) loadEnlistmentPlanner();
     });
-    await chrome.storage.local.set({[`data_ips`]: organizeSemesterData(ips)});
+    const idNumber = await new Promise((resolve) => {
+        chrome.storage.local.get({'data_idNumber': 0}, (result) => {
+            resolve(result.data_idNumber);
+        });
+    });
+    await chrome.storage.local.set({[`data_ips_${idNumber}`]: organizeSemesterData(ips)});
     if (getUrlParam("ap_close") == 1) {     
         chrome.runtime.sendMessage({
             action: "cachedIPS"

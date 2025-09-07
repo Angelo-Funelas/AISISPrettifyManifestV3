@@ -11,14 +11,18 @@ function load() {
         const text_anim = ["Exporting      ", "Exporting .    ", "Exporting . .  ", "Exporting . . ."];
         animate_text(grade_exporter_button_text, text_anim, 500);
         grade_exporter_button.disabled = true;
-
-        chrome.storage.local.get(['data_ips'], function(result) {
-            console.log(result)
-            if (result.data_ips) {
-                openGradeCalculator(result.data_ips)
-            } else {
-                cacheIPS();
-            }
+     
+        chrome.storage.local.get({"data_idNumber": 0}, (result) => {
+            const idNumber = result.data_idNumber;
+            const ipsKey = `data_ips_${idNumber}`;
+            chrome.storage.local.get([ipsKey], function(result) {
+                const ips = result[ipsKey]
+                if (ips) {
+                    openGradeCalculator(ips)
+                } else {
+                    cacheIPS();
+                }
+            })
         })
         removeURLParam("export");
     };
@@ -130,13 +134,14 @@ function exportGrades() {
     animate_text(grade_exporter_button_text, text_anim, 500);
     grade_exporter_button.disabled = true;
 
-    chrome.storage.local.get(['data_ips'], function(result) {
-        const ips_loaded = !!result.data_ips;
-        if (!ips_loaded) {
+    chrome.storage.local.get({"data_idNumber": 0}, (result) => {
+        const idNumber = result.data_idNumber;
+        const ipsKey = `data_ips_${idNumber}`;
+        chrome.storage.local.get([ipsKey], function(result) {
+            const ips_loaded = !!result[ipsKey];
+            if (ips_loaded) return openAllGrades();
             cacheIPS();
-        } else {
-            openAllGrades();
-        }
+        })
     })
 }
 function openAllGrades() {
