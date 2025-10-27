@@ -106,7 +106,9 @@ async function loadEnlistmentPlanner() {
     const table_heading = sem_table.querySelector('tr > td').innerText
     const sem_index = semesterNameToIndex(table_heading);
     const api_sem_index = semesterNameToIndex(sem_check_data.semesterString);
-    if (sem_index !== api_sem_index) return;
+    const previous_sem = (sem_index-1<0) ? 2 : (sem_index-1)
+    console.log(previous_sem, sem_index, api_sem_index, sem_table)
+    if (api_sem_index == previous_sem) return;
     appendButtonToTable(sem_table);
 }
 
@@ -169,15 +171,15 @@ function findUnenlistedSem() {
     const tables = document.querySelectorAll("table.needspadding:has(> tbody > tr > td.text04)");
     for (let table of tables) {
         if (!isSemesterTable(table)) continue;
-        let isUnenlisted = true;
+        let isUnenlisted = false;
         const rows = table.querySelectorAll("tr")
         for (let row of rows) {
             if (row.querySelectorAll('td').length < 4) continue;
             const firstCol = row.querySelector('td').innerText;
             if (firstCol == "Status" || firstCol.includes("Units")) continue;
             const status = row.querySelector('td > a')?.innerText;
-            if (status !== 'N') {
-                isUnenlisted = false;
+            if (status == 'N') {
+                isUnenlisted = true;
                 break;
             };
         }
