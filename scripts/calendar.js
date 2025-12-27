@@ -322,6 +322,9 @@ async function convertCalendarFromSchedule() {
   }
 }
 
+// Note: A 'format' argument may be passed to this function (e.g., from chooseConversionMethod),
+// but it is intentionally ignored because only ICS output is currently supported.
+// The argument is reserved for future support of additional calendar formats.
 async function convertCalendarFromEnlistment() {
   try {
     const [tab] = await chrome.tabs.query({
