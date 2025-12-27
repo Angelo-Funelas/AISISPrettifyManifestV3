@@ -177,8 +177,12 @@ async function chooseConversionMethod() {
 
     if (currentPage === "schedule") {
       await convertCalendarFromSchedule();
-    } else {
+    } else if (currentPage === "enlistment") {
       await convertCalendarFromEnlistment();
+    } else {
+      alert(
+        "Sorry, but the current page is not supported for conversion. Please navigate to either the class schedule page or the enlistment summary page."
+      );
     }
   } catch (error) {
     console.error("Error choosing conversion method:", error);
@@ -292,6 +296,7 @@ async function convertCalendarFromSchedule() {
           }
 
           let earliestDayDate = null;
+          let earliestDay = null;
           for (const day of days) {
             const dayDate = getFirstDayOccurrenceFromDate(
               firstDayOfClasses,
@@ -299,10 +304,15 @@ async function convertCalendarFromSchedule() {
             );
             if (!earliestDayDate || dayDate < earliestDayDate) {
               earliestDayDate = dayDate;
+              earliestDay = day;
             }
           }
 
-          const icsDays = days.map((day) => ICSDays[day]).join(",");
+          const sortedDays = [
+            earliestDay,
+            ...days.filter((d) => d !== earliestDay),
+          ];
+          const icsDays = sortedDays.map((day) => ICSDays[day]).join(",");
 
           events.push({
             summary: subject,
@@ -352,9 +362,6 @@ async function convertCalendarFromSchedule() {
   }
 }
 
-// Note: A 'format' argument may be passed to this function (e.g., from chooseConversionMethod),
-// but it is intentionally ignored because only ICS output is currently supported.
-// The argument is reserved for future support of additional calendar formats.
 async function convertCalendarFromEnlistment() {
   try {
     const [tab] = await chrome.tabs.query({
@@ -514,6 +521,12 @@ async function convertCalendarFromEnlistment() {
                   ? firstDayDate
                   : secondDayDate;
 
+              let earliestDay =
+                firstDayDate.getTime() < secondDayDate.getTime()
+                  ? firstDay
+                  : secondDay;
+              let laterDay = earliestDay === firstDay ? secondDay : firstDay;
+
               events.push({
                 summary: courseCode,
                 start: `${startDate.getFullYear()}${String(
@@ -530,7 +543,7 @@ async function convertCalendarFromEnlistment() {
                 )}T${endTime.replace(":", "")}00`,
                 location: venue.trim(),
                 description: `Section: ${section}\\nInstructor: ${instructor}`,
-                byday: `${ICSDays[firstDay]},${ICSDays[secondDay]}`,
+                byday: `${ICSDays[earliestDay]},${ICSDays[laterDay]}`,
                 endString: `${yearString}${String(
                   lastDayOfClasses.getMonth() + 1
                 ).padStart(2, "0")}${String(
@@ -675,8 +688,9 @@ function generateUID(event) {
   const startTime = event.start.substring(9, 15);
   const days = event.byday.replace(/,/g, "");
   const location = event.location.replace(/[^a-zA-Z0-9]/g, "");
+  const description = event.description.replace(/[^a-zA-Z0-9]/g, "");
 
-  return `${summary}-${startTime}-${days}-${location}@aisis-to-calendar`;
+  return `${summary}-${startTime}-${days}-${location}-${description}@aisis-to-calendar`;
 }
 
 function getFirstDayOccurrenceFromDate(startDate, dayOfWeek) {
@@ -726,12 +740,20 @@ function extractClassesTableFromEnlistment() {
 }
 
 function extractPage() {
-  const classCell = document.querySelector(".classCell");
-  if (classCell) {
+  const headerCell = document.querySelector(".header06");
+  const headerContent = headerCell ? headerCell.textContent.trim() : "";
+
+  if (headerContent.toLowerCase() === "my class schedule") {
     return "schedule";
-  } else {
+  } else if (
+    headerContent.toLowerCase() === "summary of enlistment" ||
+    headerContent.toLowerCase() === "enlistment summary" ||
+    headerContent.toLowerCase() === "confirm enlistment"
+  ) {
     return "enlistment";
   }
+
+  return null;
 }
 
 function extractTermAndYear() {
