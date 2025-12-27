@@ -569,14 +569,6 @@ function generateUID(event) {
   return `${summary}-${startTime}-${days}-${location}@aisis-to-calendar`;
 }
 
-function getFirstDayOccurrence(year, month, dayOfWeek) {
-  const date = new Date(year, month, 1);
-  const firstDayOfMonth = date.getDay();
-  const dayDifference = (dayOfWeek - firstDayOfMonth + 7) % 7;
-  date.setDate(1 + dayDifference);
-  return date;
-}
-
 function getFirstDayOccurrenceFromDate(startDate, dayOfWeek) {
   const date = new Date(startDate);
   const currentDay = date.getDay();
