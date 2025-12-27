@@ -46,7 +46,9 @@
     "permissions": [
         "tabs",
         "storage",
-        "declarativeNetRequest"
+        "declarativeNetRequest",
+        "activeTab",
+        "scripting"
     ],
     "host_permissions": [
         "https://aisis.ateneo.edu/*"
