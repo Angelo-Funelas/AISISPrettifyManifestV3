@@ -324,11 +324,15 @@ async function convertCalendarFromStorage() {
     downloadICS(icsData, "schedule.ics");
 
     alert(`Conversion successful! Check your downloads for the ICS file.`);
+
+    window.close();
   } catch (error) {
     console.error("Error:", error);
     alert(
       "Sorry, but there was an issue during the conversion process. Please try again."
     );
+
+    window.close();
   }
 }
 
@@ -572,11 +576,15 @@ async function convertCalendarFromEnlistment() {
         "Sorry, but the table containing the class schedules couldn't be found. Please ensure you are on the correct page with the class schedule table."
       );
     }
+
+    window.close();
   } catch (error) {
     console.error("Error:", error);
     alert(
       "Sorry, but there was an issue during the conversion process. Please try again."
     );
+
+    window.close();
   }
 }
 

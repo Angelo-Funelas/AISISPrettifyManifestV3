@@ -294,11 +294,15 @@ async function convertCalendarFromStorage() {
     downloadICS(icsData, "schedule.ics");
 
     alert(`Conversion successful! Check your downloads for the ICS file.`);
+
+    window.close();
   } catch (error) {
     console.error("Error:", error);
     alert(
       "Sorry, but there was an issue during the conversion process. Please try again."
     );
+
+    window.close();
   }
 }
 
