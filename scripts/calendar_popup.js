@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   form.addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    await chooseConversionMethod();
+    await convertCalendarFromStorage();
   });
 });
 

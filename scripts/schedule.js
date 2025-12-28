@@ -48,6 +48,15 @@ function loadSchedule() {
                 subjects: mapToObject(subjects)
             }});
         })
+
+        var convertButton = document.createElement('button')
+        convertButton.id = 'convertToCalendar'
+        convertButton.innerText = '📅 Convert to Calendar'
+        convertButton.style.cssText = 'margin: 10px 0; padding: 10px 20px; background-color: #4B70F5; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;'
+        convertButton.onclick = () => {
+            chrome.runtime.sendMessage({ action: 'openCalendar' })
+        }
+
         var gridSchedule = document.createElement('div')
         gridSchedule.id = "prettyGrid"
         gridSchedule.style.gridTemplateRows = `64px repeat(${gridTable[0].length-1}, 32px)`
@@ -90,6 +99,7 @@ function loadSchedule() {
             }
         
         }
+        table.parentElement.append(convertButton)
         table.parentElement.append(gridSchedule)
         table.style.display = 'none'
     }
