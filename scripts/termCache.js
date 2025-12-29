@@ -26,7 +26,7 @@ function extractComputedTermAndYear(termAndYear) {
 function extractTermAndYear() {
   const terms = ["1st semester, sy ", "2nd semester, sy ", "intersession, sy "];
   const spanElements = document.querySelectorAll("span");
-  
+
   for (const spanElement of spanElements) {
     let spanText = spanElement.textContent.trim().toLowerCase();
     if (terms.some((term) => spanText.includes(term))) {
@@ -39,31 +39,49 @@ function extractTermAndYear() {
 function cacheTermInfo() {
   const termAndYearHTML = extractTermAndYear();
   if (!termAndYearHTML) return;
-  
+
   const [termAndYear, term, year] = extractComputedTermAndYear(termAndYearHTML);
   const defaults = TermDefaultDates[term];
-  
+
   if (defaults) {
-    const firstDay = new Date(year, defaults.firstDay.month, defaults.firstDay.day);
-    const lastDay = new Date(year, defaults.lastDay.month, defaults.lastDay.day);
-    
-    const formatLocalDate = (date) => {
-      const year = date.getFullYear();
-      const month = String(date.getMonth() + 1).padStart(2, "0");
-      const day = String(date.getDate()).padStart(2, "0");
-      return `${year}-${month}-${day}`;
-    };
-    
-    chrome.storage.local.set({
-      savedTerm: termAndYear,
-      savedFirstDay: formatLocalDate(firstDay),
-      savedLastDay: formatLocalDate(lastDay)
-    });
+    chrome.storage.local.get(
+      ["savedTerm", "savedFirstDay", "savedLastDay"],
+      (result) => {
+        if (result.savedTerm && result.savedFirstDay && result.savedLastDay) {
+          return;
+        }
+
+        const firstDay = new Date(
+          year,
+          defaults.firstDay.month,
+          defaults.firstDay.day,
+        );
+        const lastDay = new Date(
+          year,
+          defaults.lastDay.month,
+          defaults.lastDay.day,
+        );
+
+        const formatLocalDate = (date) => {
+          const year = date.getFullYear();
+          const month = String(date.getMonth() + 1).padStart(2, "0");
+          const day = String(date.getDate()).padStart(2, "0");
+          return `${year}-${month}-${day}`;
+        };
+
+        chrome.storage.local.set({
+          savedTerm: termAndYear,
+          savedFirstDay: formatLocalDate(firstDay),
+          savedLastDay: formatLocalDate(lastDay),
+        });
+      },
+    );
   }
 }
 
-if (document.readyState !== 'loading') {
+if (document.readyState !== "loading") {
   cacheTermInfo();
 } else {
-  document.addEventListener('DOMContentLoaded', cacheTermInfo);
+  document.addEventListener("DOMContentLoaded", cacheTermInfo);
 }
+
