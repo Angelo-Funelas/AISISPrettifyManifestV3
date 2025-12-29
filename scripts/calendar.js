@@ -331,8 +331,6 @@ async function convertCalendarFromStorage() {
     alert(
       "Sorry, but there was an issue during the conversion process. Please try again."
     );
-
-    window.close();
   }
 }
 
@@ -583,8 +581,6 @@ async function convertCalendarFromEnlistment() {
     alert(
       "Sorry, but there was an issue during the conversion process. Please try again."
     );
-
-    window.close();
   }
 }
 
