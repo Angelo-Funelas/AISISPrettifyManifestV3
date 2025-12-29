@@ -1,3 +1,17 @@
+function extractPage() {
+    const headerCell = document.querySelector(".header06");
+    const headerContent = headerCell ? headerCell.textContent.trim() : "";
+
+    if (
+        headerContent.toLowerCase() === "summary of enlistment" ||
+        headerContent.toLowerCase() === "enlistment summary"
+    ) {
+        return "enlistment";
+    }
+
+    return null;
+}
+
 function extractClassesTableFromEnlistment() {
     const tableCells = document.querySelectorAll("td");
     let scheduleTable = null;
@@ -25,13 +39,14 @@ function extractClassesTableFromEnlistment() {
 }
 
 function loadEnlistSumm() {
+    let page = extractPage()
+    if (!page) return;
+
     let table = extractClassesTableFromEnlistment();
     let tbody = table.querySelector("tbody");
     let rows = Array.from(tbody.rows);
-    rows.pop();
 
-    // programatically access "Subject", "Section", "Instructor", "Schedule/Location"
-    let events = [];
+    let enlistedClasses = [];
 
     if (rows.length === 0) {
         alert("No rows found in the schedule table.");
@@ -103,8 +118,7 @@ function loadEnlistSumm() {
         let endTime = timeSplit[1].trim();
         let venue = dayAndTime[1].trim();
 
-        const storageKey = `${courseCode}-${section}-${startTime}-${endTime}-${day}-${venue}`;
-        const storageValue = {
+        enlistedClasses.push({
             courseCode: courseCode,
             startTime: startTime,
             endTime: endTime,
@@ -112,10 +126,10 @@ function loadEnlistSumm() {
             location: venue,
             section: section,
             instructor: instructor
-        };
-
-        chrome.storage.local.set({ [storageKey]: storageValue });
+        });
     }
+
+    chrome.storage.local.set({ enlistedClasses: enlistedClasses });
 
     var div = document.createElement('div')
     div.style.cssText = 'width: 100%; display: flex; justify-content: center; align-items: center;'

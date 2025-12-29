@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", async function() {
     form.addEventListener("submit", async function(e) {
         e.preventDefault();
 
-        await chooseConversionMethod();
+        await convertCalendarFromStorage();
     });
 });
 
@@ -122,47 +122,19 @@ async function initializeDates(firstDayInput, lastDayInput) {
     }
 }
 
-async function chooseConversionMethod() {
-    try {
-        const [tab] = await chrome.tabs.query({
-            active: true,
-            currentWindow: true,
-        });
-
-        const pageResults = await chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            function: extractPage,
-        });
-        let currentPage = pageResults[0].result;
-
-        if (currentPage === "schedule") {
-            await convertCalendarFromStorage();
-        } else if (currentPage === "enlistment") {
-            await convertCalendarFromEnlistment();
-        } else {
-            alert(
-                "Sorry, but the current page is not supported for conversion. Please navigate to either the class schedule page or the enlistment summary page."
-            );
-        }
-    } catch (error) {
-        console.error("Error choosing conversion method:", error);
-        alert(
-            "Sorry, but there was an issue during the date processing. Please try again."
-        );
-    }
-}
-
 async function convertCalendarFromStorage() {
     try {
         const result = await chrome.storage.local.get(["data_idNumber"]);
         const idNumber = result.data_idNumber || 0;
         const scheduleData = await chrome.storage.local.get([
             `data_schedule_${idNumber}`,
+            "enlistedClasses",
         ]);
 
         const schedule = scheduleData[`data_schedule_${idNumber}`];
+        const enlistedClasses = scheduleData.enlistedClasses;
 
-        if (!schedule || !schedule.gridTable) {
+        if ((!schedule || !schedule.gridTable) && !enlistedClasses) {
             alert(
                 "No schedule data found. Please visit your class schedule page first."
             );
@@ -186,45 +158,123 @@ async function convertCalendarFromStorage() {
         });
 
         let eventsByKey = new Map();
-        const gridTable = schedule.gridTable;
 
-        console.log("gridTable:", gridTable);
+        if (schedule && schedule.gridTable) {
+            const gridTable = schedule.gridTable;
 
-        for (let colIndex = 1; colIndex < gridTable.length; colIndex++) {
-            const dayColumn = gridTable[colIndex];
-            const dayLetter = ScheduleGridDays[colIndex + 1];
+            console.log("gridTable:", gridTable);
 
-            console.log("dayLetter:", dayLetter, "dayColumn:", dayColumn);
+            for (let colIndex = 1; colIndex < gridTable.length; colIndex++) {
+                const dayColumn = gridTable[colIndex];
+                const dayLetter = ScheduleGridDays[colIndex + 1];
 
-            if (!dayLetter) continue;
+                console.log("dayLetter:", dayLetter, "dayColumn:", dayColumn);
 
-            for (const cell of dayColumn) {
-                if (cell.length === 3) {
-                    const [courseInfo, startRow, endRow] = cell;
+                if (!dayLetter) continue;
 
-                    const parts = courseInfo.split("\n");
-                    if (parts.length < 2) continue;
+                for (const cell of dayColumn) {
+                    if (cell.length === 3) {
+                        const [courseInfo, startRow, endRow] = cell;
 
-                    const subject = parts[0].trim();
-                    const restOfInfo = parts[1].trim();
+                        const parts = courseInfo.split("\n");
+                        if (parts.length < 2) continue;
 
-                    const modalityMatch = restOfInfo.match(/\(([^)]+)\)/);
-                    const modality = modalityMatch ? modalityMatch[1].trim() : "";
+                        const subject = parts[0].trim();
+                        const restOfInfo = parts[1].trim();
 
-                    const withoutModality = modalityMatch
-                        ? restOfInfo.substring(0, modalityMatch.index).trim()
-                        : restOfInfo.trim();
+                        const modalityMatch = restOfInfo.match(/\(([^)]+)\)/);
+                        const modality = modalityMatch ? modalityMatch[1].trim() : "";
 
-                    const tokens = withoutModality.split(/\s+/);
-                    const section = tokens[0] || "";
-                    const venue = tokens.slice(1).join(" ");
+                        const withoutModality = modalityMatch
+                            ? restOfInfo.substring(0, modalityMatch.index).trim()
+                            : restOfInfo.trim();
 
-                    const startTime = ScheduleGridTimes[startRow];
-                    const endTime = ScheduleGridTimes[endRow];
+                        const tokens = withoutModality.split(/\s+/);
+                        const section = tokens[0] || "";
+                        const venue = tokens.slice(1).join(" ");
 
-                    if (!startTime || !endTime) continue;
+                        const startTime = ScheduleGridTimes[startRow];
+                        const endTime = ScheduleGridTimes[endRow];
 
+                        if (!startTime || !endTime) continue;
+
+                        const dayOfWeek = Days[dayLetter];
+                        const firstOccurrence = getFirstDayOccurrenceFromDate(
+                            firstDayOfClasses,
+                            dayOfWeek
+                        );
+
+                        const startDateTime = `${firstOccurrence.getFullYear()}${String(
+                            firstOccurrence.getMonth() + 1
+                        ).padStart(2, "0")}${String(firstOccurrence.getDate()).padStart(
+                            2,
+                            "0"
+                        )}T${startTime}00`;
+                        const endDateTime = `${firstOccurrence.getFullYear()}${String(
+                            firstOccurrence.getMonth() + 1
+                        ).padStart(2, "0")}${String(firstOccurrence.getDate()).padStart(
+                            2,
+                            "0"
+                        )}T${endTime}00`;
+
+                        const endString = `${lastDayOfClasses.getFullYear()}${String(
+                            lastDayOfClasses.getMonth() + 1
+                        ).padStart(2, "0")}${String(lastDayOfClasses.getDate()).padStart(
+                            2,
+                            "0"
+                        )}`;
+
+                        const eventKey = `${subject}|${section}|${startTime}|${endTime}|${venue}|${modality}`;
+
+                        if (!eventsByKey.has(eventKey)) {
+                            eventsByKey.set(eventKey, {
+                                summary: subject,
+                                startDateTime: startDateTime,
+                                endDateTime: endDateTime,
+                                location: venue,
+                                description: `Section: ${section}\\nModality: ${modality}`,
+                                bydays: [],
+                                endString: endString,
+                                firstOccurrence: firstOccurrence,
+                            });
+                        }
+
+                        eventsByKey.get(eventKey).bydays.push(ICSDays[dayLetter]);
+
+                        const currentEvent = eventsByKey.get(eventKey);
+                        if (firstOccurrence < currentEvent.firstOccurrence) {
+                            currentEvent.firstOccurrence = firstOccurrence;
+                            currentEvent.startDateTime = startDateTime;
+                            currentEvent.endDateTime = endDateTime;
+                        }
+                    }
+                }
+            }
+        }
+        else if (enlistedClasses && enlistedClasses.length > 0) {
+            console.log("enlistedClasses:", enlistedClasses);
+
+            for (const classData of enlistedClasses) {
+                const { courseCode, startTime, endTime, day, location, section, instructor } = classData;
+
+                const startTimeFormatted = startTime.replace(":", "");
+                const endTimeFormatted = endTime.replace(":", "");
+
+                const endString = `${lastDayOfClasses.getFullYear()}${String(
+                    lastDayOfClasses.getMonth() + 1
+                ).padStart(2, "0")}${String(lastDayOfClasses.getDate()).padStart(
+                    2,
+                    "0"
+                )}`;
+
+                const eventKey = `${courseCode}|${section}|${startTimeFormatted}|${endTimeFormatted}|${location}`;
+
+                const dayParts = day.split("-");
+
+                for (const dayLetter of dayParts) {
                     const dayOfWeek = Days[dayLetter];
+                    if (dayOfWeek === undefined) continue;
+
                     const firstOccurrence = getFirstDayOccurrenceFromDate(
                         firstDayOfClasses,
                         dayOfWeek
@@ -235,30 +285,21 @@ async function convertCalendarFromStorage() {
                     ).padStart(2, "0")}${String(firstOccurrence.getDate()).padStart(
                         2,
                         "0"
-                    )}T${startTime}00`;
+                    )}T${startTimeFormatted}00`;
                     const endDateTime = `${firstOccurrence.getFullYear()}${String(
                         firstOccurrence.getMonth() + 1
                     ).padStart(2, "0")}${String(firstOccurrence.getDate()).padStart(
                         2,
                         "0"
-                    )}T${endTime}00`;
-
-                    const endString = `${lastDayOfClasses.getFullYear()}${String(
-                        lastDayOfClasses.getMonth() + 1
-                    ).padStart(2, "0")}${String(lastDayOfClasses.getDate()).padStart(
-                        2,
-                        "0"
-                    )}`;
-
-                    const eventKey = `${subject}|${section}|${startTime}|${endTime}|${venue}|${modality}`;
+                    )}T${endTimeFormatted}00`;
 
                     if (!eventsByKey.has(eventKey)) {
                         eventsByKey.set(eventKey, {
-                            summary: subject,
+                            summary: courseCode,
                             startDateTime: startDateTime,
                             endDateTime: endDateTime,
-                            location: venue,
-                            description: `Section: ${section}\\nModality: ${modality}`,
+                            location: location,
+                            description: `Section: ${section}\\nInstructor: ${instructor}`,
                             bydays: [],
                             endString: endString,
                             firstOccurrence: firstOccurrence,
@@ -324,256 +365,6 @@ async function convertCalendarFromStorage() {
         downloadICS(icsData, "schedule.ics");
 
         alert(`Conversion successful! Check your downloads for the ICS file.`);
-
-        window.close();
-    } catch (error) {
-        console.error("Error:", error);
-        alert(
-            "Sorry, but there was an issue during the conversion process. Please try again."
-        );
-    }
-}
-
-async function convertCalendarFromEnlistment() {
-    try {
-        const [tab] = await chrome.tabs.query({
-            active: true,
-            currentWindow: true,
-        });
-
-        const termAndYearResults = await chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            function: extractTermAndYear,
-        });
-
-        const classResults = await chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            function: extractClassesTableFromEnlistment,
-        });
-
-        console.log("Executing...");
-        console.log({ classResults, termAndYearResults });
-
-        if (classResults && classResults[0] && classResults[0].result) {
-            const tableHTML = classResults[0].result;
-
-            let [termAndYear, term, year] = extractComputedTermAndYear(
-                termAndYearResults[0].result
-            );
-
-            let yearString = year.toString();
-            console.log({ term, year, yearString });
-
-            const firstDayInput = document.querySelector("#firstDay").value;
-            const lastDayInput = document.querySelector("#lastDay").value;
-
-            if (!firstDayInput || !lastDayInput) {
-                alert("Please provide both first and last day of classes.");
-                return;
-            }
-
-            const firstDayOfClasses = new Date(firstDayInput + "T00:00:00");
-            const lastDayOfClasses = new Date(lastDayInput + "T00:00:00");
-
-            await chrome.storage.local.set({
-                savedTerm: termAndYear,
-                savedFirstDay: firstDayInput,
-                savedLastDay: lastDayInput,
-            });
-
-            if (tableHTML) {
-                console.log("Found table:", tableHTML);
-
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(tableHTML, "text/html");
-                const tableElement = doc.querySelector("table");
-
-                console.log("Table element:", tableElement);
-
-                const tbody = tableElement.querySelector("tbody");
-                if (tbody) {
-                    const rows = Array.from(tbody.rows);
-
-                    let events = [];
-
-                    if (rows.length === 0) {
-                        alert("No rows found in the schedule table.");
-                        return;
-                    }
-                    const expectedColumnCount = rows[0].cells.length;
-
-                    const firstRow = rows[0];
-                    let courseCodeIndex = -1;
-                    let sectionIndex = -1;
-                    let instructorIndex = -1;
-                    let scheduleIndex = -1;
-
-                    for (let i = 0; i < firstRow.cells.length; i++) {
-                        const cellText = firstRow.cells[i].innerText.trim().toLowerCase();
-
-                        if (
-                            cellText.includes("course code") ||
-                            cellText.includes("subject")
-                        ) {
-                            courseCodeIndex = i;
-                        } else if (cellText.includes("section")) {
-                            sectionIndex = i;
-                        } else if (cellText.includes("instructor")) {
-                            instructorIndex = i;
-                        } else if (cellText.includes("schedule")) {
-                            scheduleIndex = i;
-                        }
-                    }
-
-                    for (const row of rows) {
-                        let shouldSkipRow = false;
-                        for (const cell of row.cells) {
-                            if (
-                                cell.getAttribute("background") ===
-                                "images/spacer_lightblue.jpg"
-                            ) {
-                                shouldSkipRow = true;
-                                break;
-                            }
-                        }
-                        if (shouldSkipRow) continue;
-
-                        if (row.cells.length !== expectedColumnCount) continue;
-
-                        const courseCode =
-                            courseCodeIndex >= 0 && row.cells[courseCodeIndex]
-                                ? row.cells[courseCodeIndex].innerText.trim()
-                                : "";
-                        const section =
-                            sectionIndex >= 0 && row.cells[sectionIndex]
-                                ? row.cells[sectionIndex].innerText.trim()
-                                : "";
-                        const instructor =
-                            instructorIndex >= 0 && row.cells[instructorIndex]
-                                ? row.cells[instructorIndex].innerText.trim()
-                                : "";
-                        const schedule =
-                            scheduleIndex >= 0 && row.cells[scheduleIndex]
-                                ? row.cells[scheduleIndex].innerText.trim()
-                                : "";
-
-                        if (schedule.includes("TBA")) continue;
-
-                        let dateAndVenue = schedule.split("(")[0].trim();
-                        let dayAndTime = dateAndVenue.split("/");
-                        let timeSplit = dayAndTime[0].trim().split(" ")[1].trim().split("-");
-                        let day = dayAndTime[0].trim().split(" ")[0].trim();
-                        let startTime = timeSplit[0].trim();
-                        let endTime = timeSplit[1].trim();
-                        let venue = dayAndTime[1].trim();
-
-                        if (day.includes("-")) {
-                            let dayValues = day.split("-");
-                            let firstDay = dayValues[0];
-                            let secondDay = dayValues[1];
-
-                            let firstDayDate = getFirstDayOccurrenceFromDate(
-                                firstDayOfClasses,
-                                Days[firstDay]
-                            );
-                            let secondDayDate = getFirstDayOccurrenceFromDate(
-                                firstDayOfClasses,
-                                Days[secondDay]
-                            );
-
-                            console.log({
-                                firstDayDate,
-                                secondDayDate,
-                                startTime,
-                                endTime,
-                                venue,
-                            });
-
-                            let startDate =
-                                firstDayDate.getTime() < secondDayDate.getTime()
-                                    ? firstDayDate
-                                    : secondDayDate;
-
-                            let earliestDay =
-                                firstDayDate.getTime() < secondDayDate.getTime()
-                                    ? firstDay
-                                    : secondDay;
-                            let laterDay = earliestDay === firstDay ? secondDay : firstDay;
-
-                            events.push({
-                                summary: courseCode,
-                                start: `${startDate.getFullYear()}${String(
-                                    startDate.getMonth() + 1
-                                ).padStart(2, "0")}${String(startDate.getDate()).padStart(
-                                    2,
-                                    "0"
-                                )}T${startTime.replace(":", "")}00`,
-                                end: `${startDate.getFullYear()}${String(
-                                    startDate.getMonth() + 1
-                                ).padStart(2, "0")}${String(startDate.getDate()).padStart(
-                                    2,
-                                    "0"
-                                )}T${endTime.replace(":", "")}00`,
-                                location: venue.trim(),
-                                description: `Section: ${section}\\nInstructor: ${instructor}`,
-                                byday: `${ICSDays[earliestDay]},${ICSDays[laterDay]}`,
-                                endString: `${yearString}${String(
-                                    lastDayOfClasses.getMonth() + 1
-                                ).padStart(2, "0")}${String(
-                                    lastDayOfClasses.getDate()
-                                ).padStart(2, "0")}`,
-                            });
-                        } else {
-                            let dayDate = getFirstDayOccurrenceFromDate(
-                                firstDayOfClasses,
-                                Days[day]
-                            );
-
-                            console.log({ dayDate, startTime, endTime, venue });
-
-                            events.push({
-                                summary: courseCode,
-                                start: `${dayDate.getFullYear()}${String(
-                                    dayDate.getMonth() + 1
-                                ).padStart(2, "0")}${String(dayDate.getDate()).padStart(
-                                    2,
-                                    "0"
-                                )}T${startTime.replace(":", "")}00`,
-                                end: `${dayDate.getFullYear()}${String(
-                                    dayDate.getMonth() + 1
-                                ).padStart(2, "0")}${String(dayDate.getDate()).padStart(
-                                    2,
-                                    "0"
-                                )}T${endTime.replace(":", "")}00`,
-                                location: venue.trim(),
-                                description: `Section: ${section}\\nInstructor: ${instructor}`,
-                                byday: ICSDays[day],
-                                endString: `${yearString}${String(
-                                    lastDayOfClasses.getMonth() + 1
-                                ).padStart(2, "0")}${String(
-                                    lastDayOfClasses.getDate()
-                                ).padStart(2, "0")}`,
-                            });
-                        }
-                    }
-
-                    const icsData = await convertToICS(events);
-                    downloadICS(icsData, "schedule.ics");
-                }
-
-                alert(
-                    `Conversion successful! Check your downloads for the schedule.ics file.`
-                );
-            } else {
-                alert(
-                    "Sorry, but the table containing the class schedules couldn't be found. Please ensure you are on the correct page with the class schedule table."
-                );
-            }
-        } else {
-            alert(
-                "Sorry, but the table containing the class schedules couldn't be found. Please ensure you are on the correct page with the class schedule table."
-            );
-        }
 
         window.close();
     } catch (error) {
@@ -669,100 +460,4 @@ function getFirstDayOccurrenceFromDate(startDate, dayOfWeek) {
     const dayDifference = (dayOfWeek - currentDay + 7) % 7;
     date.setDate(date.getDate() + dayDifference);
     return date;
-}
-
-function extractComputedTermAndYear(termAndYear) {
-    let term = termAndYear.split(", SY ")[0].trim();
-    let year = termAndYear.split(", SY ")[1].trim().split("-")[1];
-    year = parseInt(year, 10);
-    if (term.toLowerCase() !== "2nd semester") {
-        year -= 1;
-    }
-
-    return [termAndYear, term, year];
-}
-
-function extractClassesTableFromEnlistment() {
-    const tableCells = document.querySelectorAll("td");
-    let scheduleTable = null;
-    let foundTable = false;
-    for (const tableCell of tableCells) {
-        const background = tableCell.getAttribute("background");
-        const isScheduleInCell = tableCell.textContent
-            .trim()
-            .toLowerCase()
-            .includes("schedule");
-
-        if (!isScheduleInCell || background !== "images/spacer_lightblue.jpg")
-            continue;
-
-        foundTable = true;
-        scheduleTable = tableCell;
-        break;
-    }
-
-    if (!foundTable) return null;
-
-    scheduleTable = scheduleTable.closest("table");
-
-    return scheduleTable.outerHTML;
-}
-
-function extractPage() {
-    const headerCell = document.querySelector(".header06");
-    const headerContent = headerCell ? headerCell.textContent.trim() : "";
-
-    if (headerContent.toLowerCase() === "my class schedule") {
-        return "schedule";
-    } else if (
-        headerContent.toLowerCase() === "summary of enlistment" ||
-        headerContent.toLowerCase() === "enlistment summary" ||
-        headerContent.toLowerCase() === "confirm enlistment"
-    ) {
-        return "enlistment";
-    }
-
-    return null;
-}
-
-function extractTermAndYear() {
-    const terms = ["1st semester, sy ", "2nd semester, sy ", "intersession, sy "];
-
-    const spanElements = document.querySelectorAll("span");
-    let termSpan = null;
-    let foundSpan = false;
-    for (const spanElement of spanElements) {
-        let spanText = spanElement.textContent.trim().toLowerCase();
-        if (terms.some((term) => spanText.includes(term))) {
-            foundSpan = true;
-            termSpan = spanElement;
-            break;
-        }
-    }
-
-    if (!foundSpan) return null;
-
-    return termSpan.innerHTML;
-}
-
-function extractClassCellsFromSchedule() {
-    const classCells = document.querySelectorAll(".classCell");
-    const cellsData = [];
-
-    for (const cell of classCells) {
-        const style = cell.style;
-        const gridRowStart = style.gridRowStart;
-        const gridRowEnd = style.gridRowEnd;
-        const gridColumnStart = style.gridColumnStart;
-        const innerHTML = cell.innerHTML.trim();
-
-        cellsData.push({
-            innerHTML: innerHTML,
-            gridRowStart: gridRowStart,
-            gridRowEnd: gridRowEnd,
-            gridColumnStart: gridColumnStart,
-        });
-    }
-
-    return cellsData;
 }
