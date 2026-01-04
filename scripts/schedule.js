@@ -51,8 +51,25 @@ function loadSchedule() {
 
         var convertButton = document.createElement('button')
         convertButton.id = 'convertToCalendar'
-        convertButton.innerText = '📅 Convert to Calendar'
-        convertButton.style.cssText = 'margin: 10px 0; padding: 10px 20px; background-color: #4B70F5; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px;'
+        convertButton.style.cssText = 'font-family: Arial, Helvetica, sans-serif; padding: 0.5rem 2.2rem; box-shadow: rgba(145, 145, 145, 0.4) 0px 0px 5px 3px; font-size: 14px; transition: all 0.2s cubic-bezier(.36,1.59,.59,.99); cursor: pointer; border-radius: 10px; text-align: center; display: inline-block; margin: 1rem 0; border: none; background-image: linear-gradient(40deg, rgb(255, 255, 255) -30%, rgb(255, 255, 255) 69%);'
+        
+        var buttonText = document.createElement('p')
+        buttonText.innerText = 'Convert to Calendar'
+        buttonText.style.cssText = 'margin: 0; background-image: linear-gradient(40deg, rgb(129, 213, 255) -30%, rgb(89, 122, 255) 69%); font-weight: bold; color: transparent; background-clip: text; -webkit-background-clip: text;'
+        convertButton.appendChild(buttonText)
+        
+        convertButton.onmouseover = () => {
+            convertButton.style.backgroundImage = 'linear-gradient(40deg, rgb(129, 213, 255) -30%, rgb(89, 122, 255) 69%)'
+            convertButton.style.boxShadow = 'rgba(145, 145, 145, 0.3) 0px 0px 5px 3px'
+            convertButton.style.scale = '1.02'
+            buttonText.style.color = 'white'
+        }
+        convertButton.onmouseout = () => {
+            convertButton.style.backgroundImage = 'linear-gradient(40deg, rgb(255, 255, 255) -30%, rgb(255, 255, 255) 69%)'
+            convertButton.style.boxShadow = 'rgba(145, 145, 145, 0.4) 0px 0px 5px 3px'
+            convertButton.style.scale = '1'
+            buttonText.style.color = 'transparent'
+        }
         convertButton.onclick = () => {
             chrome.runtime.sendMessage({ action: 'openCalendar' })
         }
