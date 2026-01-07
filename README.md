@@ -9,6 +9,7 @@ This Chrome extension aims to provide a different UI for the student portal of A
 Credits:
 - Original AISIS Prettify by Prof. Ian De La Cruz
 - QPI Calculator and Enlistment Planner website and endpoints provided by Alexi
+- Calendar Converter by Arthur Lluisma
 
 Features
 - Improved Home Layout  
@@ -21,4 +22,5 @@ Features
 ![login page](https://lh3.googleusercontent.com/wqgsyc0M0tcfEipwIHrUAGudCk2Aqzrlcr3LVd7eOCS4ktr-nY5OOv4Jut_2VY_BTR8rf5-7a4oAdNbRFJl3VqFW=s1280-w1280-h800)
 - Improved Class Schedule Table  
 ![class schedule filter preview](https://lh3.googleusercontent.com/HgWCyKqXWlVwKu03GRCRiEsADMdqz7rA9aXeb5s_yLpzTlOsHuxl9sm7aGQqvUEKWbbKotKVB1Vmf0k3q3QGcebriA=s800-w800-h500)
+- Calendar Converter
 - Sort Dropdown  
