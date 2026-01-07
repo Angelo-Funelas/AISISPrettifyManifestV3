@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "AISIS Prettify - Improved User Interface",
     "description": "An extension that aims to make AISIS easier to work with",
-    "version": "1.3",
+    "version": "1.4",
     "icons": {
         "16": "/images/icon_16.png",
         "48": "/images/icon_48.png",
