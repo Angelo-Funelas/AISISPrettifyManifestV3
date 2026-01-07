@@ -257,14 +257,15 @@ function addCalendarPreview() {
 
 }
 
-function loadEnlistSumm() {
-    addCalendarConverter();
+function loadEnlistSumm(settings_calendar) {
+    if (settings_calendar)
+        addCalendarConverter();
     // addCalendarPreview();
 }
 
-chrome.storage.local.get({ 'settings_enlistSumm': true }, function(result) {
+chrome.storage.local.get({ 'settings_enlistSumm': true, 'settings_calendar': true }, function(result) {
     if (result.settings_enlistSumm) {
-        if (document.readyState !== 'loading') return loadEnlistSumm()
+        if (document.readyState !== 'loading') return loadEnlistSumm(result.settings_calendar)
         document.addEventListener('DOMContentLoaded', loadEnlistSumm)
     }
 })

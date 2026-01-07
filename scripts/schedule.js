@@ -1,5 +1,5 @@
 const mapToObject = map => Object.fromEntries(map.entries());
-function loadSchedule() {
+function loadSchedule(settings_calendar) {
     const pageHeading = document.getElementsByTagName('table')[11]?.querySelector("tbody > tr:nth-child(2) > td > span.header06")?.innerText
     if (pageHeading !== "My Class Schedule") return;
     var table = document.getElementsByTagName('table')[15]
@@ -49,31 +49,6 @@ function loadSchedule() {
             }});
         })
 
-        var convertButton = document.createElement('button')
-        convertButton.id = 'convertToCalendar'
-        convertButton.style.cssText = 'font-family: Arial, Helvetica, sans-serif; padding: 0.5rem 2.2rem; box-shadow: rgba(145, 145, 145, 0.4) 0px 0px 5px 3px; font-size: 14px; transition: all 0.2s cubic-bezier(.36,1.59,.59,.99); cursor: pointer; border-radius: 10px; text-align: center; display: inline-block; margin: 1rem 0; border: none; background-image: linear-gradient(40deg, rgb(255, 255, 255) -30%, rgb(255, 255, 255) 69%);'
-        
-        var buttonText = document.createElement('p')
-        buttonText.innerText = 'Convert to Calendar'
-        buttonText.style.cssText = 'margin: 0; background-image: linear-gradient(40deg, rgb(129, 213, 255) -30%, rgb(89, 122, 255) 69%); font-weight: bold; color: transparent; background-clip: text; -webkit-background-clip: text;'
-        convertButton.appendChild(buttonText)
-        
-        convertButton.onmouseover = () => {
-            convertButton.style.backgroundImage = 'linear-gradient(40deg, rgb(129, 213, 255) -30%, rgb(89, 122, 255) 69%)'
-            convertButton.style.boxShadow = 'rgba(145, 145, 145, 0.3) 0px 0px 5px 3px'
-            convertButton.style.scale = '1.02'
-            buttonText.style.color = 'white'
-        }
-        convertButton.onmouseout = () => {
-            convertButton.style.backgroundImage = 'linear-gradient(40deg, rgb(255, 255, 255) -30%, rgb(255, 255, 255) 69%)'
-            convertButton.style.boxShadow = 'rgba(145, 145, 145, 0.4) 0px 0px 5px 3px'
-            convertButton.style.scale = '1'
-            buttonText.style.color = 'transparent'
-        }
-        convertButton.onclick = () => {
-            chrome.runtime.sendMessage({ action: 'openCalendar' })
-        }
-
         var gridSchedule = document.createElement('div')
         gridSchedule.id = "prettyGrid"
         gridSchedule.style.gridTemplateRows = `64px repeat(${gridTable[0].length-1}, 32px)`
@@ -115,16 +90,45 @@ function loadSchedule() {
                 }
             }
         
+        } 
+
+        if (settings_calendar) {
+            var convertButton = document.createElement('button')
+            convertButton.id = 'convertToCalendar'
+            convertButton.style.cssText = 'font-family: Arial, Helvetica, sans-serif; padding: 0.5rem 2.2rem; box-shadow: rgba(145, 145, 145, 0.4) 0px 0px 5px 3px; font-size: 14px; transition: all 0.2s cubic-bezier(.36,1.59,.59,.99); cursor: pointer; border-radius: 10px; text-align: center; display: inline-block; margin: 1rem 0; border: none; background-image: linear-gradient(40deg, rgb(255, 255, 255) -30%, rgb(255, 255, 255) 69%);'
+
+            var buttonText = document.createElement('p')
+            buttonText.innerText = 'Convert to Calendar'
+            buttonText.style.cssText = 'margin: 0; background-image: linear-gradient(40deg, rgb(129, 213, 255) -30%, rgb(89, 122, 255) 69%); font-weight: bold; color: transparent; background-clip: text; -webkit-background-clip: text;'
+            convertButton.appendChild(buttonText)
+
+            convertButton.onmouseover = () => {
+                convertButton.style.backgroundImage = 'linear-gradient(40deg, rgb(129, 213, 255) -30%, rgb(89, 122, 255) 69%)'
+                convertButton.style.boxShadow = 'rgba(145, 145, 145, 0.3) 0px 0px 5px 3px'
+                convertButton.style.scale = '1.02'
+                buttonText.style.color = 'white'
+            }
+            convertButton.onmouseout = () => {
+                convertButton.style.backgroundImage = 'linear-gradient(40deg, rgb(255, 255, 255) -30%, rgb(255, 255, 255) 69%)'
+                convertButton.style.boxShadow = 'rgba(145, 145, 145, 0.4) 0px 0px 5px 3px'
+                convertButton.style.scale = '1'
+                buttonText.style.color = 'transparent'
+            }
+            convertButton.onclick = () => {
+                chrome.runtime.sendMessage({ action: 'openCalendar' })
+            }
+
+            table.parentElement.append(convertButton)
         }
-        table.parentElement.append(convertButton)
+
         table.parentElement.append(gridSchedule)
         table.style.display = 'none'
     }
 }
 
-chrome.storage.local.get({'settings_schedule': true}, function(result) {
+chrome.storage.local.get({'settings_schedule': true, 'settings_calendar': true}, function(result) {
     if (result.settings_schedule) {
-        if (document.readyState !== 'loading') return loadSchedule()
+        if (document.readyState !== 'loading') return loadSchedule(result.settings_calendar)
         document.addEventListener('DOMContentLoaded', loadSchedule)
     }
 })
