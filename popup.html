@@ -1,150 +1,127 @@
 <!doctype html>
 <html>
-
-<head>
+  <head>
     <title>AISIS Prettify</title>
     <style>
-        html {
-            width: 18em;
-            overflow-x: hidden;
-        }
-
-        body {
-            font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-            font-size: 0.8rem;
-            margin: 0;
-        }
-
-        #status {
-            /* avoid an excessively wide status text */
-            white-space: pre;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            max-width: 400px;
-        }
-
-        .switch {
-            position: relative;
-            display: inline-block;
-            width: 4em;
-            height: 2em;
-        }
-
-        /* Hide default HTML checkbox */
-        .switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        /* The slider */
-        .slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #ccc;
-            -webkit-transition: .2s;
-            transition: .2s;
-        }
-
-        .slider:before {
-            position: absolute;
-            content: "";
-            height: 1.6em;
-            width: 1.6em;
-            left: 0.25em;
-            bottom: 0.25em;
-            background-color: white;
-            -webkit-transition: .2s;
-            transition: .2s;
-        }
-
-        input:checked+.slider {
-            background-color: #2196F3;
-        }
-
-        input:focus+.slider {
-            box-shadow: 0 0 1px #2196F3;
-        }
-
-        input:checked+.slider:before {
-            -webkit-transform: translateX(1.8em);
-            -ms-transform: translateX(1.8em);
-            transform: translateX(1.8em);
-        }
-
-        input:disabled+.slider {
-            background-color: #d6d6d6;
-        }
-
-        input:disabled+.slider:before {
-            background-color: rgb(200, 200, 200);
-        }
-
-        /* Rounded sliders */
-        .slider.round {
-            border-radius: 34px;
-        }
-
-        .slider.round:before {
-            border-radius: 50%;
-        }
-
-        p {
-            display: inline-block;
-            vertical-align: -webkit-baseline-middle;
-            margin: 0.4rem 0.6rem;
-        }
-
-        header {
-            background: rgb(34, 230, 255);
-            background: linear-gradient(17deg, rgba(34, 230, 255, 1) 0%, rgba(1, 4, 255, 1) 100%);
-            color: white;
-            padding: 1rem;
-        }
-
-        header>h1 {
-            margin: 0;
-        }
-
-        main {
-            margin: 1rem;
-        }
-
-        footer {
-            padding: 1rem;
-            font-size: .8rem;
-            color: #8f8f8f;
-        }
-
-        main>div {
-            white-space: nowrap;
-        }
-
-        .setting-checkbox-p {
-            vertical-align: bottom;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            width: 15em;
-            overflow: hidden;
-        }
+      html {
+        width: 18em;
+        overflow-x: hidden;
+      }
+      body {
+        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+        font-size: 0.8rem;
+        margin: 0;
+      }
+      #status {
+        /* avoid an excessively wide status text */
+        white-space: pre;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        max-width: 400px;
+      }
+      .switch {
+        position: relative;
+        display: inline-block;
+        width: 4em;
+        height: 2em;
+    }
+    /* Hide default HTML checkbox */
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+    /* The slider */
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #ccc;
+        -webkit-transition: .2s;
+        transition: .2s;
+    }
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 1.6em;
+        width: 1.6em;
+        left: 0.25em;
+        bottom: 0.25em;
+        background-color: white;
+        -webkit-transition: .2s;
+        transition: .2s;
+    }
+    input:checked + .slider {
+        background-color: #2196F3;
+    }
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+    input:checked + .slider:before {
+        -webkit-transform: translateX(1.8em);
+        -ms-transform: translateX(1.8em);
+        transform: translateX(1.8em);
+    }
+    input:disabled + .slider {
+        background-color: #d6d6d6;
+    }
+    input:disabled + .slider:before {
+      background-color: rgb(200, 200, 200);
+    }
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 34px;
+    }
+    .slider.round:before {
+        border-radius: 50%;
+    }
+    p {
+      display: inline-block;
+      vertical-align: -webkit-baseline-middle;
+      margin: 0.4rem 0.6rem;
+    }
+    header {
+      background: rgb(34,230,255);
+      background: linear-gradient(17deg, rgba(34,230,255,1) 0%, rgba(1,4,255,1) 100%);
+      color: white;
+      padding: 1rem;
+    }
+    header > h1 {
+      margin: 0;
+    }
+    main {
+      margin: 1rem;
+    }
+    footer {
+      padding: 1rem;
+      font-size: .8rem;
+      color: #8f8f8f;
+    }
+    main > div {
+      white-space: nowrap;
+    }
+    .setting-checkbox-p {
+      vertical-align: bottom;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      width: 15em;
+      overflow: hidden;
+    }
     </style>
-</head>
-
-<body>
+  </head>
+  <body>
     <header>
-        <h1>Settings</h1>
-        <p>Turn off features from this panel</p>
+      <h1>Settings</h1>
+      <p>Turn off features from this panel</p>
     </header>
     <main>
     </main>
     <footer>
-        Developed by Gelo Funelas
+      Developed by Gelo Funelas
     </footer>
     <script src="/scripts/popup.js"></script>
-</body>
-
+  </body>
 </html>
