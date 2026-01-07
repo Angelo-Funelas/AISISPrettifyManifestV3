@@ -8,6 +8,7 @@ const settings = {
     'enlistPlanr': 'Enlistment Planner',
     'enlistSumm': 'Schedule in Enlistment Summary',
     'filter': 'Class Filter',
+    'calendar': 'Calendar Converter',
 }
 const setting_ids = Object.keys(settings)
 const setting_keys = Object.fromEntries(setting_ids.map(str => ["settings_" + str, true]));

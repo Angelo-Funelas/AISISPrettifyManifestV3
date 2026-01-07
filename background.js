@@ -13,6 +13,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     chrome.tabs.sendMessage(cachingTabID, {
         action: "IPSCached"
     })
+  } else if (message.action === "openCalendar") {
+    chrome.windows.create({
+      url: chrome.runtime.getURL("calendar_popup.html"),
+      type: "popup",
+      width: 500,
+      height: 600
+    });
   }
 });
 

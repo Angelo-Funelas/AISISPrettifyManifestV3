@@ -35,7 +35,8 @@
                 "/scripts/loop.js",
                 "/scripts/osu.js",
                 "/scripts/pageModifier.js",
-                "/scripts/app.js"
+                "/scripts/app.js",
+                "/scripts/termCache.js"
             ],
                 "run_at": "document_end"
         }
@@ -46,7 +47,8 @@
     "permissions": [
         "tabs",
         "storage",
-        "declarativeNetRequest"
+        "declarativeNetRequest",
+        "activeTab"
     ],
     "host_permissions": [
         "https://aisis.ateneo.edu/*"
