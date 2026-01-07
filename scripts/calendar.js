@@ -1,3 +1,7 @@
+if (typeof browser === "undefined") {
+    var browser = chrome;
+}
+
 document.addEventListener("DOMContentLoaded", async function() {
     const form = document.querySelector("#scheduleForm");
     const firstDayInput = document.querySelector("#firstDay");
@@ -90,7 +94,7 @@ const ICSDays = Object.freeze({
 
 async function initializeDates(firstDayInput, lastDayInput) {
     try {
-        const result = await chrome.storage.local.get([
+        const result = await browser.storage.local.get([
             "data_idNumber",
             "savedTerm",
             "savedFirstDay",
@@ -124,9 +128,9 @@ async function initializeDates(firstDayInput, lastDayInput) {
 
 async function convertCalendarFromStorage() {
     try {
-        const result = await chrome.storage.local.get(["data_idNumber"]);
+        const result = await browser.storage.local.get(["data_idNumber"]);
         const idNumber = result.data_idNumber || 0;
-        const scheduleData = await chrome.storage.local.get([
+        const scheduleData = await browser.storage.local.get([
             `data_schedule_${idNumber}`,
             "enlistedClasses",
         ]);
@@ -152,7 +156,7 @@ async function convertCalendarFromStorage() {
         const firstDayOfClasses = new Date(firstDayInput + "T00:00:00");
         const lastDayOfClasses = new Date(lastDayInput + "T00:00:00");
 
-        await chrome.storage.local.set({
+        await browser.storage.local.set({
             savedFirstDay: firstDayInput,
             savedLastDay: lastDayInput,
         });
@@ -435,17 +439,12 @@ async function convertToICS(events) {
 }
 
 async function getSequences() {
-    return new Promise((resolve) => {
-        chrome.storage.local.get(["eventSequences"], (result) => {
-            resolve(result.eventSequences || {});
-        });
-    });
+    const result = await browser.storage.local.get(["eventSequences"]);
+    return result.eventSequences || {};
 }
 
 async function saveSequences(sequences) {
-    return new Promise((resolve) => {
-        chrome.storage.local.set({ eventSequences: sequences }, resolve);
-    });
+    await browser.storage.local.set({ eventSequences: sequences });
 }
 
 function generateUID(event) {
